@@ -22,6 +22,9 @@ public class UserModel {
         this.jobTitle = jobTitle;
     }
 
+    public UserModel(String username, String email) {
+    }
+
     public String getFirstName() {
         return firstName;
     }
