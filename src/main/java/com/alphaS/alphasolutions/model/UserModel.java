@@ -6,12 +6,12 @@ public class UserModel {
     private String lastName;
     private String email;
     private String username;
-    private int password;
+    private String password;
     private int phoneNo;
     private String country;
     private String jobTitle;
 
-    public UserModel(String firstName, String lastName, String email, String username, int password, int phoneNo, String country, String jobTitle) {
+    public UserModel(String firstName, String lastName, String email, String username, String password, int phoneNo, String country, String jobTitle) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -54,11 +54,11 @@ public class UserModel {
         this.username = username;
     }
 
-    public int getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(int password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
