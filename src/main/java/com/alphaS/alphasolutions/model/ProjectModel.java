@@ -8,6 +8,8 @@ public class ProjectModel {
     private String projectDescriptopn;
     private LocalDate startDate;
     private LocalDate endDate;
+    private int client_id;
+    private int user_id;
 
     public ProjectModel(String projectName, String projectDescriptopn, LocalDate startDate, LocalDate endDate) {
         this.projectName = projectName;
