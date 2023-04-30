@@ -42,6 +42,12 @@ public class TaskCompassController {
         }
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/signin";
+    }
+
     //        try {
     //            User user = wishRepository.verifyUser(email);
     //            if (user == null) {
