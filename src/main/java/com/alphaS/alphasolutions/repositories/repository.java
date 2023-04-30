@@ -3,41 +3,37 @@ package com.alphaS.alphasolutions.repositories;
 import com.alphaS.alphasolutions.model.*;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import javax.sql.DataSource;
+import java.sql.*;
 
 @Repository
 public class repository {
 
-  String DBURL = System.getenv("DB_URL");
-  String DBUSERNAME = System.getenv("DB_USERNAME");
-  String DBPASSWORD = System.getenv("DB_PASSWORD");
+  private final DataSource dataSource;
 
+  public repository(DataSource dataSource) {
+    this.dataSource = dataSource;
+  }
     //Method for signin in
-    public UserModel signin(String username, int password) throws SQLException {
-        Connection con = DriverManager.getConnection(DBURL, DBUSERNAME, DBPASSWORD);
+    public UserModel signin(String username, String password) throws SQLException {
+      Connection con = dataSource.getConnection();
+      String sql = "SELECT * FROM taskcompass.user WHERE username=? AND password=?";
+      PreparedStatement stmt = con.prepareStatement(sql);
+      stmt.setString(1, username);
+      stmt.setString(2, password);
+
+      // Execute the query and get the result set
+      ResultSet rs = stmt.executeQuery();
+
+      if (rs.next()) {
+        UserModel user = new UserModel(rs.getString("username"), rs.getString("email"));
+        return user;
+      } else {
+        // User authentication failed
+        throw new SQLException("Username or password incorrect");
+      }
     }
-    //String sql = "SELECT u.email, wl.* \n" +
-    //                    "FROM miniProjekt.user u \n" +
-    //                    "JOIN miniProjekt.wishLists wl ON u.email = wl.userEmail \n" +
-    //                    "WHERE u.email = ?";
-    //            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-    //                statement.setString(1, email);
-    //                try (ResultSet resultSet = statement.executeQuery()) {
-    //                    if (resultSet.next()) {
-    //                        User user = new User();
-    //                        user.setEmail(resultSet.getString("email"));
-    //                        return user;
-    //                    } else {
-    //                        throw new LoginSampleException("Could not validate user");
-    //                    }
-    //                }
-    //            }
-    //        } catch (SQLException e) {
-    //            throw new RuntimeException("Error verifying user", e);
-    //        }
-    //    }
+
 /*
     //Method for creating new project
     public ProjectModel createProject(){
@@ -75,4 +71,4 @@ public class repository {
 
 */
 
-}
+    }
