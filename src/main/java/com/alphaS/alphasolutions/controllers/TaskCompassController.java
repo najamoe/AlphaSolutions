@@ -2,14 +2,18 @@ package com.alphaS.alphasolutions.controllers;
 
 import com.alphaS.alphasolutions.model.UserModel;
 import com.alphaS.alphasolutions.repositories.repository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.SQLException;
 
@@ -47,6 +51,25 @@ public class TaskCompassController {
         session.invalidate();
         return "redirect:/signin";
     }
+
+    @PostMapping("/createTeam")
+    @ResponseBody
+    public ResponseEntity<String> createTeam(HttpServletRequest request, @Autowired com.alphaS.alphasolutions.repositories.repository repository) {
+        try {
+            String teamName = request.getParameter("teamName");
+            int teamId = repository.createTeam(teamName);
+            return ResponseEntity.ok().body(Integer.toString(teamId));
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create team");
+        }
+    }
+
+
+
+
+
+
+
 
 
 

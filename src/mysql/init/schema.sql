@@ -12,6 +12,8 @@ CREATE TABLE taskcompass.User (
                                   user_id int PRIMARY KEY
 );
 
+
+
 CREATE TABLE taskcompass.Client (
                                     client_name varchar(255),
                                     contact_po_no int,
@@ -50,6 +52,7 @@ CREATE TABLE taskcompass.Sub_project (
                                          project_id int,
                                          FOREIGN KEY (project_id) REFERENCES Project (project_id)
 );
+
 
 CREATE TABLE taskcompass.Team (
                                   name varchar(255),
