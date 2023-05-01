@@ -48,21 +48,6 @@ public class TaskCompassController {
         return "redirect:/signin";
     }
 
-    //        try {
-    //            User user = wishRepository.verifyUser(email);
-    //            if (user == null) {
-    //                // User not found in the database, add an error message to the model
-    //                model.addAttribute("error", "Invalid email or password");
-    //                return "login";
-    //            }
-    //            session.setAttribute("user", user);
-    //            session.setAttribute("userEmail", email);
-    //            return "redirect:/myprofile";
-    //        } catch (LoginSampleException e) {
-    //            // Handle the exception
-    //            model.addAttribute("error", "An error occurred while logging in. Please try again later.");
-    //            return "login";
-    //        }
-    //    }
+
 
 }
