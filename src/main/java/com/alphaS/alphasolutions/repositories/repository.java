@@ -35,6 +35,30 @@ public class repository {
       }
     }
 
+    //Delete project
+    public String deleteProject(int projectID) {
+      String message;
+
+      try (Connection con = dataSource.getConnection()){
+        String sql = "DELETE FROM taskcompass.project WHERE project_id = ?";
+        PreparedStatement preparedStatement = con.prepareStatement(sql);
+        preparedStatement.setInt(1, projectID);
+        int rowsDeleted = preparedStatement.executeUpdate();
+
+        if (rowsDeleted > 0) {
+          message = "Project with ID " + projectID + " has been deleted successfully";
+        } else {
+          message = "Project with ID " + projectID + " does not exist";
+        }
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      }
+
+      return message;
+    }
+
+
+
   //Method for creating a team
   public int createTeam(String teamName) throws SQLException {
     Connection con = dataSource.getConnection();

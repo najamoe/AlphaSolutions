@@ -54,6 +54,10 @@ CREATE TABLE taskcompass.Sub_project (
                                          project_id int,
                                          FOREIGN KEY (project_id) REFERENCES Project (project_id)
 );
+ALTER TABLE taskcompass.Sub_project
+    ADD CONSTRAINT fk_subproject_project_id
+        FOREIGN KEY (project_id) REFERENCES taskcompass.Project (project_id)
+            ON DELETE CASCADE;
 
 
 CREATE TABLE taskcompass.Team (

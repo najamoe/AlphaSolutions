@@ -20,9 +20,11 @@ import java.sql.SQLException;
 @Controller
 public class TaskCompassController {
 
-    //Handle dataaccess
-    Repository repository;
+    private final repository repository;
 
+    public TaskCompassController(repository repository) {
+        this.repository = repository;
+    }
 
     @GetMapping("")
     public String Index(){
@@ -50,6 +52,12 @@ public class TaskCompassController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/signin";
+    }
+
+    @PostMapping("project/delete")
+    public String deleteProject(@RequestParam int projectID){
+        String message = repository.deleteProject(projectID);
+        return message;
     }
 
     @PostMapping("/createTeam")
