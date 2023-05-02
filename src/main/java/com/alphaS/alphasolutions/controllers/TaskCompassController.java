@@ -105,6 +105,17 @@ public class TaskCompassController {
         return message;
     }
 
+
+    @GetMapping("/project/search")
+    @ResponseBody
+    public ResponseEntity<String> searchProject(@RequestParam String projectName) {
+        try {
+            String result = repository.searchProjects(projectName).toString();
+            return ResponseEntity.ok(result);
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to search project");
+        }
+    }
     @PostMapping("project/delete")
     public String deleteProject(@RequestParam int projectID){
         String message = repository.deleteProject(projectID);
