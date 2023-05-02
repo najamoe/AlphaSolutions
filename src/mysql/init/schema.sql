@@ -28,7 +28,9 @@ CREATE TABLE taskcompass.Task (
                                   description_task varchar(255),
                                   est_time time,
                                   title_needed varchar(255),
-                                  task_id int PRIMARY KEY
+                                  task_id int PRIMARY KEY,
+                                  status_name varchar(255),
+                                  status_color varchar(255)
 );
 
 CREATE TABLE taskcompass.Project (

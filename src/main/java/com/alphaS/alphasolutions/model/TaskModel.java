@@ -1,5 +1,6 @@
 package com.alphaS.alphasolutions.model;
 
+import java.awt.*;
 import java.time.LocalTime;
 
 public class TaskModel {
@@ -8,6 +9,8 @@ public class TaskModel {
     private String taskDescription;
     private LocalTime estTime;
     private String jobTitleNeeded;
+    private String status;
+    private Color color;
 
     public TaskModel(String taskName, String taskDescription, LocalTime estTime, String jobTitleNeeded) {
         this.taskName = taskName;
