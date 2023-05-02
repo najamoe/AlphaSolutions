@@ -37,7 +37,7 @@ public class TaskCompassController {
     }
 
     @PostMapping("/signin")
-    public String signinpostmapping(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, Model model,@Autowired com.alphaS.alphasolutions.repositories.repository repository){
+    public String signinpostmapping(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, Model model){
         try {
             UserModel usermodel = repository.signin(username, password);
             session.setAttribute("user", usermodel); // store user in session
@@ -54,6 +54,58 @@ public class TaskCompassController {
         return "redirect:/signin";
     }
 
+    @PostMapping("/clients/create")
+    public ResponseEntity<String> createClient(@RequestParam String clientName,
+                                               @RequestParam String contactPoNo,
+                                               @RequestParam String contactPerson,
+                                               @RequestParam String companyPoNo,
+                                               @RequestParam String address,
+                                               @RequestParam String zipCode,
+                                               @RequestParam String country,
+                                               @RequestParam String clientId) {
+        try {
+            String result = repository.createClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country, clientId);
+            return ResponseEntity.ok(result);
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create client");
+        }
+    }
+
+    @PostMapping("/clients/edit")
+    public ResponseEntity<String> editClient(@RequestParam String clientName,
+                                             @RequestParam String contactPoNo,
+                                             @RequestParam String contactPerson,
+                                             @RequestParam String companyPoNo,
+                                             @RequestParam String address,
+                                             @RequestParam String zipCode,
+                                             @RequestParam String country,
+                                             @RequestParam String clientId) {
+        try {
+            String result = repository.editClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country, clientId);
+            return ResponseEntity.ok(result);
+            } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to edit client");
+        }
+
+    }
+
+    @GetMapping("/clients/search")
+    @ResponseBody
+    public ResponseEntity<String> searchClient(@RequestParam String clientName) {
+        try {
+            String result = repository.searchClients(clientName).toString();
+            return ResponseEntity.ok(result);
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to search client");
+        }
+    }
+
+    @PostMapping("/clients/delete")
+    public String deleteClient(@RequestParam int clientID){
+        String message = repository.deleteClient(clientID);
+        return message;
+    }
+
     @PostMapping("project/delete")
     public String deleteProject(@RequestParam int projectID){
         String message = repository.deleteProject(projectID);
@@ -62,7 +114,7 @@ public class TaskCompassController {
 
     @PostMapping("/createTeam")
     @ResponseBody
-    public ResponseEntity<String> createTeam(HttpServletRequest request, @Autowired com.alphaS.alphasolutions.repositories.repository repository) {
+    public ResponseEntity<String> createTeam(HttpServletRequest request) {
         try {
             String teamName = request.getParameter("teamName");
             int teamId = repository.createTeam(teamName);
