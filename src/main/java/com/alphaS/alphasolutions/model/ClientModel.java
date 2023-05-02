@@ -2,22 +2,36 @@ package com.alphaS.alphasolutions.model;
 
 public class ClientModel {
 
+    private int clientId;
     private String clientName;
-    private int companyPhone;
+    private int companyPoNo;
     private String contactPerson;
-    private int contactPhone;
-    private String adress;
+    private int contactPoNo;
+    private String address;
     private int zipcode;
     private String country;
 
-    public ClientModel(String clientName, int companyPhone, String contactPerson, int contactPhone, String adress, int zipcode, String country) {
+    public ClientModel(int clientId, String clientName, int companyPoNo, String contactPerson, int contactPoNo, String address, int zipcode, String country) {
+        this.clientId = clientId;
         this.clientName = clientName;
-        this.companyPhone = companyPhone;
+        this.companyPoNo = companyPoNo;
         this.contactPerson = contactPerson;
-        this.contactPhone = contactPhone;
-        this.adress = adress;
+        this.contactPoNo = contactPoNo;
+        this.address = address;
         this.zipcode = zipcode;
         this.country = country;
+    }
+
+    public ClientModel() {
+
+    }
+
+    public int getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
     }
 
     public String getClientName() {
@@ -28,12 +42,12 @@ public class ClientModel {
         this.clientName = clientName;
     }
 
-    public int getCompanyPhone() {
-        return companyPhone;
+    public int getCompanyPoNo() {
+        return companyPoNo;
     }
 
-    public void setCompanyPhone(int companyPhone) {
-        this.companyPhone = companyPhone;
+    public void setCompanyPoNo(int companyPoNo) {
+        this.companyPoNo = companyPoNo;
     }
 
     public String getContactPerson() {
@@ -44,20 +58,20 @@ public class ClientModel {
         this.contactPerson = contactPerson;
     }
 
-    public int getContactPhone() {
-        return contactPhone;
+    public int getContactPoNo() {
+        return contactPoNo;
     }
 
-    public void setContactPhone(int contactPhone) {
-        this.contactPhone = contactPhone;
+    public void setContactPoNo(int contactPoNo) {
+        this.contactPoNo = contactPoNo;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public int getZipcode() {
@@ -79,11 +93,12 @@ public class ClientModel {
     @Override
     public String toString() {
         return "ClientModel{" +
-                "clientName='" + clientName + '\'' +
-                ", companyPhone=" + companyPhone +
+                "clientId=" + clientId +
+                ", clientName='" + clientName + '\'' +
+                ", companyPoNo=" + companyPoNo +
                 ", contactPerson='" + contactPerson + '\'' +
-                ", contactPhone=" + contactPhone +
-                ", adress='" + adress + '\'' +
+                ", contactPoNo=" + contactPoNo +
+                ", address='" + address + '\'' +
                 ", zipcode=" + zipcode +
                 ", country='" + country + '\'' +
                 '}';
