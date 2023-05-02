@@ -25,8 +25,8 @@ RUN mvn package
    # Copy the built JAR file from the build stage to the final image
    COPY --from=build /app/target/my-app.jar .
 
-   # Expose port 8080 for the application
-   EXPOSE 8080
+   # Expose port 8686 for the application
+   EXPOSE 8686
 
    # Set the default command to run the application
    CMD ["java", "-jar", "my-app.jar"]
