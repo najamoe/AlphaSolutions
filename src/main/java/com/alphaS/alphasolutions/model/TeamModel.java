@@ -10,11 +10,28 @@ public class TeamModel {
         this.projectName = projectName;
     }
 
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+
     @Override
     public String toString() {
         return "TeamModel{" +
                 "teamName='" + teamName + '\'' +
                 ", projectName='" + projectName + '\'' +
-                '}';
+               '}';
     }
 }
