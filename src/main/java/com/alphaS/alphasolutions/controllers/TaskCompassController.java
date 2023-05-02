@@ -35,7 +35,6 @@ public class TaskCompassController {
     public String signin(){
         return "index";
     }
-
     @PostMapping("/signin")
     public String signinpostmapping(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, Model model){
         try {
