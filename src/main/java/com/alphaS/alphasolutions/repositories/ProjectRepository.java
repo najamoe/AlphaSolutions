@@ -173,113 +173,83 @@ public class ProjectRepository {
     }
 
 
+    //Remove member from a team
+    public String removeMemberFromTeam(int teamId, int userId) throws SQLException {
+        String message;
+
+        try (Connection con = dataSource.getConnection()){
+            String sql = "DELETE FROM taskcompass.Team_users WHERE team_id = ? AND user_id = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, teamId);
+            preparedStatement.setInt(2,userId);
+            int rowsDeleted = preparedStatement.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                message = userId + " has been removed from the " + teamId + " team, successfully";
+            } else {
+                message = userId + " is not a member of the " + teamId + " team";
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return message;
+
+    }
+
+
 
     //Method for creating a team
     public int createTeam(String teamName) throws SQLException {
-        Connection con = dataSource.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
+        try (Connection con = dataSource.getConnection();
+             Statement stmt = con.createStatement()) {
 
-        try {
             // Create a new team
-            String sql = "INSERT INTO team (name) VALUES (?)";
-            stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, teamName);
-            stmt.executeUpdate();
+            String sql = "INSERT INTO taskcompass.Team (name) VALUES ('" + teamName + "')";
+            stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
             // Get the ID of the newly created team
-            int teamId;
-            rs = stmt.getGeneratedKeys();
-            if (rs.next()) {
-                teamId = rs.getInt(1);
-            } else {
-                throw new SQLException("Creating team failed, no ID obtained.");
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                } else {
+                    throw new SQLException("Creating team failed, no ID obtained.");
+                }
             }
-
-            con.commit();
-
-            return teamId;
-
-        } catch (SQLException ex) {
-            if (con != null) {
-                con.rollback();
-            }
-            throw ex;
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
-            con.close();
         }
     }
 
+
     //Method for adding a member to a team
     public void addTeamMembers(int teamId, List<String> userNames) throws SQLException {
-        Connection con = dataSource.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
-        try {
+        String sql = "INSERT INTO taskcompass.user_team (user_id, team_id) SELECT u.id, t.id FROM taskcompass.user u  JOIN taskcompass.team t ON t.team_name = ?  WHERE u.first_name = ? AND u.last_name = ?";
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            con.setAutoCommit(false);
             for (String userName : userNames) {
                 String[] nameParts = userName.split("\\s+");
                 String firstName = nameParts[0];
                 String lastName = nameParts[1];
-
-                // Find the user ID by first and last name
-                String sql = "SELECT * FROM user WHERE first_name = ? AND last_name = ?";
-                stmt = con.prepareStatement(sql);
-                stmt.setString(1, firstName);
-                stmt.setString(2, lastName);
-                rs = stmt.executeQuery();
-
-                if (rs.next()) {
-                    int userId = rs.getInt("id");
-                    // Check if the user is already in another team
-                    sql = "SELECT COUNT(*) AS team_count FROM user_team WHERE user_id = ?";
-                    stmt = con.prepareStatement(sql);
-                    stmt.setInt(1, userId);
-                    rs = stmt.executeQuery();
-
-                    int teamCount = rs.getInt("team_count");
-                    if (teamCount > 0) {
-                        // Update the user's team if they are already in one
-                        sql = "UPDATE user_team SET team_id = ? WHERE user_id = ?";
-                        stmt = con.prepareStatement(sql);
-                        stmt.setInt(1, teamId);
-                        stmt.setInt(2, userId);
-                        stmt.executeUpdate();
-                    } else {
-                        // Add the user to the team
-                        sql = "INSERT INTO user_team (user_id, team_id) VALUES (?, ?)";
-                        stmt = con.prepareStatement(sql);
-                        stmt.setInt(1, userId);
-                        stmt.setInt(2, teamId);
-                        stmt.executeUpdate();
-                    }
-                } else {
-                    throw new SQLException("User with name " + userName + " not found.");
+                stmt.setInt(1, teamId);
+                stmt.setString(2, firstName);
+                stmt.setString(3, lastName);
+                int rowCount = stmt.executeUpdate();
+                if (rowCount == 0) {
+                    // Log error and continue with next user
+                    System.err.println("User with name " + userName + " not found.");
                 }
             }
-
             con.commit();
-
         } catch (SQLException ex) {
-            if (con != null) {
-                con.rollback();
-            }
+            // Log error and rollback transaction
+            System.err.println("Error adding team members: " + ex.getMessage());
             throw ex;
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
-            con.close();
         }
+    }
+
+
+
+
 
         /*
 
