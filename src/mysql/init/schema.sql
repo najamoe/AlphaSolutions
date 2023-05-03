@@ -9,7 +9,7 @@ CREATE TABLE taskcompass.User (
                                   phone_no int,
                                   user_country varchar(255),
                                   title varchar(255),
-                                  user_id int PRIMARY KEY
+                                  user_id int PRIMARY KEY AUTO_INCREMENT
 );
 
 
@@ -22,7 +22,7 @@ CREATE TABLE taskcompass.Client (
                                     address varchar(255),
                                     zip_code int,
                                     country varchar(255),
-                                    client_id int PRIMARY KEY
+                                    client_id int PRIMARY KEY AUTO_INCREMENT
 );
 
 CREATE TABLE taskcompass.Task (
@@ -30,7 +30,7 @@ CREATE TABLE taskcompass.Task (
                                   description_task varchar(255),
                                   est_time time,
                                   title_needed varchar(255),
-                                  task_id int PRIMARY KEY,
+                                  task_id int PRIMARY KEY AUTO_INCREMENT,
                                   status_name varchar(255),
                                   status_color varchar(255)
 );
@@ -42,7 +42,7 @@ CREATE TABLE taskcompass.Project (
                                      end_date date,
                                      client_id int,
                                      user_id int,
-                                     project_id int primary key,
+                                     project_id int primary key AUTO_INCREMENT,
                                      FOREIGN KEY (user_id) REFERENCES User (user_id),
                                      FOREIGN KEY (client_id) REFERENCES Client (client_id)
 );
@@ -50,7 +50,7 @@ CREATE TABLE taskcompass.Project (
 CREATE TABLE taskcompass.Sub_project (
                                          sub_project_name varchar(255),
                                          sub_project_description varchar(255),
-                                         subproject_id int PRIMARY KEY,
+                                         subproject_id int PRIMARY KEY AUTO_INCREMENT,
                                          project_id int,
                                          FOREIGN KEY (project_id) REFERENCES Project (project_id)
 );
@@ -63,7 +63,7 @@ ALTER TABLE taskcompass.Sub_project
 CREATE TABLE taskcompass.Team (
                                   name varchar(255),
                                   project_name varchar(255),
-                                  team_id int PRIMARY KEY,
+                                  team_id int PRIMARY KEY AUTO_INCREMENT,
                                   user_id int,
                                   teamusers_id int
 );
@@ -71,7 +71,7 @@ CREATE TABLE taskcompass.Team (
 CREATE TABLE taskcompass.Team_users (
                                         user_id int,
                                         team_id int,
-                                        teamusers_id int PRIMARY KEY
+                                        teamusers_id int PRIMARY KEY AUTO_INCREMENT
 );
 
 ALTER TABLE taskcompass.Team
