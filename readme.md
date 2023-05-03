@@ -22,23 +22,23 @@ Screenshots of the Alpha Solutions Project Calculation Tool are available in the
 
 The Alpha Solutions Project Calculation Tool was built using the following technologies and frameworks:
 
-GitHub
-Meta Platform Messenger
-Monday.com
-Google Drive
-LucidChart
-Render.com
-Microsoft Teams
-IntelliJ IDEA
-MySQL Desktop
-Microsoft OneNote
+- GitHub
+- Meta Platform Messenger
+- Monday.com
+- Google Drive
+- LucidChart
+- Render.com
+- Microsoft Teams
+- IntelliJ IDEA
+- MySQL Desktop
+- Microsoft OneNote
 
 # Features
 
 The Alpha Solutions Project Calculation Tool includes the following features:
 
-Client creation and search
-Subtask creation and assignment
-Team creation and assignment
-Time breakdown and limitation consideration
-Edit and delete functionality for clients, projects, and teams
+- Client creation and search
+- Subtask creation and assignment
+- Team creation and assignment
+- Time breakdown and limitation consideration
+- Edit and delete functionality for clients, projects, and teams
