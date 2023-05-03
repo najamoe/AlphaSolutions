@@ -6,16 +6,16 @@ public class ProjectModel {
 
     private int projectId;
     private String projectName;
-    private String projectDescriptopn;
+    private String projectDescription;
     private LocalDate startDate;
     private LocalDate endDate;
     private int client_id;
     private int user_id;
 
-    public ProjectModel(int projectId, String projectName, String projectDescriptopn, LocalDate startDate, LocalDate endDate, int client_id, int user_id) {
+    public ProjectModel(int projectId, String projectName, String projectDescription, LocalDate startDate, LocalDate endDate, int client_id, int user_id) {
         this.projectId = projectId;
         this.projectName = projectName;
-        this.projectDescriptopn = projectDescriptopn;
+        this.projectDescription = projectDescription;
         this.startDate = startDate;
         this.endDate = endDate;
         this.client_id = client_id;
@@ -42,12 +42,12 @@ public class ProjectModel {
         this.projectName = projectName;
     }
 
-    public String getProjectDescriptopn() {
-        return projectDescriptopn;
+    public String getProjectDescription() {
+        return projectDescription;
     }
 
-    public void setProjectDescriptopn(String projectDescriptopn) {
-        this.projectDescriptopn = projectDescriptopn;
+    public void setProjectDescription(String projectDescription) {
+        this.projectDescription = projectDescription;
     }
 
     public LocalDate getStartDate() {
@@ -87,7 +87,7 @@ public class ProjectModel {
         return "ProjectModel{" +
                 "projectId=" + projectId +
                 ", projectName='" + projectName + '\'' +
-                ", projectDescriptopn='" + projectDescriptopn + '\'' +
+                ", projectDescriptopn='" + projectDescription + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", client_id=" + client_id +
