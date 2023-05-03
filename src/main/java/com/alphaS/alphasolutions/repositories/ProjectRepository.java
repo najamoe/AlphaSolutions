@@ -71,6 +71,8 @@ public class ProjectRepository {
         }
     }
 
+
+
         //Search clients
         public List<ClientModel> searchClients(String search) throws SQLException {
             List<ClientModel> clients = new ArrayList<>();
@@ -173,6 +175,10 @@ public class ProjectRepository {
     }
 
 
+
+
+
+
     //Remove member from a team
     public String removeMemberFromTeam(int teamId, int userId) throws SQLException {
         String message;
@@ -195,6 +201,20 @@ public class ProjectRepository {
 
         return message;
 
+    }
+
+    public String editTeamName(String teamName) throws SQLException {
+        Connection con = dataSource.getConnection();String sql = "UPDATE taskcompass.Team SET team_name = ? WHERE team_id = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+
+        stmt.setString(1, teamName);
+        // Execute the query and get the result set
+        int rowsUpdated = stmt.executeUpdate();
+        if (rowsUpdated > 0) {
+            return "Client successfully updated in database";
+        } else {
+            return "Something went wrong, no client updated";
+        }
     }
 
 
