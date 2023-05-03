@@ -1,14 +1,13 @@
 package com.alphaS.alphasolutions.controllers;
 
-import com.alphaS.alphasolutions.model.UserModel;
-import com.alphaS.alphasolutions.repositories.repository;
+
+
+import com.alphaS.alphasolutions.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,13 +15,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 public class TaskCompassController {
 
-    private final repository repository;
+    private final UserRepository repository;
 
-    public TaskCompassController(repository repository) {
+    public TaskCompassController(UserRepository repository) {
         this.repository = repository;
     }
 
@@ -133,6 +134,21 @@ public class TaskCompassController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create team");
         }
     }
+
+    @PostMapping("/addTeamMembers")
+    @ResponseBody
+    public ResponseEntity<String> addTeamMembers(HttpServletRequest request) {
+        try {
+            int teamId = Integer.parseInt(request.getParameter("teamId"));
+            String[] usernames = request.getParameterValues("usernames[]");
+            List<String> userNames = Arrays.asList(usernames);
+            repository.addTeamMembers(teamId, userNames);
+            return ResponseEntity.ok().body("Team members added successfully.");
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add team members.");
+        }
+    }
+
 
 
 
