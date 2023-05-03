@@ -2,6 +2,7 @@ package com.alphaS.alphasolutions.controllers;
 
 
 
+import com.alphaS.alphasolutions.model.UserModel;
 import com.alphaS.alphasolutions.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
