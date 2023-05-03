@@ -8,11 +8,11 @@ The motivation behind creating the Alpha Solutions Project Calculation Tool was 
 
 # Build Status
 
-The current build status of the project is stable, with no major bugs or errors. Any issues that may arise will be addressed and resolved promptly.
+
 
 # Code Style
 
-The project follows the standard code style to maintain consistency and readability throughout the codebase.
+
 
 # Screenshots
 
