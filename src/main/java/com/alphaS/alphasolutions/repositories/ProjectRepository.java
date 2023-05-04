@@ -152,17 +152,7 @@ public class ProjectRepository {
         return "Failed to create project";
     }
 
-    private void createSubProject(int projectId, SubProjectModel subProject) throws SQLException {
-        Connection con = dataSource.getConnection();
-        String sql = "INSERT INTO taskcompass.sub_project (project_id, subproject_name, subproject_description) VALUES (?,?,?)";
-        PreparedStatement stmt = con.prepareStatement(sql);
 
-        stmt.setInt(1, projectId);
-        stmt.setString(2, subProject.getSubProjectName());
-        stmt.setString(3, subProject.getSubProjectDescription());
-
-        stmt.executeUpdate();
-    }
 
 
     //Search project
@@ -213,6 +203,21 @@ public class ProjectRepository {
         return message;
     }
 
+    private void createSubProject(int projectId, SubProjectModel subProject) throws SQLException {
+        Connection con = dataSource.getConnection();
+        String sql = "INSERT INTO taskcompass.sub_project (project_id, subproject_name, subproject_description) VALUES (?,?,?)";
+        PreparedStatement stmt = con.prepareStatement(sql);
+
+        stmt.setInt(1, projectId);
+        stmt.setString(2, subProject.getSubProjectName());
+        stmt.setString(3, subProject.getSubProjectDescription());
+
+        stmt.executeUpdate();
+    }
+
+    //TODO editSubproject
+
+    //TODO delete subproject
 
     //Remove member from a team
     public String removeMemberFromTeam(int teamId, int userId) throws SQLException {
