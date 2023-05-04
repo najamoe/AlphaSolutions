@@ -26,7 +26,7 @@ public class TeamRepository {
              Statement stmt = con.createStatement()) {
 
             // Create a new team
-            String sql = "INSERT INTO taskcompass.Team (name) VALUES ('" + teamName + "')";
+            String sql = "INSERT INTO taskcompass.Team name VALUES ('" + teamName + "')";
             stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
             // Get the ID of the newly created team
@@ -93,13 +93,13 @@ public class TeamRepository {
     }
 
     //Method for editing a team name
-    public String editTeamName(String teamName) throws SQLException {
+    public String editTeamName(int teamId, String teamName) throws SQLException {
         Connection con = dataSource.getConnection();
-        String sql = "UPDATE taskcompass.Team SET team_name = ? WHERE team_id = ?";
+        String sql = "UPDATE taskcompass.Team SET name = ? WHERE team_id = ?";
         PreparedStatement stmt = con.prepareStatement(sql);
 
         stmt.setString(1, teamName);
-        // Execute the query and get the result set
+
         int rowsUpdated = stmt.executeUpdate();
         if (rowsUpdated > 0) {
             return "New team name successfully updated";
