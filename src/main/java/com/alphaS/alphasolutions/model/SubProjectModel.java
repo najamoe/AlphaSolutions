@@ -1,6 +1,7 @@
 package com.alphaS.alphasolutions.model;
 
 public class SubProjectModel {
+    private int subprojectId;
     private String subProjectName;
     private String subProjectDescription;
 
