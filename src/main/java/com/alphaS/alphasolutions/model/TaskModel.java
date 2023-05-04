@@ -4,7 +4,7 @@ import java.awt.*;
 import java.time.LocalTime;
 
 public class TaskModel {
-
+    private int taskId;
     private String taskName;
     private String taskDescription;
     private LocalTime estTime;

@@ -1,7 +1,7 @@
 package com.alphaS.alphasolutions.model;
 
 public class TeamModel {
-
+    private int teamId;
     private String teamName;
     private String projectName;
 
