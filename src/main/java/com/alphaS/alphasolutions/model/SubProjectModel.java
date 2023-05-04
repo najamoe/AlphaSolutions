@@ -10,7 +10,6 @@ public class SubProjectModel {
     }
 
     public SubProjectModel() {
-
     }
 
     public String getSubProjectName() {
