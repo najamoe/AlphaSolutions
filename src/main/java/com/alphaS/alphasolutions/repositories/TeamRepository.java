@@ -20,6 +20,7 @@ public class TeamRepository {
         this.dataSource = dataSource;
     }
 
+    //Method for creating a team
     public int createTeam(String teamName) throws SQLException {
         try (Connection con = dataSource.getConnection();
              Statement stmt = con.createStatement()) {
@@ -39,6 +40,7 @@ public class TeamRepository {
         }
     }
 
+    //Method for adding a member to a team
     public void AddEmployeeToTeam(int teamId, List<String> userNames) throws SQLException {
         String sql = "INSERT INTO taskcompass.user_team (user_id, team_id) SELECT u.id, t.id FROM taskcompass.user u  JOIN taskcompass.team t ON t.team_name = ?  WHERE u.first_name = ? AND u.last_name = ?";
         try (Connection con = dataSource.getConnection();
@@ -66,7 +68,7 @@ public class TeamRepository {
     }
 
 
-    //Missing in controller
+    //Method for removing a member form a team
     public String removeEmployeeFromTeam(int teamId, int userId) throws SQLException {
         String message;
 
@@ -90,7 +92,7 @@ public class TeamRepository {
 
     }
 
-    //Missing in controller
+    //Method for editing a team name
     public String editTeamName(String teamName) throws SQLException {
         Connection con = dataSource.getConnection();
         String sql = "UPDATE taskcompass.Team SET team_name = ? WHERE team_id = ?";
@@ -100,9 +102,9 @@ public class TeamRepository {
         // Execute the query and get the result set
         int rowsUpdated = stmt.executeUpdate();
         if (rowsUpdated > 0) {
-            return "Client successfully updated in database"; //TODO: Client? Isn't it Employee (former User)?
+            return "New team name successfully updated";
         } else {
-            return "Something went wrong, no client updated";//TODO: Same question as above.
+            return "Something went wrong, new team name not updated";
         }
     }
 }

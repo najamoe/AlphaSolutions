@@ -175,4 +175,31 @@ public class TaskCompassController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add team members.");
         }
     }
+
+    @PostMapping("/editTeamName")
+    @ResponseBody
+    public ResponseEntity<String> editTeamName(HttpServletRequest request) {
+        try {
+            int teamId = Integer.parseInt(request.getParameter("teamId"));
+            String teamName = request.getParameter("teamName");
+            String message = teamRepository.editTeamName(teamId, teamName);
+            return ResponseEntity.ok().body(message);
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to edit team name");
+        }
+    }
+
+    @PostMapping("/removeEmployeeFromTeam")
+    @ResponseBody
+    public ResponseEntity<String> removeEmployeeFromTeam(HttpServletRequest request) {
+        try {
+            int teamId = Integer.parseInt(request.getParameter("teamId"));
+            int userId = Integer.parseInt(request.getParameter("userId"));
+            String message = teamRepository.removeEmployeeFromTeam(teamId, userId);
+            return ResponseEntity.ok().body(message);
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to remove team member");
+        }
+    }
+
 }
