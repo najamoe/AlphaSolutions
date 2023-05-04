@@ -9,6 +9,10 @@ public class SubProjectModel {
         this.subProjectDescription = subProjectDescription;
     }
 
+    public SubProjectModel() {
+
+    }
+
     public String getSubProjectName() {
         return subProjectName;
     }
