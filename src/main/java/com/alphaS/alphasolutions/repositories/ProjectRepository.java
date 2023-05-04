@@ -70,42 +70,42 @@ public class ProjectRepository {
     }
 
 
-        //Search clients
-        public List<ClientModel> searchClients(String search) throws SQLException {
-            List<ClientModel> clients = new ArrayList<>();
+    //Search clients
+    public List<ClientModel> searchClients(String search) throws SQLException {
+        List<ClientModel> clients = new ArrayList<>();
 
-            Connection con = dataSource.getConnection();
-            String sql = "SELECT * FROM taskcompass.client WHERE client_name LIKE ? OR contact_person LIKE ? OR contact_po_no LIKE ? OR company_po_no LIKE ? OR address LIKE ? OR zip_code LIKE ? OR country LIKE ? OR client_id LIKE ?";
-            try (PreparedStatement stmt = con.prepareStatement(sql)) {
+        Connection con = dataSource.getConnection();
+        String sql = "SELECT * FROM taskcompass.client WHERE client_name LIKE ? OR contact_person LIKE ? OR contact_po_no LIKE ? OR company_po_no LIKE ? OR address LIKE ? OR zip_code LIKE ? OR country LIKE ? OR client_id LIKE ?";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
 
-                // Set the search term as the parameter value for each placeholder
-                String likeSearchTerm = "%" + search + "%";
-                for (int i = 1; i <= 8; i++) {
-                    stmt.setString(i, likeSearchTerm);
-                }
+            // Set the search term as the parameter value for each placeholder
+            String likeSearchTerm = "%" + search + "%";
+            for (int i = 1; i <= 8; i++) {
+                stmt.setString(i, likeSearchTerm);
+            }
 
-                try (ResultSet rs = stmt.executeQuery()) {
-                    while (rs.next()) {
-                        ClientModel client = new ClientModel();
-                        client.setClientId(rs.getInt("client_id"));
-                        client.setClientName(rs.getString("client_name"));
-                        client.setContactPerson(rs.getString("contact_person"));
-                        client.setContactPoNo(rs.getInt("contact_po_no"));
-                        client.setCompanyPoNo(rs.getInt("company_po_no"));
-                        client.setAddress(rs.getString("address"));
-                        client.setZipcode(rs.getInt("zip_code"));
-                        client.setCountry(rs.getString("country"));
-                        clients.add(client);
-                    }
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    ClientModel client = new ClientModel();
+                    client.setClientId(rs.getInt("client_id"));
+                    client.setClientName(rs.getString("client_name"));
+                    client.setContactPerson(rs.getString("contact_person"));
+                    client.setContactPoNo(rs.getInt("contact_po_no"));
+                    client.setCompanyPoNo(rs.getInt("company_po_no"));
+                    client.setAddress(rs.getString("address"));
+                    client.setZipcode(rs.getInt("zip_code"));
+                    client.setCountry(rs.getString("country"));
+                    clients.add(client);
                 }
             }
-            return clients;
         }
+        return clients;
+    }
 
     //Delete client
     public String deleteClient(int clientId) {
         String message;
-        try (Connection con = dataSource.getConnection()){
+        try (Connection con = dataSource.getConnection()) {
             String sql = "DELETE FROM taskcompass.client WHERE client_id =?";
             PreparedStatement preparedStatement = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, clientId);
@@ -165,38 +165,37 @@ public class ProjectRepository {
     }
 
 
-
     //Search project
-        public List<ProjectModel> searchProjects(String search) throws SQLException {
-            List<ProjectModel> projects = new ArrayList<>();
+    public List<ProjectModel> searchProjects(String search) throws SQLException {
+        List<ProjectModel> projects = new ArrayList<>();
 
-            Connection con = dataSource.getConnection();
-            String sql = "SELECT p.* FROM taskcompass.project p " +
-                    "INNER JOIN taskcompass.client c ON p.client_id = c.client_id " +
-                    "WHERE p.project_name LIKE ? OR p.project_id LIKE ? OR c.clientName LIKE ?";
-            try (PreparedStatement stmt = con.prepareStatement(sql)) {
-                stmt.setString(1, "%" + search + "%");
-                stmt.setString(2, "%" + search + "%");
-                stmt.setString(3, "%" + search + "%");
-                ResultSet rs = stmt.executeQuery();
-                while (rs.next()) {
-                    // Map the result set to your ProjectModel object and add it to the list
-                    ProjectModel project = new ProjectModel();
-                    project.setProjectId(rs.getInt("project_id"));
-                    project.setProjectName(rs.getString("project_name"));
-                    // Set other fields as needed
-                    projects.add(project);
-                }
+        Connection con = dataSource.getConnection();
+        String sql = "SELECT p.* FROM taskcompass.project p " +
+                "INNER JOIN taskcompass.client c ON p.client_id = c.client_id " +
+                "WHERE p.project_name LIKE ? OR p.project_id LIKE ? OR c.clientName LIKE ?";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, "%" + search + "%");
+            stmt.setString(2, "%" + search + "%");
+            stmt.setString(3, "%" + search + "%");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                // Map the result set to your ProjectModel object and add it to the list
+                ProjectModel project = new ProjectModel();
+                project.setProjectId(rs.getInt("project_id"));
+                project.setProjectName(rs.getString("project_name"));
+                // Set other fields as needed
+                projects.add(project);
             }
-            return projects;
         }
+        return projects;
+    }
 
 
     //Delete project
     public String deleteProject(int projectID) {
         String message;
 
-        try (Connection con = dataSource.getConnection()){
+        try (Connection con = dataSource.getConnection()) {
             String sql = "DELETE FROM taskcompass.project WHERE project_id = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setInt(1, projectID);
@@ -215,19 +214,15 @@ public class ProjectRepository {
     }
 
 
-
-
-
-
     //Remove member from a team
     public String removeMemberFromTeam(int teamId, int userId) throws SQLException {
         String message;
 
-        try (Connection con = dataSource.getConnection()){
+        try (Connection con = dataSource.getConnection()) {
             String sql = "DELETE FROM taskcompass.Team_users WHERE team_id = ? AND user_id = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setInt(1, teamId);
-            preparedStatement.setInt(2,userId);
+            preparedStatement.setInt(2, userId);
             int rowsDeleted = preparedStatement.executeUpdate();
 
             if (rowsDeleted > 0) {
@@ -244,7 +239,8 @@ public class ProjectRepository {
     }
 
     public String editTeamName(String teamName) throws SQLException {
-        Connection con = dataSource.getConnection();String sql = "UPDATE taskcompass.Team SET team_name = ? WHERE team_id = ?";
+        Connection con = dataSource.getConnection();
+        String sql = "UPDATE taskcompass.Team SET team_name = ? WHERE team_id = ?";
         PreparedStatement stmt = con.prepareStatement(sql);
 
         stmt.setString(1, teamName);
@@ -256,7 +252,6 @@ public class ProjectRepository {
             return "Something went wrong, no client updated";
         }
     }
-
 
 
     //Method for creating a team
@@ -348,5 +343,5 @@ public class ProjectRepository {
         }
 
 */
-    }
+}
 
