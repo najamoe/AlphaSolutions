@@ -70,7 +70,6 @@ public class ProjectRepository {
     }
 
 
-
         //Search clients
         public List<ClientModel> searchClients(String search) throws SQLException {
             List<ClientModel> clients = new ArrayList<>();
@@ -96,7 +95,7 @@ public class ProjectRepository {
                         client.setAddress(rs.getString("address"));
                         client.setZipcode(rs.getInt("zip_code"));
                         client.setCountry(rs.getString("country"));
-                     //   client.add(client); //TODO FIX ADD
+                        clients.add(client);
                     }
                 }
             }
@@ -186,7 +185,7 @@ public class ProjectRepository {
                     project.setProjectId(rs.getInt("project_id"));
                     project.setProjectName(rs.getString("project_name"));
                     // Set other fields as needed
-               //     project.add(project);    //TODO FIX ADD
+                    projects.add(project);
                 }
             }
             return projects;
