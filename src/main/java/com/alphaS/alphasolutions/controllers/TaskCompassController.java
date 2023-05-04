@@ -2,6 +2,8 @@ package com.alphaS.alphasolutions.controllers;
 
 
 
+import com.alphaS.alphasolutions.model.ProjectModel;
+import com.alphaS.alphasolutions.model.SubProjectModel;
 import com.alphaS.alphasolutions.model.UserModel;
 import com.alphaS.alphasolutions.repositories.ProjectRepository;
 import com.alphaS.alphasolutions.repositories.UserRepository;
@@ -11,10 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -74,6 +73,25 @@ public class TaskCompassController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create client");
         }
     }
+
+    @GetMapping("/createproject")
+    public String CreateProject(Model model) {
+        model.addAttribute("project", new ProjectModel());
+        model.addAttribute("subProject", new SubProjectModel());
+        return "createproject";
+    }
+
+    @PostMapping("/createproject") //TODO: SESSIONS
+    public ResponseEntity<String> createProject(@RequestBody ProjectModel project, @RequestBody(required = false) SubProjectModel subProject) {
+        try {
+            projectRepository.createProject(project.getProjectName(), project.getProjectDescription(), project.getStartDate(), project.getEndDate(), subProject);
+            return ResponseEntity.ok("Project successfully created");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Failed to create project");
+        }
+    }
+
 
     @PostMapping("/clients/edit")
     public ResponseEntity<String> editClient(@RequestParam String clientName,
@@ -152,15 +170,4 @@ public class TaskCompassController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add team members.");
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 }

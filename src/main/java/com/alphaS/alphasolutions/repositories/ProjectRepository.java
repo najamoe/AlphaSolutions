@@ -1,13 +1,11 @@
 package com.alphaS.alphasolutions.repositories;
 
-import com.alphaS.alphasolutions.model.ClientModel;
-import com.alphaS.alphasolutions.model.ProjectModel;
-import com.alphaS.alphasolutions.model.TaskModel;
-import com.alphaS.alphasolutions.model.TeamModel;
+import com.alphaS.alphasolutions.model.*;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,7 +122,50 @@ public class ProjectRepository {
         return message;
     }
 
-        //Search project
+    public String createProject(String projectName, String projectDescription, LocalDate startDate, LocalDate endDate, SubProjectModel subProject) throws SQLException {
+        Connection con = dataSource.getConnection();
+        String sql = "INSERT INTO taskcompass.project (project_name, project_description, start_date, end_date) VALUES (?,?,?,?)";
+        PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+        stmt.setString(1, projectName);
+        stmt.setString(2, projectDescription);
+        stmt.setDate(3, Date.valueOf(startDate));
+        stmt.setDate(4, Date.valueOf(endDate));
+
+        // Udfør SQL-forespørgslen og få resultatet
+        int rowsInserted = stmt.executeUpdate();
+
+        if (rowsInserted > 0) {
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                int projectId = rs.getInt(1);
+
+                if (subProject != null) {
+                    // Opret subproject
+                    createSubProject(projectId, subProject);
+                }
+
+                return "Projektet blev oprettet" + projectId;
+            }
+        }
+        return "Kunne ikke oprette projektet";
+    }
+
+    private void createSubProject(int projectId, SubProjectModel subProject) throws SQLException {
+        Connection con = dataSource.getConnection();
+        String sql = "INSERT INTO taskcompass.sub_project (project_id, subproject_name, subproject_description) VALUES (?,?,?)";
+        PreparedStatement stmt = con.prepareStatement(sql);
+
+        stmt.setInt(1, projectId);
+        stmt.setString(2, subProject.getSubProjectName());
+        stmt.setString(3, subProject.getSubProjectDescription());
+
+        stmt.executeUpdate();
+    }
+
+
+
+    //Search project
         public List<ProjectModel> searchProjects(String search) throws SQLException {
             List<ProjectModel> projects = new ArrayList<>();
 
