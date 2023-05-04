@@ -35,19 +35,24 @@ public class TaskCompassController {
         return "index";
     }
 
-    @GetMapping("/signin")
+    @GetMapping("/login")
     public String signin(){
         return "index";
     }
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public String signinpostmapping(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, Model model){
         try {
             UserModel usermodel = userRepository.signin(username, password);
-            session.setAttribute("user", usermodel); // store user in session
-            return "dashboard"; // return dashboard page if login is successful
+            if (usermodel != null) {
+                session.setAttribute("user", usermodel); // store user in session
+                return "redirect:/dashboard"; // redirect to dashboard page if login is successful
+            } else {
+                model.addAttribute("error", "Username or password incorrect"); // add error message to model
+                return "signin"; // return sign-in page if login is unsuccessful
+            }
         } catch (SQLException e) {
-            model.addAttribute("error", "Username or password incorrect"); // add error message to model
-            return "signin"; // return sign in page if login is unsuccessful
+            model.addAttribute("error", "An error occurred during login"); // add error message to model
+            return "signin"; // return sign-in page if an error occurs during login
         }
     }
 
@@ -56,6 +61,8 @@ public class TaskCompassController {
         session.invalidate();
         return "redirect:/signin";
     }
+
+
 
     @PostMapping("/clients/create")
     public ResponseEntity<String> createClient(@RequestParam String clientName,
