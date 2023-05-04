@@ -37,7 +37,7 @@ CREATE TABLE taskcompass.Task (
 
 CREATE TABLE taskcompass.Project (
                                      project_name varchar(255),
-                                     description varchar(255),
+                                     project_description varchar(255),
                                      start_date date,
                                      end_date date,
                                      client_id int,

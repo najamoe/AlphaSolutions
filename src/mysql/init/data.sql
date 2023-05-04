@@ -16,7 +16,7 @@ VALUES
     ('Develop Backend', 'Develop Backend for the website', '6:00:00', 'Backend Developer', 'Not Started', 'Red'),
     ('Write Tests', 'Write unit tests for the website', '1:00:00', 'Quality Assurance', 'Completed', 'Green');
 
-INSERT INTO taskcompass.Project (project_name, description, start_date, end_date, client_id, user_id)
+INSERT INTO taskcompass.Project (project_name, project_description, start_date, end_date, client_id, user_id)
 VALUES
     ('Project A', 'Development of Website', '2022-01-01', '2022-12-31', 1, 1),
     ('Project B', 'Design of Mobile App', '2023-01-01', '2023-12-31', 2, 2),
