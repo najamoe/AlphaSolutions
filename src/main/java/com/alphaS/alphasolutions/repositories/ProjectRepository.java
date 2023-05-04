@@ -146,10 +146,10 @@ public class ProjectRepository {
                     createSubProject(projectId, subProject);
                 }
 
-                return "Projektet blev oprettet" + projectId;
+                return "Project successfully created" + projectId;
             }
         }
-        return "Kunne ikke oprette projektet";
+        return "Failed to create project";
     }
 
     private void createSubProject(int projectId, SubProjectModel subProject) throws SQLException {
