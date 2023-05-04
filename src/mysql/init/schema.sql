@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS taskcompass;
 
-CREATE TABLE taskcompass.User (
+CREATE TABLE taskcompass.Employee (
                                   first_name varchar(255),
                                   last_name varchar(255),
                                   email varchar(255),
@@ -65,27 +65,27 @@ CREATE TABLE taskcompass.Team (
                                   project_name varchar(255),
                                   team_id int PRIMARY KEY AUTO_INCREMENT,
                                   user_id int,
-                                  teamusers_id int
+                                  teamemployees_id int
 );
 
-CREATE TABLE taskcompass.Team_users (
+CREATE TABLE taskcompass.Team_employees(
                                         user_id int,
                                         team_id int,
-                                        teamusers_id int PRIMARY KEY AUTO_INCREMENT
+                                        teamemployees_id int PRIMARY KEY AUTO_INCREMENT
 );
 
 ALTER TABLE taskcompass.Team
     ADD CONSTRAINT fk_team_user_id
-        FOREIGN KEY (user_id) REFERENCES taskcompass.User (user_id);
+        FOREIGN KEY (user_id) REFERENCES taskcompass.Employee (user_id);
 
 ALTER TABLE taskcompass.Team
-    ADD CONSTRAINT fk_team_teamusers_id
-        FOREIGN KEY (teamusers_id) REFERENCES taskcompass.Team_users (teamusers_id);
+    ADD CONSTRAINT fk_team_teamemployees_id
+        FOREIGN KEY (teamemployees_id) REFERENCES taskcompass.Team_employees (teamemployees_id);
 
-ALTER TABLE taskcompass.Team_users
-    ADD CONSTRAINT fk_teamusers_user_id
-        FOREIGN KEY (user_id) REFERENCES taskcompass.User (user_id);
+ALTER TABLE taskcompass.Team_employees
+    ADD CONSTRAINT fk_teamemployees_user_id
+        FOREIGN KEY (user_id) REFERENCES taskcompass.Employee (user_id);
 
-ALTER TABLE taskcompass.Team_users
-    ADD CONSTRAINT fk_teamusers_team_id
+ALTER TABLE taskcompass.Team_employees
+    ADD CONSTRAINT fk_teamemployees_team_id
         FOREIGN KEY (team_id) REFERENCES taskcompass.Team (team_id);

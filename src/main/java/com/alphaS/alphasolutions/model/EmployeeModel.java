@@ -1,6 +1,6 @@
 package com.alphaS.alphasolutions.model;
 
-public class UserModel {
+public class EmployeeModel {
 
     private String firstName;
     private String lastName;
@@ -11,7 +11,7 @@ public class UserModel {
     private String country;
     private String jobTitle;
 
-    public UserModel(String firstName, String lastName, String email, String username, String password, int phoneNo, String country, String jobTitle) {
+    public EmployeeModel(String firstName, String lastName, String email, String username, String password, int phoneNo, String country, String jobTitle) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -22,7 +22,7 @@ public class UserModel {
         this.jobTitle = jobTitle;
     }
 
-    public UserModel(String username, String email) {
+    public EmployeeModel(String username, String email) {
     }
 
     public String getFirstName() {
@@ -91,7 +91,7 @@ public class UserModel {
 
     @Override
     public String toString() {
-        return "UserModel{" +
+        return "EmployeeModel{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +

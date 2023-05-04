@@ -1,4 +1,4 @@
-INSERT INTO taskcompass.User (first_name, last_name, email, username, password, phone_no, user_country, title)
+INSERT INTO taskcompass.Employee (first_name, last_name, email, username, password, phone_no, user_country, title)
 VALUES
     ('John', 'Doe', 'johndoe@gmail.com', 'johndoe', 'password', 12345678, 'USA', 'Software Engineer'),
     ('Jane', 'Doe', 'janedoe@gmail.com', 'janedoe', 'password', 98765432, 'Canada', 'Product Manager'),
