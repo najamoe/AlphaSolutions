@@ -48,12 +48,16 @@ public class TaskCompassController {
     @PostMapping("/signin")
     public String signinpostmapping(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, Model model){
         try {
-            EmployeeModel employeeModel = employeeRepository.signin(username, password);
-            session.setAttribute("user", employeeModel); // store user in session
-            return "dashboard"; // return dashboard page if login is successful
+            if (employeeModel != null) {
+                session.setAttribute("user", employeemModel); // store user in session
+                return "redirect:/dashboard"; // redirect to dashboard page if login is successful
+            } else {
+                model.addAttribute("error", "Username or password incorrect"); // add error message to model
+                return "signin"; // return sign-in page if login is unsuccessful
+            }
         } catch (SQLException e) {
-            model.addAttribute("error", "Username or password incorrect"); // add error message to model
-            return "signin"; // return sign in page if login is unsuccessful
+            model.addAttribute("error", "An error occurred during login"); // add error message to model
+            return "signin"; // return sign-in page if an error occurs during login
         }
     }
 
