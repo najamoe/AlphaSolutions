@@ -11,21 +11,20 @@ public class EmployeeRepository {
         public EmployeeRepository(DataSource dataSource) {
             this.dataSource = dataSource;
         }
-        public EmployeeModel signin(String username, String password) throws SQLException {
-            Connection con = dataSource.getConnection();
-            String sql = "SELECT * FROM taskcompass.user WHERE username=? AND password=?";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setString(1, username);
-            stmt.setString(2, password);
+    public EmployeeModel logIn(String username, String password) throws SQLException {
+        Connection con = dataSource.getConnection();
+        String sql = "SELECT * FROM taskcompass.user WHERE username=? AND password=?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setString(1, username);
+        stmt.setString(2, password);
 
-            ResultSet rs = stmt.executeQuery();
+        ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                EmployeeModel employee = new EmployeeModel(rs.getString("username"), rs.getString("email"));
-                return employee; //TODO: return user or employee??
-            } else {
-                // User authentication failed
-                throw new SQLException("Username or password incorrect");
-            }
+        if (rs.next()) {
+            return new EmployeeModel(rs.getString("username"), rs.getString("email"));
+        } else {
+            throw new SQLException("Username or password incorrect");
         }
     }
+
+}

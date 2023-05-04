@@ -101,23 +101,16 @@ public class ClientRepository {
         return clients;
     }
 
-    public String deleteClient(int clientId) {
-        String message;
+    public boolean deleteClient(int clientId) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "DELETE FROM taskcompass.client WHERE client_id =?";
-            PreparedStatement preparedStatement = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setInt(1, clientId);
             int rowsDeleted = preparedStatement.executeUpdate();
-
-            if (rowsDeleted > 0) {
-                message = "Client with ID " + clientId + " has been deleted successfully";
-            } else {
-                message = "Client with ID " + clientId + " does not exist";
-            }
+            return rowsDeleted > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        return message;
     }
+
 }
