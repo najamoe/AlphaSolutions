@@ -1,15 +1,15 @@
 CREATE SCHEMA IF NOT EXISTS taskcompass;
 
 CREATE TABLE taskcompass.Employee (
-                                  first_name varchar(255),
-                                  last_name varchar(255),
-                                  email varchar(255),
-                                  username varchar(255),
-                                  password varchar(255),
-                                  phone_no int,
-                                  user_country varchar(255),
-                                  title varchar(255),
-                                  user_id int PRIMARY KEY AUTO_INCREMENT
+                                      first_name varchar(255),
+                                      last_name varchar(255),
+                                      email varchar(255),
+                                      username varchar(255),
+                                      password varchar(255),
+                                      phone_no int,
+                                      user_country varchar(255),
+                                      title varchar(255),
+                                      user_id int PRIMARY KEY AUTO_INCREMENT
 );
 
 
@@ -43,7 +43,7 @@ CREATE TABLE taskcompass.Project (
                                      client_id int,
                                      user_id int,
                                      project_id int primary key AUTO_INCREMENT,
-                                     FOREIGN KEY (user_id) REFERENCES User (user_id),
+                                     FOREIGN KEY (user_id) REFERENCES Employee (user_id),
                                      FOREIGN KEY (client_id) REFERENCES Client (client_id)
 );
 
@@ -69,9 +69,9 @@ CREATE TABLE taskcompass.Team (
 );
 
 CREATE TABLE taskcompass.Team_employees(
-                                        user_id int,
-                                        team_id int,
-                                        teamemployees_id int PRIMARY KEY AUTO_INCREMENT
+                                           user_id int,
+                                           team_id int,
+                                           teamemployees_id int PRIMARY KEY AUTO_INCREMENT
 );
 
 ALTER TABLE taskcompass.Team
