@@ -1,6 +1,7 @@
 package com.alphaS.alphasolutions.model;
 
 import java.awt.*;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class TaskModel {
@@ -8,31 +9,28 @@ public class TaskModel {
     private String taskName;
     private String taskDescription;
     private LocalTime estTime;
+    private LocalDate deadline;
     private String jobTitleNeeded;
     private String status;
     private Color color;
 
-    public TaskModel(String taskName, String taskDescription, LocalTime estTime, String jobTitleNeeded) {
+    public TaskModel(int taskId, String taskName, String taskDescription, LocalTime estTime, LocalDate deadline, String jobTitleNeeded, String status, Color color) {
+        this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.estTime = estTime;
+        this.deadline = deadline;
         this.jobTitleNeeded = jobTitleNeeded;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
         this.color = color;
+    }
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
     }
 
     public String getTaskName() {
@@ -59,6 +57,14 @@ public class TaskModel {
         this.estTime = estTime;
     }
 
+    public LocalDate getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(LocalDate deadline) {
+        this.deadline = deadline;
+    }
+
     public String getJobTitleNeeded() {
         return jobTitleNeeded;
     }
@@ -67,13 +73,20 @@ public class TaskModel {
         this.jobTitleNeeded = jobTitleNeeded;
     }
 
-    @Override
-    public String toString() {
-        return "TaskModel{" +
-                "taskName='" + taskName + '\'' +
-                ", taskDescription='" + taskDescription + '\'' +
-                ", estTime=" + estTime +
-                ", jobTitleNeeded='" + jobTitleNeeded + '\'' +
-                '}';
+    public String getStatus() {
+        return status;
     }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
 }

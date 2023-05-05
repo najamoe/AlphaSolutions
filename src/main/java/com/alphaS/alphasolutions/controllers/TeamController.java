@@ -21,7 +21,6 @@ public class TeamController {
 
 
     @PostMapping("/createTeam")
-    @ResponseBody
     public ResponseEntity<String> createTeam(HttpServletRequest request) {
         try {
             String teamName = request.getParameter("teamName");
@@ -33,7 +32,6 @@ public class TeamController {
     }
 
     @PostMapping("/addEmployeeToTeam")
-    @ResponseBody
     public ResponseEntity<String> addEmployeeToTeam(HttpServletRequest request) {
         try {
             int teamId = Integer.parseInt(request.getParameter("teamId"));
@@ -47,7 +45,6 @@ public class TeamController {
     }
 
     @PostMapping("/editTeamName")
-    @ResponseBody
     public ResponseEntity<String> editTeamName(@RequestParam int teamId, @RequestParam String teamName) {
         try {
             String message = teamRepository.editTeamName(teamId, teamName);
@@ -59,7 +56,6 @@ public class TeamController {
 
 
     @PostMapping("/removeEmployeeFromTeam")
-    @ResponseBody
     public ResponseEntity<String> removeEmployeeFromTeam(HttpServletRequest request) {
         try {
             int teamId = Integer.parseInt(request.getParameter("teamId"));

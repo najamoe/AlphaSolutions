@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import java.awt.*;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 
 @Repository
@@ -16,17 +17,33 @@ public class TaskRepository {
         this.dataSource = dataSource;
     }
 
-    public String createTask(String taskName, String taskDescription, LocalDate estTime, String jobTitleNeeded, String status, Color color, int subProjectId) throws SQLException {
+    public String createTask(String taskName, String taskDescription, LocalTime estTime, LocalDate deadline, String jobTitleNeeded, String status, Color color, int subProjectId) throws SQLException {
         try (Connection con = dataSource.getConnection()) {
-            String sql = "INSERT INTO taskcompass.Task (task_name, description_task, est_time, title_needed, status_name, status_color) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO taskcompass.Task (task_name, description_task, est_time, deadline, title_needed, status_name, status_color) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             stmt.setString(1, taskName);
             stmt.setString(2, taskDescription);
-            stmt.setDate(3, Date.valueOf(estTime));
-            stmt.setString(4, jobTitleNeeded);
-            stmt.setString(5, status);
-            stmt.setString(6, color.toString());
+            stmt.setTime(3, Time.valueOf(estTime));
+            stmt.setDate(4, Date.valueOf(deadline));
+            stmt.setString(5, jobTitleNeeded);
+            stmt.setString(6, status);
+
+            switch(status) {
+                case "Not started", "Pending":
+                    color = Color.RED;
+                    break;
+                case "In progress":
+                    color = Color.YELLOW;
+                    break;
+                case "Done", "Completed":
+                    color = Color.GREEN;
+                    break;
+                default:
+                    color = Color.BLACK;
+            }
+
+            stmt.setString(7, color.toString());
 
             // execute the SQL statement to insert the task into the Task table
             int rowsInserted = stmt.executeUpdate();
@@ -83,19 +100,35 @@ public class TaskRepository {
 
     }
 
-    //Method for editing a task information
-    public String editTask(String taskName, String taskDescription, LocalDate estTime, String jobTitleNeeded, String status, Color color) throws SQLException {
+    //Method for editing task information
+    public String editTask(int taskId, String taskName, String taskDescription, LocalTime estTime, LocalDate deadline, String jobTitleNeeded, String status, Color color) throws SQLException {
         Connection con = dataSource.getConnection();
-        String sql = "UPDATE taskcompass.Task Set task_name = ?, description_task = ?, est_time = ?, title_needed = ?, status_name = ?, status_color = ? WHERE task_id = ?";
+        String sql = "UPDATE taskcompass.Task Set task_name = ?, description_task = ?, est_time = ?, deadline = ?, title_needed = ?, status_name = ?, status_color = ? WHERE task_id = ?";
 
         PreparedStatement stmt = con.prepareStatement(sql);
 
         stmt.setString(1, taskName);
         stmt.setString(2, taskDescription);
-        stmt.setDate(3, Date.valueOf(estTime));
-        stmt.setString(4, jobTitleNeeded);
-        stmt.setString(5, status);
-        stmt.setString(6, color.toString());
+        stmt.setTime(3, Time.valueOf(estTime));
+        stmt.setDate(4, Date.valueOf(deadline));
+        stmt.setString(5, jobTitleNeeded);
+        stmt.setString(6, status);
+
+        switch(status) {
+            case "Not started", "Pending":
+                color = Color.RED;
+                break;
+            case "In progress":
+                color = Color.YELLOW;
+                break;
+            case "Done", "Completed":
+                color = Color.GREEN;
+                break;
+            default:
+                color = Color.BLACK;
+        }
+        stmt.setString(7, color.toString());
+
         // Execute the query and get the result set
         int rowsUpdated = stmt.executeUpdate();
         if (rowsUpdated > 0) {
@@ -104,5 +137,6 @@ public class TaskRepository {
             return "Something went wrong, new information not updated";
         }
     }
+
 
 }
