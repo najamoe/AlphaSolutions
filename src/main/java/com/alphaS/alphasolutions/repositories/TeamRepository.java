@@ -69,7 +69,7 @@ public class TeamRepository {
 
 
     //Method for removing a member form a team
-    public String removeEmployeeFromTeam(int teamId, int userId) throws SQLException {
+    public String deleteEmployeeFromTeam(int teamId, int userId) throws SQLException {
         String message;
 
         try (Connection con = dataSource.getConnection()) {

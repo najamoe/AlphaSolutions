@@ -64,7 +64,7 @@ public class TeamController {
         try {
             int teamId = Integer.parseInt(request.getParameter("teamId"));
             int userId = Integer.parseInt(request.getParameter("userId"));
-            String message = teamRepository.removeEmployeeFromTeam(teamId, userId);
+            String message = teamRepository.deleteEmployeeFromTeam(teamId, userId);
             return ResponseEntity.ok().body(message);
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to remove team member");

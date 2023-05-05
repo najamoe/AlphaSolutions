@@ -16,7 +16,7 @@ public class TaskRepository {
         this.dataSource = dataSource;
     }
 
-    public String addTaskToSubProject(String taskName, String taskDescription, LocalDate estTime, String jobTitleNeeded, String status, Color color, int subProjectId) throws SQLException {
+    public String createTask(String taskName, String taskDescription, LocalDate estTime, String jobTitleNeeded, String status, Color color, int subProjectId) throws SQLException {
         try (Connection con = dataSource.getConnection()) {
             String sql = "INSERT INTO taskcompass.Task (task_name, description_task, est_time, title_needed, status_name, status_color) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -59,7 +59,7 @@ public class TaskRepository {
 
 
     //Method for removing a task form a subproject
-    public String removeTaskFromSubProject(int subProjetId, int taskId) throws SQLException {
+    public String deleteTaskFromSubProject(int subProjetId, int taskId) throws SQLException {
         String message;
 
         try (Connection con = dataSource.getConnection()) {
