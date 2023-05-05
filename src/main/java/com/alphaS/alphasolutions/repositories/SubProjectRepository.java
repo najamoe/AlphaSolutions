@@ -32,8 +32,6 @@ public class SubProjectRepository {
             throw new RuntimeException(e);
         }
     }
-    //TODO: No searchSubProject or??
-
     public String editSubProject(int subProjectId, String newSubProjectName, String newSubProjectDescription) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "UPDATE taskcompass.Sub_project SET sub_project_name=?, sub_project_description=? WHERE sub_project_id=?";
@@ -50,16 +48,22 @@ public class SubProjectRepository {
             throw new RuntimeException(e);
         }
     }
-
-    //TODO: Make sure sub data is deleted
     public String deleteSubProject(int subProjectId) {
         try (Connection con = dataSource.getConnection()) {
-            String sql = "DELETE FROM taskcompass.Sub_project WHERE sub_project_id=?";
+            // delete the tasks associated with the subproject
+            String sql = "DELETE FROM taskcompass.Task WHERE task_id IN (SELECT task_id FROM taskcompass.Sub_project WHERE subproject_id=?)";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, subProjectId);
-            int rowsDeleted = stmt.executeUpdate();
-            if (rowsDeleted > 0) {
-                return "Subproject successfully deleted";
+            int tasksDeleted = stmt.executeUpdate();
+
+            // delete the subproject
+            sql = "DELETE FROM taskcompass.Sub_project WHERE subproject_id=?";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, subProjectId);
+            int subProjectDeleted = stmt.executeUpdate();
+
+            if (subProjectDeleted > 0) {
+                return "Subproject successfully deleted " + tasksDeleted;
             }
             return "Failed to delete subproject";
         } catch (SQLException e) {
