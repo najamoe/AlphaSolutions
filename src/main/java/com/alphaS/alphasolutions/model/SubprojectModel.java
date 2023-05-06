@@ -1,16 +1,25 @@
 package com.alphaS.alphasolutions.model;
 
-public class SubProjectModel {
+public class SubprojectModel {
     private int subprojectId;
     private String subProjectName;
     private String subProjectDescription;
 
-    public SubProjectModel(String subProjectName, String subProjectDescription) {
+    public SubprojectModel(int subprojectId, String subProjectName, String subProjectDescription) {
+        this.subprojectId = subprojectId;
         this.subProjectName = subProjectName;
         this.subProjectDescription = subProjectDescription;
     }
 
-    public SubProjectModel() {
+    public SubprojectModel() {
+    }
+
+    public int getSubprojectId() {
+        return subprojectId;
+    }
+
+    public void setSubProjectId(int subprojectId) {
+        this.subprojectId = subprojectId;
     }
 
     public String getSubProjectName() {
@@ -32,6 +41,7 @@ public class SubProjectModel {
     @Override
     public String toString() {
         return "SubProjectModel{" +
+                "subProjectId='" + subprojectId + '\'' +
                 "subProjectName='" + subProjectName + '\'' +
                 ", subProjectDescription='" + subProjectDescription + '\'' +
                 '}';

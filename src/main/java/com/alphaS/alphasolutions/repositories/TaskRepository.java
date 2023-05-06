@@ -76,7 +76,7 @@ public class TaskRepository {
 
 
     //Method for removing a task form a subproject
-    public String deleteTaskFromSubProject(int subProjetId, int taskId) throws SQLException {
+    public String deleteTaskFromSubproject(int subProjetId, int taskId) throws SQLException {
         String message;
 
         try (Connection con = dataSource.getConnection()) {
