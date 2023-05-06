@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.sql.SQLException;
 
 @Controller
@@ -36,11 +35,13 @@ public class ClientController {
         }
     }
 
+    //TODO: READ
+
     @GetMapping("/clients/search")
     @ResponseBody
     public ResponseEntity<String> searchClient(@RequestParam String clientName) {
         try {
-            String result = clientRepository.searchClients(clientName).toString();
+            String result = clientRepository.searchClient(clientName).toString();
             return ResponseEntity.ok(result);
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to search client");
@@ -72,5 +73,4 @@ public class ClientController {
             return new ResponseEntity<>("Failed to delete client with ID " + clientID, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

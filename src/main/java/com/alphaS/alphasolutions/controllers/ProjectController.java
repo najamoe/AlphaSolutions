@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.sql.SQLException;
 
 @Controller
@@ -20,12 +19,12 @@ public class ProjectController {
     }
 
     @GetMapping("/createproject")
-    public String CreateProject(Model model) {
+    public String createProject(Model model) {
         model.addAttribute("project", new ProjectModel());
         return "createproject";
     }
 
-    @PostMapping("/createproject") //TODO: SESSIONS
+    @PostMapping("/createproject")
     public ResponseEntity<String> createProject(@RequestBody ProjectModel project) {
         try {
             projectRepository.createProject(project.getProjectName(), project.getProjectDescription(), project.getStartDate(), project.getEndDate());
@@ -36,11 +35,13 @@ public class ProjectController {
         }
     }
 
+    //TODO: READ
+
     @GetMapping("/project/search")
     @ResponseBody
     public ResponseEntity<String> searchProject(@RequestParam String projectName) {
         try {
-            String result = projectRepository.searchProjects(projectName).toString();
+            String result = projectRepository.searchProject(projectName).toString();
             return ResponseEntity.ok(result);
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to search project");

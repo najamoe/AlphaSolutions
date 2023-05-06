@@ -6,11 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.awt.*;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Controller
 public class TaskController {
@@ -20,8 +16,8 @@ public class TaskController {
     public TaskController(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
-
-    //TODO skal kigge på forbindelse til subprojet og task (task.getsupprojet)
+    //TODO: Make the methods only accessible via subproject
+    //TODO skal kigge på forbindelse til subproject og task (task.getsubproject)
     @PostMapping("/createtask")
     public ResponseEntity<String> createTask(@RequestBody TaskModel task) {
         try {
@@ -34,9 +30,9 @@ public class TaskController {
     }
 
     @DeleteMapping("/deletetask")
-    public ResponseEntity<String> deleteTaskFromSubProject(@RequestParam int subProjectId, @RequestParam int taskId) {
+    public ResponseEntity<String> deleteTaskFromSubproject(@RequestParam int subprojectId, @RequestParam int taskId) {
         try {
-            String message = taskRepository.deleteTaskFromSubProject(subProjectId, taskId);
+            String message = taskRepository.deleteTaskFromSubproject(subprojectId, taskId);
             return ResponseEntity.ok(message);
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete task");

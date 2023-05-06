@@ -19,7 +19,7 @@ public class TeamController {
         this.teamRepository = teamRepository;
     }
 
-
+    //TODO: Where do we access the team methods? PM page or?
     @PostMapping("/createTeam")
     public ResponseEntity<String> createTeam(HttpServletRequest request) {
         try {

@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.sql.SQLException;
 
 @Controller
@@ -20,11 +19,11 @@ public class EmployeeController {
     }
 
     @GetMapping("/signin")
-    public String signin(){
+    public String signIn(){
         return "index";
     }
     @PostMapping("/signin")
-    public String signinpostmapping(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, Model model){
+    public String signInPostMapping(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, Model model){
         try {
             EmployeeModel employee = employeeRepository.logIn(username, password);
             if (employee != null) {
@@ -42,7 +41,7 @@ public class EmployeeController {
 
 
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
+    public String logOut(HttpSession session) {
         session.invalidate();
         return "redirect:/signin";
     }

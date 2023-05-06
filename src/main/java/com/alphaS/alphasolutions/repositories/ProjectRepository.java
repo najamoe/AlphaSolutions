@@ -2,7 +2,6 @@ package com.alphaS.alphasolutions.repositories;
 
 import com.alphaS.alphasolutions.model.*;
 import org.springframework.stereotype.Repository;
-
 import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDate;
@@ -18,7 +17,6 @@ public class ProjectRepository {
     public ProjectRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-
 
     public String createProject(String projectName, String projectDescription, LocalDate startDate, LocalDate endDate) throws SQLException {
         Connection con = dataSource.getConnection();
@@ -43,7 +41,9 @@ public class ProjectRepository {
         return "Failed to create project";
     }
 
-    public List<ProjectModel> searchProjects(String search) throws SQLException {
+    //TODO: READ
+
+    public List<ProjectModel> searchProject(String search) throws SQLException {
         List<ProjectModel> projects = new ArrayList<>();
 
         Connection con = dataSource.getConnection();
@@ -56,11 +56,9 @@ public class ProjectRepository {
             stmt.setString(3, "%" + search + "%");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                // Map the result set to your ProjectModel object and add it to the list
                 ProjectModel project = new ProjectModel();
                 project.setProjectId(rs.getInt("project_id"));
                 project.setProjectName(rs.getString("project_name"));
-                // Set other fields as needed
                 projects.add(project);
             }
         }
@@ -86,26 +84,26 @@ public class ProjectRepository {
         }
     }
 
-    //TODO: Make sure sub data is deleted
-    public String deleteProject(int projectID) {
-        String message;
-
+    //Now deletes project and associated subprojects (deleteSubproject handles deletion of subprojects and all their associated tasks)
+    public String deleteProject(int projectId) {
         try (Connection con = dataSource.getConnection()) {
-            String sql = "DELETE FROM taskcompass.project WHERE project_id = ?";
-            PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setInt(1, projectID);
-            int rowsDeleted = preparedStatement.executeUpdate();
+            String subprojectsSql = "DELETE FROM taskcompass.Sub_project WHERE project_id=?";
+            PreparedStatement subprojectsStmt = con.prepareStatement(subprojectsSql);
+            subprojectsStmt.setInt(1, projectId);
 
-            if (rowsDeleted > 0) {
-                message = "Project with ID " + projectID + " has been deleted successfully";
-            } else {
-                message = "Project with ID " + projectID + " does not exist";
+            int subprojectsDeleted = subprojectsStmt.executeUpdate();
+            String projectSql = "DELETE FROM taskcompass.Project WHERE project_id=?";
+            PreparedStatement projectStmt = con.prepareStatement(projectSql);
+            projectStmt.setInt(1, projectId);
+            int projectDeleted = projectStmt.executeUpdate();
+
+            if (projectDeleted > 0) {
+                return "Project deleted successfully";
             }
+            return "Project with ID " + projectId + " does not exist";
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        return message;
     }
 }
 
