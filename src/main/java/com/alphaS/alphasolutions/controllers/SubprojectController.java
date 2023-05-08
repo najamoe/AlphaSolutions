@@ -1,7 +1,7 @@
 package com.alphaS.alphasolutions.controllers;
 
 import com.alphaS.alphasolutions.model.SubprojectModel;
-import com.alphaS.alphasolutions.repositories.SubProjectRepository;
+import com.alphaS.alphasolutions.repositories.SubprojectRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -11,10 +11,10 @@ import java.util.List;
 
 
 @Controller
-public class SubProjectController {
+public class SubprojectController {
 
-    private final SubProjectRepository subprojectRepository;
-    public SubProjectController(SubProjectRepository subprojectRepository) {
+    private final SubprojectRepository subprojectRepository;
+    public SubprojectController(SubprojectRepository subprojectRepository) {
         this.subprojectRepository = subprojectRepository;
     }
 

@@ -8,11 +8,11 @@ import java.util.List;
 
 
 @Repository
-public class SubProjectRepository {
+public class SubprojectRepository {
 
     private final DataSource dataSource;
 
-    public SubProjectRepository(DataSource dataSource) {
+    public SubprojectRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
