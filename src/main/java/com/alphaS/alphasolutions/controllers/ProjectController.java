@@ -23,7 +23,6 @@ public class ProjectController {
         model.addAttribute("project", new ProjectModel());
         return "createproject";
     }
-//lala
     @PostMapping("/createproject")
     public ResponseEntity<String> createProject(@RequestBody ProjectModel project) {
         try {
@@ -34,7 +33,6 @@ public class ProjectController {
             return ResponseEntity.badRequest().body("Failed to create project.");
         }
     }
-
     //TODO: READ
 
     @GetMapping("/project/search")
