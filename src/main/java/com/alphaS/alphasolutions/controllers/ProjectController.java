@@ -31,7 +31,7 @@ public class ProjectController {
             return ResponseEntity.ok("Project successfully created");
         } catch (SQLException e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().body("Failed to create project");
+            return ResponseEntity.badRequest().body("Failed to create project.");
         }
     }
 
