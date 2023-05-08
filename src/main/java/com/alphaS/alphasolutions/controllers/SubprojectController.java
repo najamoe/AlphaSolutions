@@ -1,6 +1,6 @@
 package com.alphaS.alphasolutions.controllers;
 
-import com.alphaS.alphasolutions.model.SubProjectModel;
+import com.alphaS.alphasolutions.model.SubprojectModel;
 import com.alphaS.alphasolutions.repositories.SubProjectRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
