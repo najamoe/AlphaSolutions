@@ -1,6 +1,7 @@
 <p align="center">
-  <img src="path_to_your_image" alt="<img width="628" alt="Skærmbillede 2023-05-08 kl  14 24 35" src="https://user-images.githubusercontent.com/113180288/236823092-76844648-ba3b-47dd-9132-1f9bee002d66.png">n">
+  <img src="<img width="628" alt="Skærmbillede 2023-05-08 kl  14 24 35" src="https://user-images.githubusercontent.com/113180288/236823811-4896b1ac-3b24-4ec3-89f5-ff60d03a1458.png">" alt="Task compass logo">
 </p>
+
 
 
 # Alpha Solutions Project Calculation Tool
