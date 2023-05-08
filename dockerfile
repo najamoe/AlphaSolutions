@@ -1,34 +1,39 @@
-FROM maven:3.8.4-jdk-11 AS build
+FROM lakruzz/lamj:latest
 
-# Set the working directory to /app
-WORKDIR /app
+# ENV MYSQL_ROOT_PASSWORD=root
 
-# Copy the pom.xml file to the container
-COPY pom.xml .
+ENV PORT=8080
+ENV MYSQL_PORT=3306
 
-# Download the Maven dependencies specified in the pom.xml file
-RUN mvn dependency:go-offline
+COPY src /src
+COPY pom.xml /pom.xml
+RUN set -ex; \
+     mvn -f /pom.xml clean package; \
+     mv /target/*.jar /app/; \
+     rm -rf /target; \
+     rm -rf /src; \
+     rm -rf /pom.xml;
 
-# Copy the source code to the container
-COPY src/ ./src/
+COPY src/mysql/init/* /docker-entrypoint-initdb.d/
 
-# Build the application
-RUN mvn package
+EXPOSE $PORT $MYSQL_PORT
 
-#This is our base-image that the application will run on, in our case java version 17
-  FROM openjdk:17-jdk-alpine
+CMD set -eux; \
+    lamj.init.sh; \
+    java -jar /app/*.jar;
 
+# Build like this:
+# docker build  -t alphasolutions .
 
-   # Set the working directory to /app
-   WORKDIR /app
-
-   # Copy the built JAR file from the build stage to the final image
-   COPY --from=build /app/target/my-app.jar .
-
-   # Expose port 8686 for the application
-   EXPOSE 8686
-
-   # Set the default command to run the application
-   CMD ["java", "-jar", "my-app.jar"]
-       ## Set the default command to run the application
-       #CMD ["java", "-jar", "/app/build/libs/myapp.jar"]va", "-jar", "myapp.jar"]
+# Run like this:
+# docker run -it --rm --name alphasolutions --pid=host -p 8686:8080 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root alphasolutions
+#
+#   - `docker run`: This command is used to run a container from an image.
+#   - `-it`: This switch allocates a pseudo-TTY and opens an interactive terminal within the container.
+#   - `--rm`: This switch removes the container automatically after it exits. (useful for development, but it resets the database every time)
+#   - `--name superhero5`: This sets the name of the container to "superhero5".
+#   - `--pid=host`: This runs the container in the host's PID namespace. (enable this if you  want to debug the container with a debugger or if you want to be able to stop the container with CTRL-C)
+#   - `-p 8080:8080`: This maps port 8080 from the container to port 8080 on the host.
+#   - `-p 3306:3306`: This maps port 3306 from the container to port 3306 on the host.
+#   - `-e MYSQL_ROOT_PASSWORD=root`: This environment variable sets the root password for MySQL 'root' is default.
+#   - `superhero5`: This specifies the name of the image to run.
