@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="TaskCompassLogo.png" alt="Your Picture" width="700" height="500">
+  <img src="TaskCompassLogo.png" alt="Your Picture" width="800" height="500">
 </p>
 
 
