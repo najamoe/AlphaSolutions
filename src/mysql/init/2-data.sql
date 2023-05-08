@@ -7,7 +7,7 @@ VALUES
 INSERT INTO taskcompass.Client (client_name, contact_po_no, contact_person, company_po_no, address, zip_code, country)
 VALUES
     ('ABC Inc.', 11111111, 'John Smith', 99999999, '123 Main St.', 12345, 'USA'),
-    ('XYZ Ltd.', 2222222222, 'Jane Doe', 88888888, '456 Maple Ave.', 67890, 'Canada'),
+    ('XYZ Ltd.', 22222222, 'Jane Doe', 88888888, '456 Maple Ave.', 67890, 'Canada'),
     ('PQR Co.', 33333333, 'Bob Johnson', 77777777, '789 Oak St.', 45678, 'UK');
 
 INSERT INTO taskcompass.Task (task_name, description_task, est_time, title_needed, status_name, status_color)
@@ -37,7 +37,7 @@ VALUES
     ('Team B', 'Project B', 2),
     ('Team C', 'Project C', 3);
 
-INSERT INTO taskcompass.Team_users (user_id, team_id)
+INSERT INTO taskcompass.Team_employees (user_id, team_id)
 VALUES
     (1, 1),
     (2, 2),
