@@ -1,4 +1,4 @@
-<img width="672" alt="Skærmbillede 2023-05-02 kl  00 48 03" src="https://user-images.githubusercontent.com/113180288/236822870-d7d43160-8ad4-4789-812c-d7ba080a23a2.png">
+<img width="628" alt="Skærmbillede 2023-05-08 kl  14 24 35" src="https://user-images.githubusercontent.com/113180288/236823092-76844648-ba3b-47dd-9132-1f9bee002d66.png">
 
 # Alpha Solutions Project Calculation Tool
 
