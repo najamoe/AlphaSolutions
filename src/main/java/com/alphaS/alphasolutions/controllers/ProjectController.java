@@ -23,7 +23,7 @@ public class ProjectController {
         model.addAttribute("project", new ProjectModel());
         return "createproject";
     }
-
+//lala
     @PostMapping("/createproject")
     public ResponseEntity<String> createProject(@RequestBody ProjectModel project) {
         try {
