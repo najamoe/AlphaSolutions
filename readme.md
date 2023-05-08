@@ -1,6 +1,9 @@
+<img width="672" alt="Skærmbillede 2023-05-02 kl  00 48 03" src="https://user-images.githubusercontent.com/113180288/236822870-d7d43160-8ad4-4789-812c-d7ba080a23a2.png">
+
 # Alpha Solutions Project Calculation Tool
 
 The Alpha Solutions Project Calculation Tool is a project management tool designed to help project managers estimate task breakdown, time breakdown, and schedules involved in completing a project. It provides users with the ability to create clients for a project, search for clients, create subtasks for a more detailed overview of the project, create and assign teams to specific subtasks, put specific time on a sub-task, and take into account limitations for completing the task. The tool also enables users to edit and delete clients, projects, and teams.
+
 
 # Motivation
 
