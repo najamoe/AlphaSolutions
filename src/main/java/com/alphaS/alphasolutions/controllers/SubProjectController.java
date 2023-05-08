@@ -24,7 +24,7 @@ public class SubProjectController {
         return "createsubproject";
     }
 
-    @GetMapping("/project/{projectId}/createsubproject")
+    @PostMapping("/project/{projectId}/createsubproject")
     public String CreateSubprojectForm(@PathVariable int projectId, Model model) {
         model.addAttribute("projectId", projectId);
         model.addAttribute("subProject", new SubprojectModel());
