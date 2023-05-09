@@ -19,25 +19,37 @@ public class EmployeeController {
     }
 
     @GetMapping("/signin")
-    public String signIn(){
+    public String showLoginForm(Model model) {
+        model.addAttribute("username", ""); // Set an empty initial value for the username
+        model.addAttribute("password", ""); // Set an empty initial value for the password
         return "index";
     }
+
     @PostMapping("/signin")
-    public String signInPostMapping(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, Model model){
+    public String signInPostMapping(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, Model model) {
         try {
             EmployeeModel employee = employeeRepository.logIn(username, password);
             if (employee != null) {
-                session.setAttribute("user", employee); // store user in session
-                return "redirect:/dashboard"; // redirect to dashboard page if login is successful
+                session.setAttribute("user", employee);
+                return "redirect:/dashboard";
             } else {
-                model.addAttribute("error", "Username or password incorrect"); // add error message to model
-                return "signin"; // return sign-in page if login is unsuccessful
+                model.addAttribute("username", username);
+                model.addAttribute("password", password);
+                model.addAttribute("error", "Username or password incorrect");
+                return "index";
             }
         } catch (SQLException e) {
-            model.addAttribute("error", "An error occurred during login"); // add error message to model
-            return "signin"; // return sign-in page if an error occurs during login
+            model.addAttribute("username", username);
+            model.addAttribute("password", password);
+            model.addAttribute("error", "An error occurred during login");
+            return "index";
+        } finally {
+            System.out.println(username);
+            System.out.println(password);
         }
     }
+
+
 
 
     @GetMapping("/logout")
