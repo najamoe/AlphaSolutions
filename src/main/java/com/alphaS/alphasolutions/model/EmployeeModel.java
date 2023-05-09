@@ -23,8 +23,10 @@ public class EmployeeModel {
         this.jobTitle = jobTitle;
     }
 
-    public EmployeeModel(String username, String email) {
+    public EmployeeModel(int employeeId, String username) {
     }
+
+
     public String getEmployeeId() {
         return employeeId;
     }
