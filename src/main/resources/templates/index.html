@@ -19,7 +19,6 @@
             background: linear-gradient(#141e30, #243b55);
         }
 
-
         .footer-container {
             min-height: 5vh;
             display: flex;
@@ -435,14 +434,17 @@
                 <div class="login-box">
 
                     <h2>Login</h2>
-                    <form action="/signin" method="post">
+                    <form th:action="@{/signin}" method="post">
                         <div class="user-box">
                             <input type="text" th:field="${username}" required=""/>
-                            <label>Username</label>
+                            <label for="username">Username</label>
                         </div>
                         <div class="user-box">
                             <input type="password" th:field="${password}" required=""/>
-                            <label>Password</label>
+                            <label for="password">Password</label>
+                        </div>
+                        <div th:if="${error}" class="error-message">
+                            <p th:text="${error}"></p>
                         </div>
                         <button type="submit" class="login-button">
                             <span></span>
@@ -452,6 +454,7 @@
                             Submit
                         </button>
                     </form>
+
 
                 </div>
             </div>
