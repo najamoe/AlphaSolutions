@@ -1,14 +1,14 @@
 INSERT INTO taskcompass.Employee (first_name, last_name, email, username, password, phone_no, user_country, title)
-VALUES
-    ('John', 'Doe', 'johndoe@gmail.com', 'johndoe', 'password', 12345678, 'USA', 'Software Engineer'),
-    ('Jane', 'Doe', 'janedoe@gmail.com', 'janedoe', 'password', 98765432, 'Canada', 'Product Manager'),
-    ('Bob', 'Smith', 'bobsmith@gmail.com', 'bobsmith', 'password', 55555555, 'UK', 'Data Scientist');
+VALUES ('John', 'Doe', 'john.doe@example.com', 'johndoe', '1234', 12345678, 'DK', 'Developer'),
+       ('Jane', 'Smith', 'jane.smith@example.com', 'janesmith', '1234', 98765432, 'DK', 'Project Manager'),
+       ('Mike', 'Johnson', 'mike.johnson@example.com', 'mikejohnson', '1234', 56789012, 'DK', 'Designer');
+
 
 INSERT INTO taskcompass.Client (client_name, contact_po_no, contact_person, company_po_no, address, zip_code, country)
 VALUES
-    ('ABC Inc.', 11111111, 'John Smith', 99999999, '123 Main St.', 12345, 'USA'),
-    ('XYZ Ltd.', 22222222, 'Jane Doe', 88888888, '456 Maple Ave.', 67890, 'Canada'),
-    ('PQR Co.', 33333333, 'Bob Johnson', 77777777, '789 Oak St.', 45678, 'UK');
+    ('ABC Inc.', 11111111, 'John Smith', 99999999, '123 Main St.', 3400, 'DK'),
+    ('XYZ Ltd.', 22222222, 'Jane Doe', 88888888, '456 Maple Ave.', 2950, 'DK'),
+    ('PQR Co.', 33333333, 'Bob Johnson', 77777777, '789 Oak St.', 3450, 'DK');
 
 INSERT INTO taskcompass.Task (task_name, description_task, est_time, title_needed, status_name, status_color)
 VALUES
