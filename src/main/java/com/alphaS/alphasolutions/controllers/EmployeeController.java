@@ -18,12 +18,19 @@ public class EmployeeController {
         this.employeeRepository = employeeRepository;
     }
 
+
+    //user objet
+    //mere ren
     @GetMapping("/signin")
     public String showLoginForm(Model model) {
+     /*
         model.addAttribute("username", ""); // Set an empty initial value for the username
         model.addAttribute("password", ""); // Set an empty initial value for the password
+         */
         return "index";
     }
+
+
 
     @PostMapping("/signin")
     public String signInPostMapping(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, Model model) {
