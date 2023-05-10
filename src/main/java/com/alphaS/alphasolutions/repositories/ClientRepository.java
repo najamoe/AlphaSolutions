@@ -46,7 +46,6 @@ public class ClientRepository {
     }
 
     //TODO: READ
-
     //TODO: Sage recommends us to base our methods by id's. will be easier to identify our clients (e.x EditProject method)
     public String editClient(String clientName, String contactPoNo, String contactPerson, String companyPoNo, String address, String zipCode, String country, String clientId) throws SQLException {
         Connection con = dataSource.getConnection();

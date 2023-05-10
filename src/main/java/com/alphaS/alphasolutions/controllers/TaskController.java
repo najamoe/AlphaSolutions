@@ -5,10 +5,7 @@ import com.alphaS.alphasolutions.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 
@@ -20,12 +17,14 @@ public class TaskController {
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
-    //TODO: Make the methods only accessible via subproject
-    //TODO skal kigge på forbindelse til subproject og task (task.getsubproject)
-    @PostMapping("/createtask")
-    public ResponseEntity<String> createTask(@RequestBody TaskModel task) {
+
+    @PostMapping("/createtask/{subprojectId}")
+    public ResponseEntity<String> createTask(@PathVariable("subprojectId") int subprojectId, @RequestBody TaskModel task) {
         try {
-            String message = taskService.createTask(task.getTaskName(), task.getTaskDescription(), task.getEstTime(), task.getDeadline(), task.getJobTitleNeeded(), task.getStatus(), task.getColor(), task.getTaskId());
+            // Check if the subproject with the given subprojectId exists and is accessible by the user
+            // Call the taskService to create the task for the specific subproject
+            String message = taskService.createTask(task.getTaskName(), task.getTaskDescription(), task.getEstTime(), task.getDeadline(), task.getJobTitleNeeded(), task.getStatus(), task.getColor(), subprojectId);
+
             return ResponseEntity.ok(message);
         } catch (SQLException e) {
             e.printStackTrace();

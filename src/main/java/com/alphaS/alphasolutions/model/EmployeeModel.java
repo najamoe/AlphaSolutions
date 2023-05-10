@@ -29,7 +29,6 @@ public class EmployeeModel {
     public EmployeeModel(String username, String password) {
     }
 
-
     public String getEmployeeId() {
         return employeeId;
     }
