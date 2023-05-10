@@ -1,14 +1,10 @@
-html {
-    height: 100vh;
-}
-
 body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
     background: linear-gradient(#141e30, #243b55);
 }
-#footer-container {
+.footer-container {
     min-height: 5vh;
     display: flex;
     flex-direction: column;
@@ -22,12 +18,12 @@ body {
     text-decoration: none;
 }
 
-h5 {
+.copyright {
     font-weight: bold;
     color: black;
     font-size: 14px;
 }
-.col-md-12 {
+#header-menu {
     background-color: rgba(94, 94, 98, 0.2);
     color: black;
     height: 5vh;
