@@ -1,21 +1,22 @@
 package com.alphaS.alphasolutions.controllers;
 
 import com.alphaS.alphasolutions.model.ProjectModel;
-import com.alphaS.alphasolutions.repositories.ProjectRepository;
+import com.alphaS.alphasolutions.service.ProjectService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.sql.SQLException;
 
 @Controller
 public class ProjectController {
 
-    private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
 
-    public ProjectController(ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
+    public ProjectController(ProjectService projectService) {
+        this.projectService = projectService;
     }
 
     @GetMapping("/createproject")
@@ -26,7 +27,7 @@ public class ProjectController {
     @PostMapping("/createproject")
     public ResponseEntity<String> createProject(@RequestBody ProjectModel project) {
         try {
-            projectRepository.createProject(project.getProjectName(), project.getProjectDescription(), project.getStartDate(), project.getEndDate());
+            projectService.createProject(project.getProjectName(), project.getProjectDescription(), project.getStartDate(), project.getEndDate());
             return ResponseEntity.ok("Project successfully created");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -39,7 +40,7 @@ public class ProjectController {
     @ResponseBody
     public ResponseEntity<String> searchProject(@RequestParam String projectName) {
         try {
-            String result = projectRepository.searchProject(projectName).toString();
+            String result = projectService.searchProject(projectName).toString();
             return ResponseEntity.ok(result);
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to search project");
@@ -47,7 +48,7 @@ public class ProjectController {
     }
     @PostMapping("project/delete")
     public String deleteProject(@RequestParam int projectID){
-        String message = projectRepository.deleteProject(projectID);
+        String message = projectService.deleteProject(projectID);
         return message;
     }
 }

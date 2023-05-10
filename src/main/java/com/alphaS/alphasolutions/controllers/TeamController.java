@@ -1,11 +1,12 @@
 package com.alphaS.alphasolutions.controllers;
 
-import com.alphaS.alphasolutions.repositories.TeamRepository;
+import com.alphaS.alphasolutions.service.TeamService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -13,10 +14,11 @@ import java.util.List;
 
 @Controller
 public class TeamController {
-    private final TeamRepository teamRepository;
 
-    public TeamController(TeamRepository teamRepository) {
-        this.teamRepository = teamRepository;
+    private final TeamService teamService;
+
+    public TeamController(TeamService teamService) {
+        this.teamService = teamService;
     }
 
     //TODO: Where do we access the team methods? PM page or?
@@ -24,7 +26,7 @@ public class TeamController {
     public ResponseEntity<String> createTeam(HttpServletRequest request) {
         try {
             String teamName = request.getParameter("teamName");
-            int teamId = teamRepository.createTeam(teamName);
+            int teamId = teamService.createTeam(teamName);
             return ResponseEntity.ok().body(Integer.toString(teamId));
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create team");
@@ -37,7 +39,7 @@ public class TeamController {
             int teamId = Integer.parseInt(request.getParameter("teamId"));
             String[] usernames = request.getParameterValues("usernames[]");
             List<String> userNames = Arrays.asList(usernames);
-            teamRepository.AddEmployeeToTeam(teamId, userNames);
+            teamService.AddEmployeeToTeam(teamId, userNames);
             return ResponseEntity.ok().body("Team members added successfully.");
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add team members.");
@@ -47,7 +49,7 @@ public class TeamController {
     @PostMapping("/editTeamName")
     public ResponseEntity<String> editTeamName(@RequestParam int teamId, @RequestParam String teamName) {
         try {
-            String message = teamRepository.editTeamName(teamId, teamName);
+            String message = teamService.editTeamName(teamId, teamName);
             return ResponseEntity.ok().body(message);
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to edit team name");
@@ -60,7 +62,7 @@ public class TeamController {
         try {
             int teamId = Integer.parseInt(request.getParameter("teamId"));
             int userId = Integer.parseInt(request.getParameter("userId"));
-            String message = teamRepository.deleteEmployeeFromTeam(teamId, userId);
+            String message = teamService.deleteEmployeeFromTeam(teamId, userId);
             return ResponseEntity.ok().body(message);
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to remove team member");
