@@ -37,26 +37,22 @@ public class EmployeeController {
     public String signInPostMapping(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, Model model) {
         try {
             EmployeeModel employee = employeeService.logIn(username, password);
-            if (employee != null) {
-                session.setAttribute("user", employee);
-                return "redirect:/dashboard";
-            } else {
-                model.addAttribute("username", username);
-                model.addAttribute("password", password);
-                model.addAttribute("error", "Username or password incorrect");
-                return "index";
-            }
-        } catch (SQLException e) {
-            model.addAttribute("username", username);
-            model.addAttribute("password", password);
-            model.addAttribute("error", "An error occurred during login");
+            if (employee == null) {
+               model.addAttribute("error", "Username or password is incorrect");
+               return "index";
+            }  session.setAttribute("username",username);
+            session.setAttribute("password",password);
+            return "redirect:/dashboard";
+        }catch (Exception e) {
+            model.addAttribute("error", "Username or password is incorrect");
             return "index";
-        } finally {
-            System.out.println(username);
-            System.out.println(password);
         }
     }
 
+    @GetMapping("/dashboard")
+    public String showDashboard(Model model) {
+        return "dashboard";
+    }
 
     @GetMapping("/logout")
     public String logOut(HttpSession session) {
