@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: linear-gradient(#141e30, #243b55);
+}
+.footer-container {
+    min-height: 5vh;
+    display: flex;
+    flex-direction: column;
+    background: rgb(2, 0, 36);
+    background: linear-gradient(#141e30, #243b55);
+    flex: 1;
+}
+
+.footer-link {
+    color: black;
+    text-decoration: none;
+}
+
+.copyright {
+    font-weight: bold;
+    color: black;
+    font-size: 14px;
+}
+#header-menu {
+    background-color: rgba(94, 94, 98, 0.2);
+    color: black;
+    height: 5vh;
+}
