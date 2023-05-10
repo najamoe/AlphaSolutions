@@ -379,8 +379,8 @@
             font-family: "DM Sans", sans-serif;
         }
 
-        #loginrow {
-
+        .error-message{
+            color: darkred;
         }
     </style>
 </head>
@@ -436,11 +436,11 @@
                     <h2>Login</h2>
                     <form action="/signin" method="post">
                         <div class="user-box">
-                            <input type="text" field="username" required=""/>
+                            <input type="text" name="username" required=""/>
                             <label for="username">Username</label>
                         </div>
                         <div class="user-box">
-                            <input type="password" field="password" required=""/>
+                            <input type="password" name="password" required=""/>
                             <label for="password">Password</label>
                         </div>
                         <div th:if="${error}" class="error-message">

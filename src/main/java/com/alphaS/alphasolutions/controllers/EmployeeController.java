@@ -18,46 +18,35 @@ public class EmployeeController {
         this.employeeRepository = employeeRepository;
     }
 
-
-    //user objet
-    //mere ren
     @GetMapping("/signin")
     public String showLoginForm(Model model) {
-     /*
-        model.addAttribute("username", ""); // Set an empty initial value for the username
-        model.addAttribute("password", ""); // Set an empty initial value for the password
-         */
+
         return "index";
     }
-
-
 
     @PostMapping("/signin")
     public String signInPostMapping(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, Model model) {
         try {
             EmployeeModel employee = employeeRepository.logIn(username, password);
-            if (employee != null) {
-                session.setAttribute("user", employee);
-                return "redirect:/dashboard";
-            } else {
-                model.addAttribute("username", username);
-                model.addAttribute("password", password);
-                model.addAttribute("error", "Username or password incorrect");
-                return "index";
-            }
+            if (employee == null) {
+               model.addAttribute("error", "Username or password incorrect");
+               return "index";
+            } session.setAttribute("username", username);
+            session.setAttribute("password", password);
+            return "redirect:/dashboard";
         } catch (SQLException e) {
-            model.addAttribute("username", username);
-            model.addAttribute("password", password);
-            model.addAttribute("error", "An error occurred during login");
+            model.addAttribute("error", "an error occured");
             return "index";
-        } finally {
-            System.out.println(username);
-            System.out.println(password);
         }
     }
 
-
-
+    @GetMapping("/dashboard")
+    public String showDashboard(Model model, HttpSession session) {
+        if (session.getAttribute("username") == null) {
+            return "redirect:/signin";
+        }
+        return "dashboard";
+    }
 
     @GetMapping("/logout")
     public String logOut(HttpSession session) {
