@@ -1,6 +1,6 @@
 package com.alphaS.alphasolutions.controllers;
 
-import com.alphaS.alphasolutions.repositories.ClientRepository;
+import com.alphaS.alphasolutions.service.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -8,15 +8,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.sql.SQLException;
 
 @Controller
 public class ClientController {
-    private final ClientRepository clientRepository;
 
+    private final ClientService clientService;
 
-    public ClientController(ClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
     }
     @PostMapping("/clients/create")
     public ResponseEntity<String> createClient(@RequestParam String clientName,
@@ -28,7 +29,7 @@ public class ClientController {
                                                @RequestParam String country,
                                                @RequestParam String clientId) {
         try {
-            String result = clientRepository.createClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country, clientId);
+            String result = clientService.createClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country, clientId);
             return ResponseEntity.ok(result);
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create client");
@@ -41,7 +42,7 @@ public class ClientController {
     @ResponseBody
     public ResponseEntity<String> searchClient(@RequestParam String clientName) {
         try {
-            String result = clientRepository.searchClient(clientName).toString();
+            String result = clientService.searchClient(clientName).toString();
             return ResponseEntity.ok(result);
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to search client");
@@ -58,7 +59,7 @@ public class ClientController {
                                              @RequestParam String country,
                                              @RequestParam String clientId) {
         try {
-            String result = clientRepository.editClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country, clientId);
+            String result = clientService.editClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country, clientId);
             return ResponseEntity.ok(result);
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to edit client");
@@ -66,7 +67,7 @@ public class ClientController {
     }
     @PostMapping("/clients/delete")
     public ResponseEntity<String> deleteClient(@RequestParam int clientID){
-        boolean deletionStatus = clientRepository.deleteClient(clientID);
+        boolean deletionStatus = clientService.deleteClient(clientID);
         if (deletionStatus) {
             return new ResponseEntity<>("Client with ID " + clientID + " was deleted", HttpStatus.OK);
         } else {

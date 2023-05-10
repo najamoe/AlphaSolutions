@@ -17,50 +17,50 @@ public class TaskRepository {
         this.dataSource = dataSource;
     }
 
+    //Method for creating a task to a subprojet
     public String createTask(String taskName, String taskDescription, LocalTime estTime, LocalDate deadline, String jobTitleNeeded, String status, Color color, int subProjectId) throws SQLException {
         try (Connection con = dataSource.getConnection()) {
-            String sql = "INSERT INTO taskcompass.Task (task_name, description_task, est_time, deadline, title_needed, status_name, status_color) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            String taskSql = "INSERT INTO taskcompass.Task (task_name, description_task, est_time, deadline, title_needed, status_name, status_color) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement taskStmt = con.prepareStatement(taskSql, Statement.RETURN_GENERATED_KEYS);
 
-            stmt.setString(1, taskName);
-            stmt.setString(2, taskDescription);
-            stmt.setTime(3, Time.valueOf(estTime));
-            stmt.setDate(4, Date.valueOf(deadline));
-            stmt.setString(5, jobTitleNeeded);
-            stmt.setString(6, status);
+            taskStmt.setString(1, taskName);
+            taskStmt.setString(2, taskDescription);
+            taskStmt.setTime(3, Time.valueOf(estTime));
+            taskStmt.setDate(4, Date.valueOf(deadline));
+            taskStmt.setString(5, jobTitleNeeded);
+            taskStmt.setString(6, status);
 
-            switch(status) {
-                case "Not started", "Pending":
+            switch (status) {
+                case "Not started":
+                case "Pending":
                     color = Color.RED;
                     break;
                 case "In progress":
                     color = Color.YELLOW;
                     break;
-                case "Done", "Completed":
+                case "Done":
+                case "Completed":
                     color = Color.GREEN;
                     break;
                 default:
                     color = Color.BLACK;
             }
 
-            stmt.setString(7, color.toString());
+            taskStmt.setString(7, color.toString());
 
-            // execute the SQL statement to insert the task into the Task table
-            int rowsInserted = stmt.executeUpdate();
+            int rowsInserted = taskStmt.executeUpdate();
 
             // get the generated task ID
-            ResultSet rs = stmt.getGeneratedKeys();
+            ResultSet rs = taskStmt.getGeneratedKeys();
             rs.next();
             int taskId = rs.getInt(1);
 
-            // prepare a SQL statement to insert the task ID and subproject ID into the Sub_project_task table
-            sql = "INSERT INTO Sub_project_task (subproject_id, task_id) VALUES (?, ?)";
-            stmt = con.prepareStatement(sql);
-            stmt.setInt(1, subProjectId);
-            stmt.setInt(2, taskId);
+            String subprojectTaskSql = "INSERT INTO taskcompass.Sub_project_task (subproject_id, task_id) VALUES (?, ?)";
+            PreparedStatement subprojectTaskStmt = con.prepareStatement(subprojectTaskSql);
+            subprojectTaskStmt.setInt(1, subProjectId);
+            subprojectTaskStmt.setInt(2, taskId);
 
-            // execute the SQL statement to insert the subproject ID and task ID into the Sub_project_task table
-            int rowsInserted2 = stmt.executeUpdate();
+            int rowsInserted2 = subprojectTaskStmt.executeUpdate();
 
             if (rowsInserted > 0 && rowsInserted2 > 0) {
                 return "Task successfully added";
@@ -70,7 +70,7 @@ public class TaskRepository {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return "Something went wrong, task not added"; //Case an exception to type SQLException is caught...
+            return "Something went wrong, task not added";
         }
     }
 
