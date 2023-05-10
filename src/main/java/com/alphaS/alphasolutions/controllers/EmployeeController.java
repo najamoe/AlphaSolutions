@@ -18,9 +18,6 @@ public class EmployeeController {
         this.employeeRepository = employeeRepository;
     }
 
-
-    //user objet
-    //mere ren
     @GetMapping("/signin")
     public String showLoginForm(Model model) {
 
