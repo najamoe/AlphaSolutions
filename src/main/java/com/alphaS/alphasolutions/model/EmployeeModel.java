@@ -26,6 +26,10 @@ public class EmployeeModel {
     public EmployeeModel(int employeeId, String username) {
     }
 
+    public EmployeeModel() {
+
+    }
+
 
     public String getEmployeeId() {
         return employeeId;
