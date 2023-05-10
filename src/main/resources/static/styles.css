@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-    background: linear-gradient(#141e30, #243b55);
+    background: linear-gradient(#141e30, #324f79);
 }
 .footer-container {
     min-height: 5vh;
@@ -27,4 +27,14 @@ body {
     background-color: rgba(94, 94, 98, 0.2);
     color: black;
     height: 5vh;
+}
+#sidemenu{
+    height: 100vh;
+    background-color: #4277c4;
+}
+
+.welcome-content {
+    margin-top: 20px;
+    background:linear-gradient(#141e30, #324f79);
+    color: #e0e0e0;
 }
