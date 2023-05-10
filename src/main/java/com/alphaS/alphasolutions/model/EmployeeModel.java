@@ -22,12 +22,11 @@ public class EmployeeModel {
         this.country = country;
         this.jobTitle = jobTitle;
     }
-
-    public EmployeeModel(int employeeId, String username) {
-    }
-
     public EmployeeModel() {
 
+    }
+
+    public EmployeeModel(String username, String password) {
     }
 
 
