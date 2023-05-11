@@ -27,7 +27,7 @@ CMD set -eux; \
 
 # Run like this:
 # MYSQL_ROOT_PASSWORD=<Secret password>
-# docker run -it --rm --name alphasolutions --pid=host -p 8080:8080  -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD alphasolutions
+# docker run -it --rm --name alphasolutions --pid=host -p 8888:8080  -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD alphasolutions
 #
 #   - `docker run`: This command is used to run a container from an image.
 #   - `-it`: This switch allocates a pseudo-TTY and opens an interactive terminal within the container.
