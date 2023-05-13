@@ -100,19 +100,35 @@ public class TaskRepository {
 
     }
 
+    public String editSubproject(String SubProjectName, String SubProjectDescription) {
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "UPDATE taskcompass.Sub_project SET sub_project_name=?, sub_project_description=? WHERE sub_project_id=?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, SubProjectName);
+            stmt.setString(2, SubProjectDescription);
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                return "Changes for subproject successfully updated";
+            }
+            return "Failed to edit subproject";
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     //Method for editing task information
     public String editTask(int taskId, String taskName, String taskDescription, LocalTime estTime, LocalDate deadline, String jobTitleNeeded, String status, Color color) throws SQLException {
-        Connection con = dataSource.getConnection();
-        String sql = "UPDATE taskcompass.Task SET task_name = ?, description_task = ?, est_time = ?, deadline = ?, title_needed = ?, status_name = ?, status_color = ? WHERE task_id = ?";
+        try (Connection con = dataSource.getConnection()){
+            String sql = "UPDATE taskcompass.Task SET task_name = ?, description_task = ?, est_time = ?, deadline = ?, title_needed = ?, status_name = ?, status_color = ? WHERE task_id = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
 
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, taskName);
             stmt.setString(2, taskDescription);
             stmt.setTime(3, Time.valueOf(estTime));
             stmt.setDate(4, Date.valueOf(deadline));
             stmt.setString(5, jobTitleNeeded);
             stmt.setString(6, status);
-
             switch (status) {
                 case "Not started":
                 case "Pending":
@@ -130,24 +146,16 @@ public class TaskRepository {
             }
             stmt.setString(7, color.toString());
             stmt.setInt(8, taskId);
-
-            // Execute the query and get the result set
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
-                return "New information successfully updated";
-            } else {
-                return "Something went wrong, new information not updated";
+                return "Changes for task " + taskId + " successfully updated";
             }
+            return "Failed to edit subproject";
         } catch (SQLException e) {
-            // Handle any SQL errors here
-            e.printStackTrace();
-            return "An error occurred during the database operation";
-        } finally {
-            // Make sure to close the connection
-            if (con != null) {
-                con.close();
-            }
+            throw new RuntimeException(e);
         }
+
+
     }
 
 

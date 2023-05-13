@@ -119,45 +119,46 @@ class TaskRepositoryTest {
 
     @Test
     void editTask() throws SQLException {
-        // Unit test for whether a task can be edited and saved in the database
+        // Unit test for editing task information
 
-        // Create test data
+        // Arrange - create test data
         int taskId = 1;
-        String taskName = "Test task";
-        String taskDescription = "Task Description";
-        LocalTime estTime = LocalTime.of(15, 30); // object representing 15:30 AM
-        LocalDate deadline = LocalDate.now().plusDays(10);
-        String jobTitleNeeded = "job title";
-        String status = "Not started";
-        Color color = Color.RED;
-        int subProjectId = 1;
+        String taskName = "Updated Task";
+        String taskDescription = "Updated Description";
+        LocalTime estTime = LocalTime.of(13, 30);
+        LocalDate deadline = LocalDate.of(2023, 5, 31);
+        String jobTitleNeeded = "Updated Job Title";
+        String status = "In progress";
+        Color color = Color.YELLOW;
 
-        // Set up a mock preparedStmt and dataSource
-        PreparedStatement preparedStmt = mock(PreparedStatement.class);
-        DataSource dataSource = mock(DataSource.class);
+        // Set up a mock Connection and PreparedStatement
         Connection connection = mock(Connection.class);
-        when(dataSource.getConnection()).thenReturn(connection);
-        when(connection.prepareStatement(anyString())).thenReturn(preparedStmt);
-        when(preparedStmt.executeUpdate()).thenReturn(1);
+        PreparedStatement statement = mock(PreparedStatement.class);
 
-        // Call the method
+        // Set up the expected behavior of the Connection and PreparedStatement
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(anyString())).thenReturn(statement);
+        when(statement.executeUpdate()).thenReturn(1);
+
+        // Call the editTask method
         String result = taskRepository.editTask(taskId, taskName, taskDescription, estTime, deadline, jobTitleNeeded, status, color);
 
-        // Assert result
-        assertEquals("New information successfully updated", result);
+        // Assert the result
+        assertEquals("Changes for task " + taskId + " successfully updated", result);
 
-        // Verify
-        verify(dataSource).getConnection();
-        verify(connection).prepareStatement(anyString());
-        verify(preparedStmt).setString(eq(1), eq(taskName));
-        verify(preparedStmt).setString(eq(2), eq(taskDescription));
-        verify(preparedStmt).setTime(eq(3), any(Time.class));
-        verify(preparedStmt).setDate(eq(4), any(Date.class));
-        verify(preparedStmt).setString(eq(5), eq(jobTitleNeeded));
-        verify(preparedStmt).setString(eq(6), eq(status));
-        verify(preparedStmt).setString(eq(7), eq(color.toString()));
-        verify(preparedStmt).setInt(eq(8), eq(taskId));
-        verify(preparedStmt).executeUpdate();
+        // Verify that the PreparedStatement was called with the correct values
+        verify(statement).setString(1, taskName);
+        verify(statement).setString(2, taskDescription);
+        verify(statement).setTime(3, Time.valueOf(estTime));
+        verify(statement).setDate(4, Date.valueOf(deadline));
+        verify(statement).setString(5, jobTitleNeeded);
+        verify(statement).setString(6, status);
+        verify(statement).setString(7, color.toString());
+        verify(statement).setInt(8, taskId);
+
+        // Verify that the executeUpdate method was called
+        verify(statement).executeUpdate();
+
     }
 
 
