@@ -106,7 +106,6 @@ class TeamRepositoryTest {
     }
 
 
-
     @Test
     void deleteEmployeeFromTeam() throws SQLException {
         //Unit test for whether a team can be removed in the database
@@ -138,29 +137,36 @@ class TeamRepositoryTest {
 
     @Test
     void editTeamName() throws SQLException {
-        //Unit test for whether a team name can be edited and be saved in the database
+        // Unit test for editing task information
 
-        //Create test data
+        // Arrange - create test data
         int teamId = 1;
         String teamName = "Test teamName";
 
-        //Set up a mock preparedStmt
-        PreparedStatement preparedStmt = mock(PreparedStatement.class);
+        // Set up a mock Connection and PreparedStatement
+        Connection connection = mock(Connection.class);
+        PreparedStatement statement = mock(PreparedStatement.class);
 
-        //Set up the expected behavior of the PreparedStmt and resultSet
-        when(dataSource.getConnection().prepareStatement(anyString())).thenReturn(preparedStmt);
-        when(preparedStmt.executeUpdate()).thenReturn(1);
+        // Set up the expected behavior of the Connection and PreparedStatement
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(anyString())).thenReturn(statement);
+        when(statement.executeUpdate()).thenReturn(1);
 
-        //Call the method
+        // Call the editTask method
         String result = teamRepository.editTeamName(teamId, teamName);
 
-        //Assert result
-        assertEquals("New information successfully updated", result);
+        // Assert the result
+        assertEquals("New team name successfully updated ", result);
 
-        //Verify
-        when(dataSource.getConnection().prepareStatement(anyString()));
-        verify(preparedStmt).setString(eq(1), eq(teamName));
-        verify(preparedStmt).setInt(eq(8), eq(teamId));
-        verify(preparedStmt).executeUpdate();
+        // Verify that the PreparedStatement was called with the correct values
+        verify(statement).setString(1, teamName);
+        verify(statement).setInt(8, teamId);
+
+        // Verify that the executeUpdate method was called
+        verify(statement).executeUpdate();
+
     }
+
+
+
 }

@@ -34,13 +34,13 @@ public class TeamRepository {
         int rowsInserted = stmt.executeUpdate();
 
         if (rowsInserted > 0) {
-            return "Team successfully added to the selected sub-project";
+            return "Team successfully added";
         } else {
             return "Something went wrong, no team added";
         }
     }
 
-    //Check if subProject exists..
+    //Checks if subProject exists..
     private boolean subProjectExists(int subProjectId) throws SQLException {
         Connection con = dataSource.getConnection();
         String sql = "SELECT COUNT(*) FROM taskcompass.SubProject WHERE id = ?";
@@ -116,7 +116,7 @@ public class TeamRepository {
 
         int rowsUpdated = stmt.executeUpdate();
         if (rowsUpdated > 0) {
-            return "New team name successfully updated";
+            return "New team name successfully updated ";
         } else {
             return "Something went wrong, new team name not updated";
         }
