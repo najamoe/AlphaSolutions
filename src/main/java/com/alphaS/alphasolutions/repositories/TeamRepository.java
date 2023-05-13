@@ -2,13 +2,9 @@ package com.alphaS.alphasolutions.repositories;
 
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.sql.DataSource;
 
 
 @Repository
@@ -20,24 +16,40 @@ public class TeamRepository {
         this.dataSource = dataSource;
     }
 
-    //Method for creating a team
-    public int createTeam(String teamName) throws SQLException {
-        try (Connection con = dataSource.getConnection();
-             Statement stmt = con.createStatement()) {
-
-            // Create a new team
-            String sql = "INSERT INTO taskcompass.Team name VALUES ('" + teamName + "')";
-            stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-
-            // Get the ID of the newly created team
-            try (ResultSet rs = stmt.getGeneratedKeys()) {
-                if (rs.next()) {
-                    return rs.getInt(1);
-                } else {
-                    throw new SQLException("Creating team failed, no ID obtained.");
-                }
-            }
+    //Method for creating a team within a chosen subProject
+    public String createTeam(String teamName, int subProjectId) throws SQLException {
+        // Check if the subproject exists
+        if (!subProjectExists(subProjectId)) {
+            return "Sub-project does not exist";
         }
+
+        Connection con = dataSource.getConnection();
+        String sql = "INSERT INTO taskcompass.Team (name, project_Id) VALUES (?, ?)";
+        PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+        stmt.setString(1, teamName);
+        stmt.setInt(2, subProjectId);
+
+        // Execute the query and get the result set
+        int rowsInserted = stmt.executeUpdate();
+
+        if (rowsInserted > 0) {
+            return "Team successfully added to the selected sub-project";
+        } else {
+            return "Something went wrong, no team added";
+        }
+    }
+
+    //Check if subProject exists..
+    private boolean subProjectExists(int subProjectId) throws SQLException {
+        Connection con = dataSource.getConnection();
+        String sql = "SELECT COUNT(*) FROM taskcompass.SubProject WHERE id = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setInt(1, subProjectId);
+        ResultSet rs = stmt.executeQuery();
+        rs.next();
+        int count = rs.getInt(1);
+        return count > 0;
     }
 
     //Method for adding a member to a team
@@ -67,6 +79,7 @@ public class TeamRepository {
         }
     }
 
+    //TODO lav en metode for af både slette et team men også alle medlember i det team
 
     //Method for removing a member form a team
     public String deleteEmployeeFromTeam(int teamId, int userId) throws SQLException {
@@ -91,6 +104,7 @@ public class TeamRepository {
         return message;
 
     }
+
 
     //Method for editing a team name
     public String editTeamName(int teamId, String teamName) throws SQLException {

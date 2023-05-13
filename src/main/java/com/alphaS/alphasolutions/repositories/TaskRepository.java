@@ -88,9 +88,9 @@ public class TaskRepository {
             int rowsDeleted = preparedStatement.executeUpdate();
 
             if (rowsDeleted > 0) {
-                message = taskId + " has been removed from the " + subProjetId + " team, successfully";
+                message = taskId + " has been removed from " + subProjetId;
             } else {
-                message = taskId + " is not a member of the " + subProjetId + " team";
+                message = taskId + " is not a member of the " + subProjetId;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -103,40 +103,54 @@ public class TaskRepository {
     //Method for editing task information
     public String editTask(int taskId, String taskName, String taskDescription, LocalTime estTime, LocalDate deadline, String jobTitleNeeded, String status, Color color) throws SQLException {
         Connection con = dataSource.getConnection();
-        String sql = "UPDATE taskcompass.Task Set task_name = ?, description_task = ?, est_time = ?, deadline = ?, title_needed = ?, status_name = ?, status_color = ? WHERE task_id = ?";
+        String sql = "UPDATE taskcompass.Task SET task_name = ?, description_task = ?, est_time = ?, deadline = ?, title_needed = ?, status_name = ?, status_color = ? WHERE task_id = ?";
 
-        PreparedStatement stmt = con.prepareStatement(sql);
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, taskName);
+            stmt.setString(2, taskDescription);
+            stmt.setTime(3, Time.valueOf(estTime));
+            stmt.setDate(4, Date.valueOf(deadline));
+            stmt.setString(5, jobTitleNeeded);
+            stmt.setString(6, status);
 
-        stmt.setString(1, taskName);
-        stmt.setString(2, taskDescription);
-        stmt.setTime(3, Time.valueOf(estTime));
-        stmt.setDate(4, Date.valueOf(deadline));
-        stmt.setString(5, jobTitleNeeded);
-        stmt.setString(6, status);
+            switch (status) {
+                case "Not started":
+                case "Pending":
+                    color = Color.RED;
+                    break;
+                case "In progress":
+                    color = Color.YELLOW;
+                    break;
+                case "Done":
+                case "Completed":
+                    color = Color.GREEN;
+                    break;
+                default:
+                    color = Color.BLACK;
+            }
+            stmt.setString(7, color.toString());
+            stmt.setInt(8, taskId);
 
-        switch(status) {
-            case "Not started", "Pending":
-                color = Color.RED;
-                break;
-            case "In progress":
-                color = Color.YELLOW;
-                break;
-            case "Done", "Completed":
-                color = Color.GREEN;
-                break;
-            default:
-                color = Color.BLACK;
-        }
-        stmt.setString(7, color.toString());
-
-        // Execute the query and get the result set
-        int rowsUpdated = stmt.executeUpdate();
-        if (rowsUpdated > 0) {
-            return "New information successfully updated";
-        } else {
-            return "Something went wrong, new information not updated";
+            // Execute the query and get the result set
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                return "New information successfully updated";
+            } else {
+                return "Something went wrong, new information not updated";
+            }
+        } catch (SQLException e) {
+            // Handle any SQL errors here
+            e.printStackTrace();
+            return "An error occurred during the database operation";
+        } finally {
+            // Make sure to close the connection
+            if (con != null) {
+                con.close();
+            }
         }
     }
+
+
 
 
 }

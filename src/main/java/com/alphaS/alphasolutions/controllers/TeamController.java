@@ -23,11 +23,10 @@ public class TeamController {
 
     //TODO: Where do we access the team methods? PM page or?
     @PostMapping("/createTeam")
-    public ResponseEntity<String> createTeam(HttpServletRequest request) {
+    public ResponseEntity<String> createTeam(@RequestParam("teamName") String teamName, @RequestParam("subProjectId") int subProjectId) {
         try {
-            String teamName = request.getParameter("teamName");
-            int teamId = teamService.createTeam(teamName);
-            return ResponseEntity.ok().body(Integer.toString(teamId));
+            String result = teamService.createTeam(teamName, subProjectId);
+            return ResponseEntity.ok(result);
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create team");
         }

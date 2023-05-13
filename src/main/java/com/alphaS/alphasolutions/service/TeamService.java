@@ -15,9 +15,10 @@ public class TeamService {
         this.teamRepository = teamRepository;
     }
 
-    public int createTeam(String teamName) throws SQLException {
-       return teamRepository.createTeam(teamName);
+    public String createTeam(String teamName, int subProjectId) throws SQLException {
+       return teamRepository.createTeam(teamName, subProjectId);
     }
+
 
     public void AddEmployeeToTeam(int teamId, List<String> userNames) throws SQLException {
         teamRepository.AddEmployeeToTeam(teamId, userNames);
