@@ -16,7 +16,7 @@ The motivation behind creating the Alpha Solutions Project Calculation Tool was 
 To use the Alpha Solutions Project Calculation Tool, follow these steps:
 
 1. Accessing the Calculation tool
-- Visit  [Taskcompass project manager](https://docs.docker.com/desktop/install/mac-install/)to access the web app.
+- Visit  [Taskcompass project manager](https://task-compass.onrender.com)to access the web app.
  
  2. Logging in
  - To log in, please use the following test client credentials:
