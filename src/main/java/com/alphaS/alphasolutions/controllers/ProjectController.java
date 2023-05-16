@@ -25,15 +25,16 @@ public class ProjectController {
         return "createproject";
     }
     @PostMapping("/createproject")
-    public ResponseEntity<String> createProject(@RequestBody ProjectModel project) {
+    public String createProject(@ModelAttribute("project") ProjectModel project) {
         try {
             projectService.createProject(project.getProjectName(), project.getProjectDescription(), project.getStartDate(), project.getEndDate());
-            return ResponseEntity.ok("Project successfully created");
+            return "projectsuccess";
         } catch (SQLException e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().body("Failed to create project.");
+            return "projecterror";
         }
     }
+
     //TODO: READ
 
     @GetMapping("/project/search")
