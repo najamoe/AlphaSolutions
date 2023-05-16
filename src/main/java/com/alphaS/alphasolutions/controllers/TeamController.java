@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -32,16 +33,17 @@ public class TeamController {
         }
     }
 
-    @PostMapping("/addEmployeeToTeam")
-    public ResponseEntity<String> addEmployeeToTeam(HttpServletRequest request) {
+    @PostMapping("/{teamId}/addEmployeeToTeam")
+    public ResponseEntity<String> addMemberToTeam(@PathVariable int teamId, @RequestParam String firstName, @RequestParam String lastName) {
         try {
-            int teamId = Integer.parseInt(request.getParameter("teamId"));
-            String[] usernames = request.getParameterValues("usernames[]");
-            List<String> userNames = Arrays.asList(usernames);
-            teamService.AddEmployeeToTeam(teamId, userNames);
-            return ResponseEntity.ok().body("Team members added successfully.");
-        } catch (SQLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add team members.");
+            boolean added = teamService.addEmployeeToTeam(teamId, firstName, lastName);
+            if (added) {
+                return ResponseEntity.ok("Member added to the team");
+            } else {
+                return ResponseEntity.badRequest().body("Failed to add member to the team");
+            }
+        } catch (SQLException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding team member");
         }
     }
 

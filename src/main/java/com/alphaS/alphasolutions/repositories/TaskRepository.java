@@ -74,6 +74,7 @@ public class TaskRepository {
         }
     }
 
+    //TODO kig på boolean
 
     //Method for removing a task form a subproject
     public String deleteTaskFromSubproject(int subProjetId, int taskId) throws SQLException {
@@ -100,6 +101,7 @@ public class TaskRepository {
 
     }
 
+    //TODO skal den være herinde?
     public String editSubproject(String SubProjectName, String SubProjectDescription) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "UPDATE taskcompass.Sub_project SET sub_project_name=?, sub_project_description=? WHERE sub_project_id=?";

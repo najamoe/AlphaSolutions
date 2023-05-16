@@ -16,6 +16,8 @@ public class TeamRepository {
         this.dataSource = dataSource;
     }
 
+    //TODO  lav om så et tesm bliver lavet indenunder et subprojket
+
     //Method for creating a team within a chosen subProject
     public String createTeam(String teamName, int subProjectId) throws SQLException {
         // Check if the subproject exists
@@ -53,33 +55,32 @@ public class TeamRepository {
     }
 
     //Method for adding a member to a team
-    public void AddEmployeeToTeam(int teamId, List<String> userNames) throws SQLException {
-        String sql = "INSERT INTO taskcompass.user_team (user_id, team_id) SELECT u.id, t.id FROM taskcompass.user u  JOIN taskcompass.team t ON t.team_name = ?  WHERE u.first_name = ? AND u.last_name = ?";
+    public boolean addEmployeeToTeam(int teamId, String firstName, String lastName) throws SQLException {
+        String sql = "INSERT INTO taskcompass.user_team (user_id, team_id) " +
+                "SELECT u.user_id, ? " +
+                "FROM taskcompass.Employee u " +
+                "WHERE u.first_name = ? AND u.last_name = ?";
         try (Connection con = dataSource.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
-            con.setAutoCommit(false);
-            for (String userName : userNames) {
-                String[] nameParts = userName.split("\\s+");
-                String firstName = nameParts[0];
-                String lastName = nameParts[1];
-                stmt.setInt(1, teamId);
-                stmt.setString(2, firstName);
-                stmt.setString(3, lastName);
-                int rowCount = stmt.executeUpdate();
-                if (rowCount == 0) {
-                    // Log error and continue with next user
-                    System.err.println("Employee with username " + userName + " not found.");
-                }
+            stmt.setInt(1, teamId);
+            stmt.setString(2, firstName);
+            stmt.setString(3, lastName);
+            int rowCount = stmt.executeUpdate();
+            if (rowCount == 0) {
+                System.err.println("Failed to add member with name: " + firstName + " " + lastName);
+                return false;
             }
-            con.commit();
+            System.out.println("Member added to the team");
+            return true;
         } catch (SQLException ex) {
-            // Log error and rollback transaction
-            System.err.println("Error adding team members: " + ex.getMessage());
+            System.err.println("Error adding team member: " + ex.getMessage());
             throw ex;
         }
     }
 
+
     //TODO lav en metode for af både slette et team men også alle medlember i det team
+    // tjek om den kan printe team navet ud som fejlbeskjed
 
     //Method for removing a member form a team
     public String deleteEmployeeFromTeam(int teamId, int userId) throws SQLException {
@@ -93,7 +94,7 @@ public class TeamRepository {
             int rowsDeleted = preparedStatement.executeUpdate();
 
             if (rowsDeleted > 0) {
-                message = userId + " has been removed from the " + teamId + " team, successfully";
+                message = "Member has been removed from team, successfully";
             } else {
                 message = userId + " is not a member of the " + teamId + " team";
             }

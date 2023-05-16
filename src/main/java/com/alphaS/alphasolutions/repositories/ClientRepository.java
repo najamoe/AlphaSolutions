@@ -39,7 +39,7 @@ public class ClientRepository {
         int rowsInserted = stmt.executeUpdate();
 
         if (rowsInserted > 0) {
-            return "Client successfully added to database";
+            return "Client successfully created";
         } else {
             return "Something went wrong, no client added";
         }

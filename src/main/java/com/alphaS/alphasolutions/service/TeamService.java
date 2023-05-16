@@ -19,9 +19,8 @@ public class TeamService {
        return teamRepository.createTeam(teamName, subProjectId);
     }
 
-
-    public void AddEmployeeToTeam(int teamId, List<String> userNames) throws SQLException {
-        teamRepository.AddEmployeeToTeam(teamId, userNames);
+    public boolean addEmployeeToTeam(int teamId, String firstName, String lastName) throws SQLException {
+        return teamRepository.addEmployeeToTeam(teamId, firstName, lastName);
     }
 
     public String deleteEmployeeFromTeam(int teamId, int userId) throws SQLException {
