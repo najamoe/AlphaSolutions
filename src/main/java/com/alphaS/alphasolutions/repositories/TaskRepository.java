@@ -101,23 +101,6 @@ public class TaskRepository {
 
     }
 
-    //TODO skal den være herinde?
-    public String editSubproject(String SubProjectName, String SubProjectDescription) {
-        try (Connection con = dataSource.getConnection()) {
-            String sql = "UPDATE taskcompass.Sub_project SET sub_project_name=?, sub_project_description=? WHERE sub_project_id=?";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setString(1, SubProjectName);
-            stmt.setString(2, SubProjectDescription);
-            int rowsUpdated = stmt.executeUpdate();
-            if (rowsUpdated > 0) {
-                return "Changes for subproject successfully updated";
-            }
-            return "Failed to edit subproject";
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 
     //Method for editing task information
     public String editTask(int taskId, String taskName, String taskDescription, LocalTime estTime, LocalDate deadline, String jobTitleNeeded, String status, Color color) throws SQLException {
