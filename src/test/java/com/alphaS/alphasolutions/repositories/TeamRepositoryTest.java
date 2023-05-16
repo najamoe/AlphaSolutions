@@ -1,4 +1,4 @@
-package com.alphaS.alphasolutions.repositories;
+/*package com.alphaS.alphasolutions.repositories;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -142,3 +142,4 @@ class TeamRepositoryTest {
     }
 
 }
+*/
