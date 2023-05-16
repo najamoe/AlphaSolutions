@@ -43,15 +43,13 @@ public class ProjectController {
 
             model.addAttribute("projects", projects);
 
-            return "readprojects"; // Return the name of the view/template to render the projects
+            return "readprojects";
         } catch (SQLException e) {
             String errorMessage = "Failed to retrieve projects";
             model.addAttribute("error", errorMessage);
             return "readprojects";
         }
     }
-
-
 
     @GetMapping("/projects/{projectId}")
     public String readProject(@PathVariable int projectId) {
@@ -64,16 +62,24 @@ public class ProjectController {
         }
     }
 
-    @GetMapping("/project/search")
-    @ResponseBody
-    public ResponseEntity<String> searchProject(@RequestParam String projectName) {
+    @GetMapping("/search")
+    public String searchProject() {
+      return "search";
+    }
+    @PostMapping("/search")
+    public String searchProjectPost(@RequestParam String projectName, Model model) {
         try {
-            String result = projectService.searchProject(projectName).toString();
-            return ResponseEntity.ok(result);
+            List<ProjectModel> projects = projectService.searchProject(projectName);
+            model.addAttribute("projects", projects);
+            return "search";
         } catch (SQLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to search project");
+            // Handle the exception as needed
+            return "error"; // Return the name of the view/template for displaying an error message
         }
     }
+
+
+
     @PostMapping("project/delete")
     public String deleteProject(@RequestParam int projectID){
         String message = projectService.deleteProject(projectID);
