@@ -91,7 +91,7 @@
     }
 
     .sidebar header {
-        font-size: 28px;
+        font-size: 24px;
         color: #353535;
         line-height: 70px;
         text-align: center;
@@ -120,13 +120,14 @@
     }
 
     .sidebar a i {
-        font-size: 23px;
+        font-size: 10px;
         margin-right: 16px;
     }
 
     .sidebar a span {
         letter-spacing: 1px;
         text-transform: uppercase;
+        font-size: 12px
     }
 
     #check {
@@ -140,7 +141,7 @@
         color: #f3f6fd;
         border-radius: 5px;
         margin: 15px 30px;
-        font-size: 29px;
+        font-size: 20px;
         background: radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),
         radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%);
         box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
@@ -246,7 +247,6 @@
         margin-top: 65px;
         margin-left: 5px;
         font-weight: 400;
-
     }
 
 </style>
@@ -254,7 +254,7 @@
 <body>
 
 <div class="wrapper">
-    <div id="header-container" class="container-fluid">
+    <div id="container" class="container-fluid">
         <div class="row">
             <div class="col-md-12" id="header-menu">
                 <div class="headerlogo">
@@ -262,36 +262,39 @@
                         <img src="/img/LogoNoBackground-fotor-.png" alt="Logo">
                     </a>
                     <h3>TaskCompass - Project Managment</h3>
-
-
                 </div>
             </div>
         </div>
 
-    </div>
-    <input type="checkbox" id="check">
-    <label for="check">
-        <i class="fas fa-bars" id="btn"></i>
-        <i class="fas fa-times" id="cancel"></i>
-    </label>
-    <div class="sidebar">
-        <header>Menu</header>
-        <a href="#"><img class="active">
-            <i class="fa-solid fa-house"></i>
-            <span>Dashboard</span>
-        </a>
-        <a href="#">
-            <i class="fa-regular fa-folder"></i>
-            <span>Project-folder</span>
-        </a>
-        <a href="#">
-            <i class="fa-solid fa-folder-plus"></i>
-            <span>new project</span>
-        </a>
-        <a href="#">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <span>Search</span>
-        </a>
+        <div class="row">
+            <div class="col-md-2" id="sidebar">
+                <input type="checkbox" id="check">
+                <label for="check">
+                    <i class="fas fa-bars" id="btn"></i>
+                    <i class="fas fa-times" id="cancel"></i>
+                </label>
+                <div class="sidebar">
+                    <header>Menu</header>
+                    <a href="#"><img class="active">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#">
+                        <i class="fa-regular fa-folder"></i>
+                        <span>Project-folder</span>
+                    </a>
+                    <a href="#">
+                        <i class="fa-solid fa-folder-plus"></i>
+                        <span>new project</span>
+                    </a>
+                    <a href="#">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span>Search</span>
+                        </a>
+                </div>
+            </div>
+        </div>
+
     </div>
     <div layout:fragment="content">
 
