@@ -35,32 +35,21 @@
     <div class="welcome">
       <div class="row">
         <div class="col-md-12" id="welcomemsg">
-          <h1 class="welcome-heading">Create new project</h1>
-          <p class="welcome-text">Follow the steps below to create a new project</p>
+          <h1 class="welcome-heading">New project failed</h1>
+          <p class="welcome-text">Your new project was not created</p>
         </div>
       </div>
     </div>
   </div>
-  <div class="container" id="projectwindow">
-    <div class="newproject">
+  <div class="container" id="projectsuccesswindow">
+    <div class="newprojectsuccess">
       <div class="row">
-            <div class="col-md-10" id="newprojectswindow">
-              <form th:action="@{/createproject}" th:object="${project}" method="post">
-                <label for="projectName">Project Name:</label>
-                <input type="text" id="projectName" th:field="*{projectName}" />
+        <div class="col-md-4">
 
-                <label for="projectDescription">Project Description:</label>
-                <textarea id="projectDescription" th:field="*{projectDescription}"></textarea>
 
-                <label for="startDate">Start Date:</label>
-                <input type="date" id="startDate" th:field="*{startDate}" />
+        </div>
 
-                <label for="endDate">End Date:</label>
-                <input type="date" id="endDate" th:field="*{endDate}" />
 
-                <button type="submit">Create Project</button>
-              </form>
-            </div>
       </div>
     </div>
   </div>
