@@ -28,10 +28,10 @@ public class ProjectController {
     public String createProject(@ModelAttribute("project") ProjectModel project) {
         try {
             projectService.createProject(project.getProjectName(), project.getProjectDescription(), project.getStartDate(), project.getEndDate());
-            return "success";
+            return "projectsuccess";
         } catch (SQLException e) {
             e.printStackTrace();
-            return "error"; 
+            return "projecterror";
         }
     }
 
