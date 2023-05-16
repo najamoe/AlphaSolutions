@@ -15,11 +15,53 @@
             margin: 50px 50px 20px 200px; /*Top, right, bottom, left*/
             border-radius: 10px;
         }
+
         #projectwindow{
-            margin: 20px 50px 80px 200px; /*Top, right, bottom, left*/
+            margin: 20px 50px 20px 200px; /*Top, right, bottom, left*/
             border-radius: 10px;
             background-color: white;
+            height: 220px;
         }
+
+        #currentprojectswindow{
+            background-color: #f3f6fd;
+            height: 130px;
+            width: 130px;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 40px;
+            margin-left: 60px;
+        }
+        #closedprojectswindow{
+            background-color: #f3f6fd;
+            height: 130px;
+            width: 130px;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 40px;
+            margin-left: 60px;
+        }
+
+        #newprojectswindow{
+            background-color: #f3f6fd;
+            height: 130px;
+            width: 130px;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 40px;
+            margin-left: 60px;
+        }
+        #searchprojecswindow{
+            background-color: #f3f6fd;
+            height: 130px;
+            width: 130px;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 40px;
+            margin-left: 60px;
+        }
+
+
     </style>
 </head>
 
@@ -32,7 +74,7 @@
             <div class="row">
                 <div class="col-md-12" id="welcomemsg">
                     <h1 class="welcome-heading">Welcome to your Dashboard</h1>
-                    <p class="welcome-text">Hello Jone Doe, welcome to your dashboard!</p>
+                    <p class="welcome-text">Hello, welcome to your dashboard!</p>
                 </div>
             </div>
         </div>
@@ -40,9 +82,23 @@
     <div class="container" id="projectwindow">
         <div class="project">
             <div class="row">
-                <div class="col-md-12" id="projectwindow">
-
+                <div class="col-md-3" id="currentprojectswindow">
+                    <i class="fa-solid fa-folder" style="font-size: 26px; color: darkgoldenrod"></i>
+                    <p>test project</p>
                 </div>
+                <div class="col-md-3" id="closedprojectswindow">
+                    <i class="fa-solid fa-check" style="font-size: 26px; color: darkgoldenrod"></i>
+                    <p>test closed project</p>
+                </div>
+                <div class="col-md-3" id="newprojectswindow">
+                    <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
+                    <a href="/createproject">Create new project</a>
+                </div>
+                <div class="col-md-3" id="searchprojecswindow">
+                    <i class="fa-solid fa-magnifying-glass" style="font-size: 26px; color: darkgoldenrod"></i>
+                    <a href="/project/search">Search project</a>
+                </div>
+
             </div>
         </div>
     </div>
