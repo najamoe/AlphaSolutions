@@ -21,6 +21,10 @@ public class ProjectService {
         return projectRepository.createProject(projectName, projectDescription, startDate, endDate);
     }
 
+    public void readProject(int projectId) throws SQLException {
+        projectRepository.readProject(projectId);
+    }
+
     public List<ProjectModel> searchProject(String search) throws SQLException {
         return projectRepository.searchProject(search);
     }

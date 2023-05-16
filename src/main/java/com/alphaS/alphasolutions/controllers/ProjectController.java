@@ -37,6 +37,17 @@ public class ProjectController {
 
     //TODO: READ
 
+    @GetMapping("/projects/{projectId}")
+    public String readProject(@PathVariable int projectId) {
+        try {
+            projectService.readProject(projectId);
+
+            return "Project details retrieved successfully";
+        } catch (SQLException e) {
+            return "Failed to retrieve project details";
+        }
+    }
+
     @GetMapping("/project/search")
     @ResponseBody
     public ResponseEntity<String> searchProject(@RequestParam String projectName) {
