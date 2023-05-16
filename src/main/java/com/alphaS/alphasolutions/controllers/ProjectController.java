@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 public class ProjectController {
@@ -35,12 +36,27 @@ public class ProjectController {
         }
     }
 
-    //TODO: READ
+    @GetMapping("/readprojects")
+    public String getAllProjects(Model model) {
+        try {
+            List<ProjectModel> projects = projectService.readProjects();
+
+            model.addAttribute("projects", projects);
+
+            return "readprojects"; // Return the name of the view/template to render the projects
+        } catch (SQLException e) {
+            String errorMessage = "Failed to retrieve projects";
+            model.addAttribute("error", errorMessage);
+            return "readprojects";
+        }
+    }
+
+
 
     @GetMapping("/projects/{projectId}")
     public String readProject(@PathVariable int projectId) {
         try {
-            projectService.readProject(projectId);
+            projectService.readProjects();
 
             return "Project details retrieved successfully";
         } catch (SQLException e) {

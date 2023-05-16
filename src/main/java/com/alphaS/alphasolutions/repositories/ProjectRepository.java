@@ -41,15 +41,15 @@ public class ProjectRepository {
         return "Failed to create project";
     }
 
-    public void readProject(int projectId) throws SQLException {
+    public List<ProjectModel> readProjects() throws SQLException {
         Connection con = dataSource.getConnection();
-        String sql = "SELECT * FROM taskcompass.Project WHERE project_id = ?";
+        String sql = "SELECT * FROM taskcompass.Project";
         PreparedStatement stmt = con.prepareStatement(sql);
-        stmt.setInt(1, projectId);
-
         ResultSet rs = stmt.executeQuery();
 
-        if (rs.next()) {
+        List<ProjectModel> projects = new ArrayList<>();
+        while (rs.next()) {
+            int projectId = rs.getInt("project_id");
             String projectName = rs.getString("project_name");
             String projectDescription = rs.getString("project_description");
             LocalDate startDate = rs.getDate("start_date").toLocalDate();
@@ -57,22 +57,26 @@ public class ProjectRepository {
             int clientId = rs.getInt("client_id");
             int userId = rs.getInt("user_id");
 
-            // Do something with the retrieved project data
-            System.out.println("Project ID: " + projectId);
-            System.out.println("Project Name: " + projectName);
-            System.out.println("Project Description: " + projectDescription);
-            System.out.println("Start Date: " + startDate);
-            System.out.println("End Date: " + endDate);
-            System.out.println("Client ID: " + clientId);
-            System.out.println("User ID: " + userId);
-        } else {
-            System.out.println("Project not found");
+            ProjectModel project = new ProjectModel();
+            project.setProjectId(projectId);
+            project.setProjectName(projectName);
+            project.setProjectDescription(projectDescription);
+            project.setStartDate(startDate);
+            project.setEndDate(endDate);
+            project.setClientId(clientId);
+            project.setUserId(userId);
+
+            projects.add(project);
         }
 
         rs.close();
         stmt.close();
         con.close();
+
+        return projects;
     }
+
+
 
 
     public List<ProjectModel> searchProject(String search) throws SQLException {
@@ -137,6 +141,8 @@ public class ProjectRepository {
             throw new RuntimeException(e);
         }
     }
+
+
 }
 
 
