@@ -21,9 +21,10 @@ public class ProjectService {
         return projectRepository.createProject(projectName, projectDescription, startDate, endDate);
     }
 
-    public void readProject(int projectId) throws SQLException {
-        projectRepository.readProject(projectId);
+    public List<ProjectModel> readProjects() throws SQLException {
+        return projectRepository.readProjects();
     }
+
 
     public List<ProjectModel> searchProject(String search) throws SQLException {
         return projectRepository.searchProject(search);
@@ -36,6 +37,5 @@ public class ProjectService {
     public String deleteProject(int projectId) {
         return projectRepository.deleteProject(projectId);
     }
-
 
 }
