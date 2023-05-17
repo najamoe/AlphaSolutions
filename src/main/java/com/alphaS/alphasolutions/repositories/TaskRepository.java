@@ -101,7 +101,6 @@ public class TaskRepository {
 
     }
 
-
     //Method for editing task information
     public String editTask(int taskId, String taskName, String taskDescription, LocalTime estTime, LocalDate deadline, String jobTitleNeeded, String status, Color color) throws SQLException {
         try (Connection con = dataSource.getConnection()){

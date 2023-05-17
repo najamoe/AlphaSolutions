@@ -24,21 +24,19 @@ public class TeamRepository {
         if (!subProjectExists(subProjectId)) {
             return "Sub-project does not exist";
         }
+        try (Connection con = dataSource.getConnection()){
+            String sql = "INSERT INTO taskcompass.Team (name, project_Id) VALUES (?, ?)";
+            PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, teamName);
+            stmt.setInt(2, subProjectId);
 
-        Connection con = dataSource.getConnection();
-        String sql = "INSERT INTO taskcompass.Team (name, project_Id) VALUES (?, ?)";
-        PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
-        stmt.setString(1, teamName);
-        stmt.setInt(2, subProjectId);
-
-        // Execute the query and get the result set
-        int rowsInserted = stmt.executeUpdate();
-
-        if (rowsInserted > 0) {
-            return "Team successfully added";
-        } else {
-            return "Something went wrong, no team added";
+            // Execute the query and get the result set
+            int rowsInserted = stmt.executeUpdate();
+            if (rowsInserted > 0) {
+                return "Team successfully added";
+            } else {
+                return "Something went wrong, no team added";
+            }
         }
     }
 
