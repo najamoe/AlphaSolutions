@@ -1,13 +1,12 @@
 package com.alphaS.alphasolutions.controllers;
 
+import com.alphaS.alphasolutions.model.EmployeeModel;
 import com.alphaS.alphasolutions.service.TeamService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -71,15 +70,5 @@ public class TeamController {
     }
 
 
-    @GetMapping("/searchEmployees")
-    @ResponseBody
-    public List<String> searchEmployees(@RequestParam("searchName") String searchName) throws SQLException {
-        List<Employee> employees = teamService.searchEmployees(searchName);
-        List<String> suggestions = new ArrayList<>();
-        for (Employee employee : employees) {
-            suggestions.add(employee.getFirstName() + " " + employee.getLastName());
-        }
-        return suggestions;
-    }
 
 }

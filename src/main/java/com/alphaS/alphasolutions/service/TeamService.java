@@ -32,8 +32,7 @@ public class TeamService {
     }
 
 
-    public List<Employee> searchEmployees(@RequestParam("searchName") String searchName) throws SQLException {
+    public List<String> searchEmployees(String searchName) throws SQLException {
         return teamRepository.searchEmployees(searchName);
     }
-
 }

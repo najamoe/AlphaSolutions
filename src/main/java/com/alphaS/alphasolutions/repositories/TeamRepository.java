@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -76,34 +77,25 @@ public class TeamRepository {
         }
     }
 
-    public List<Employee> searchEmployees(String searchName) throws SQLException {
-        String sql = "SELECT * FROM taskcompass.Employee WHERE first_name LIKE ? OR last_name LIKE ?";
+    public List<String> searchEmployees(String searchName) throws SQLException {
+        String sql = "SELECT CONCAT(first_name, ' ', last_name) AS full_name FROM employees WHERE first_name LIKE ? OR last_name LIKE ?";
         try (Connection con = dataSource.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, "%" + searchName + "%");
-            stmt.setString(2, "%" + searchName + "%");
-            ResultSet rs = stmt.executeQuery();
+             PreparedStatement statement = con.prepareStatement(sql)) {
+            statement.setString(1, "%" + searchName + "%");
+            statement.setString(2, "%" + searchName + "%");
+            ResultSet resultSet = statement.executeQuery();
 
-            List<Employee> employees = new ArrayList<>();
-            while (rs.next()) {
-                Employee employee = new Employee();
-                employee.setFirstName(rs.getString("first_name"));
-                employee.setLastName(rs.getString("last_name"));
-                employee.setEmail(rs.getString("email"));
-                employee.setUsername(rs.getString("username"));
-                employee.setPassword(rs.getString("password"));
-                employee.setPhoneNo(rs.getInt("phone_no"));
-                employee.setUserCountry(rs.getString("user_country"));
-                employee.setTitle(rs.getString("title"));
-                employee.setUserId(rs.getInt("user_id"));
-                employees.add(employee);
+            List<String> suggestions = new ArrayList<>();
+            while (resultSet.next()) {
+                String fullName = resultSet.getString("full_name");
+                suggestions.add(fullName);
             }
-
-            return employees;
+            return suggestions;
         } catch (SQLException ex) {
             throw new RuntimeException("Error searching employees: " + ex.getMessage());
         }
     }
+
 
 
     //TODO lav en metode for af både slette et team men også alle medlember i det team
