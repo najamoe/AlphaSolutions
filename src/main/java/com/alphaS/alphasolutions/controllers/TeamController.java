@@ -69,4 +69,17 @@ public class TeamController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to remove team member");
         }
     }
+
+
+    @GetMapping("/searchEmployees")
+    @ResponseBody
+    public List<String> searchEmployees(@RequestParam("searchName") String searchName) throws SQLException {
+        List<Employee> employees = teamService.searchEmployees(searchName);
+        List<String> suggestions = new ArrayList<>();
+        for (Employee employee : employees) {
+            suggestions.add(employee.getFirstName() + " " + employee.getLastName());
+        }
+        return suggestions;
+    }
+
 }

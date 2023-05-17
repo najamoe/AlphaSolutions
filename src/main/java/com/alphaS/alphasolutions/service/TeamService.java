@@ -30,4 +30,10 @@ public class TeamService {
     public String editTeamName(int teamId, String teamName) throws SQLException {
         return teamRepository.editTeamName(teamId, teamName);
     }
+
+
+    public List<Employee> searchEmployees(@RequestParam("searchName") String searchName) throws SQLException {
+        return teamRepository.searchEmployees(searchName);
+    }
+
 }

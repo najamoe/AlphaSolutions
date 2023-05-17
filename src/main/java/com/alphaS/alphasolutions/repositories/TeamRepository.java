@@ -76,6 +76,35 @@ public class TeamRepository {
         }
     }
 
+    public List<Employee> searchEmployees(String searchName) throws SQLException {
+        String sql = "SELECT * FROM taskcompass.Employee WHERE first_name LIKE ? OR last_name LIKE ?";
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, "%" + searchName + "%");
+            stmt.setString(2, "%" + searchName + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            List<Employee> employees = new ArrayList<>();
+            while (rs.next()) {
+                Employee employee = new Employee();
+                employee.setFirstName(rs.getString("first_name"));
+                employee.setLastName(rs.getString("last_name"));
+                employee.setEmail(rs.getString("email"));
+                employee.setUsername(rs.getString("username"));
+                employee.setPassword(rs.getString("password"));
+                employee.setPhoneNo(rs.getInt("phone_no"));
+                employee.setUserCountry(rs.getString("user_country"));
+                employee.setTitle(rs.getString("title"));
+                employee.setUserId(rs.getInt("user_id"));
+                employees.add(employee);
+            }
+
+            return employees;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error searching employees: " + ex.getMessage());
+        }
+    }
+
 
     //TODO lav en metode for af både slette et team men også alle medlember i det team
     // tjek om den kan printe team navet ud som fejlbeskjed
