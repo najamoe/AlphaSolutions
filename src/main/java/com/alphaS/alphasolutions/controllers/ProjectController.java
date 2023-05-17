@@ -45,9 +45,7 @@ public class ProjectController {
     public String getAllProjects(Model model) {
         try {
             List<ProjectModel> projects = projectService.readProjects();
-
             model.addAttribute("projects", projects);
-
             return "readprojects";
         } catch (SQLException e) {
             String errorMessage = "Failed to retrieve projects";
@@ -55,7 +53,6 @@ public class ProjectController {
             return "readprojects";
         }
     }
-
     @GetMapping("/projects/{projectId}")
     public String readProject(@PathVariable int projectId) {
         try {
@@ -83,11 +80,40 @@ public class ProjectController {
         }
     }
 
+    @PostMapping("/project/delete/{projectId}")
+    public String deleteProject(@PathVariable("projectId") int projectId) {
+        String deletionMessage = projectService.deleteProject(projectId);
 
-
-    @PostMapping("project/delete")
-    public String deleteProject(@RequestParam int projectID){
-        String message = projectService.deleteProject(projectID);
-        return message;
+        if (deletionMessage.equals("Project deleted successfully")) {
+            // Project was deleted successfully
+            return "redirect:/deletedproject";
+        } else {
+            // Project deletion failed
+            return "redirect:/readproject.html?error=" + deletionMessage;
+        }
     }
+    @GetMapping("/project/delete/{projectId}")
+    public String showDeleteProjectPage(@PathVariable("projectId") int projectId, Model model) {
+        // Retrieve the project details or perform any necessary operations
+        // to prepare the data for the delete confirmation page
+
+        model.addAttribute("projectId", projectId);
+        return "deletedproject";
+    }
+
+    @GetMapping("/deletedproject")
+    public String showDeletedProjectPage(Model model) {
+        return "deletedproject";
+    }
+
+
+    //endpoints for showing the project
+    @GetMapping("/project")
+    public String viewProject() {
+        // Process any necessary logic
+
+        return "project";
+    }
+
+
 }
