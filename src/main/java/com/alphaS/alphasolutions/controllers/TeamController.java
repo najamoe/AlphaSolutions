@@ -69,6 +69,15 @@ public class TeamController {
         }
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<String>> searchEmployees(@RequestParam("searchName") String searchName) {
+        try {
+            List<String> suggestions = teamService.searchEmployees(searchName);
+            return ResponseEntity.ok(suggestions);
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
 
 }
