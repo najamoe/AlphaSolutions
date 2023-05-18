@@ -41,6 +41,7 @@ public class ProjectController {
         }
     }
 
+    //
     @GetMapping("/readprojects")
     public String getAllProjects(Model model) {
         try {
