@@ -17,41 +17,28 @@ public class TeamRepository {
         this.dataSource = dataSource;
     }
 
-    //TODO  lav om så et tesm bliver lavet indenunder et subprojket
-
+    //TODO
     //Method for creating a team within a chosen subProject
-    public String createTeam(String teamName, int subProjectId) throws SQLException {
-        // Check if the subproject exists
-        if (!subProjectExists(subProjectId)) {
-            return "Sub-project does not exist";
-        }
-        try (Connection con = dataSource.getConnection()){
+    public String createTeam(String teamName) {
+        try (Connection con = dataSource.getConnection()) {
             String sql = "INSERT INTO taskcompass.Team (name, project_Id) VALUES (?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, teamName);
-            stmt.setInt(2, subProjectId);
-
-            // Execute the query and get the result set
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
-                return "Team successfully added";
-            } else {
-                return "Something went wrong, no team added";
+                ResultSet rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    int subProjectId = rs.getInt(1);
+                    return "team successfully added" + subProjectId;
+                }
             }
+            return "Failed to add team";
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
+    //TODO
 
-    //Checks if subProject exists..
-    private boolean subProjectExists(int subProjectId) throws SQLException {
-        Connection con = dataSource.getConnection();
-        String sql = "SELECT COUNT(*) FROM taskcompass.SubProject WHERE id = ?";
-        PreparedStatement stmt = con.prepareStatement(sql);
-        stmt.setInt(1, subProjectId);
-        ResultSet rs = stmt.executeQuery();
-        rs.next();
-        int count = rs.getInt(1);
-        return count > 0;
-    }
 
     //Method for adding a member to a team
     public boolean addEmployeeToTeam(int teamId, String firstName, String lastName) throws SQLException {
@@ -77,22 +64,26 @@ public class TeamRepository {
         }
     }
 
-    public List<String> searchEmployees(String searchName) throws SQLException {
-        String sql = "SELECT CONCAT(first_name, ' ', last_name) AS full_name FROM employees WHERE first_name LIKE ? OR last_name LIKE ?";
+    public List<String> findMatchingEmployeeNames(String query) throws SQLException {
+        String sql = "SELECT CONCAT(first_name, ' ', last_name) AS employee_name " +
+                "FROM taskcompass.Employee " +
+                "WHERE first_name LIKE ? OR last_name LIKE ? OR username LIKE ?";
         try (Connection con = dataSource.getConnection();
-             PreparedStatement statement = con.prepareStatement(sql)) {
-            statement.setString(1, "%" + searchName + "%");
-            statement.setString(2, "%" + searchName + "%");
-            ResultSet resultSet = statement.executeQuery();
-
-            List<String> suggestions = new ArrayList<>();
-            while (resultSet.next()) {
-                String fullName = resultSet.getString("full_name");
-                suggestions.add(fullName);
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            String likeQuery = "%" + query + "%";
+            stmt.setString(1, likeQuery);
+            stmt.setString(2, likeQuery);
+            stmt.setString(3, likeQuery);
+            List<String> matchingEmployeeNames = new ArrayList<>();
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String employeeName = rs.getString("employee_name");
+                matchingEmployeeNames.add(employeeName);
             }
-            return suggestions;
+            return matchingEmployeeNames;
         } catch (SQLException ex) {
-            throw new RuntimeException("Error searching employees: " + ex.getMessage());
+            System.err.println("Error retrieving matching employee names: " + ex.getMessage());
+            throw ex;
         }
     }
 
@@ -126,19 +117,39 @@ public class TeamRepository {
     }
 
 
+
     //Method for editing a team name
-    public String editTeamName(int teamId, String teamName) throws SQLException {
-        Connection con = dataSource.getConnection();
-        String sql = "UPDATE taskcompass.Team SET name = ? WHERE team_id = ?";
-        PreparedStatement stmt = con.prepareStatement(sql);
-
-        stmt.setString(1, teamName);
-
-        int rowsUpdated = stmt.executeUpdate();
-        if (rowsUpdated > 0) {
-            return "New team name successfully updated ";
-        } else {
-            return "Something went wrong, new team name not updated";
+    public String editTeamName(String teamName) {
+        try (Connection con = dataSource.getConnection()) {
+           String sql = "UPDATE taskcompass.Team SET name = ? WHERE team_id = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, teamName);
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                return "Team name successfully updated";
+            }
+            return "Failed to edit team name";
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
+
+   /*
+    public String editTeamName(int teamId, String teamName) throws SQLException {
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "UPDATE taskcompass.Team SET name = ? WHERE team_id = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, teamName);
+            stmt.setInt(2, teamId);
+
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                return "New team name successfully updated";
+            } else {
+                return "Something went wrong, new team name not updated";
+            }
+        }
+    }
+
+    */
 }

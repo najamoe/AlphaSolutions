@@ -16,8 +16,8 @@ public class TeamService {
         this.teamRepository = teamRepository;
     }
 
-    public String createTeam(String teamName, int subProjectId) throws SQLException {
-       return teamRepository.createTeam(teamName, subProjectId);
+    public String createTeam(String teamName) throws SQLException {
+       return teamRepository.createTeam(teamName);
     }
 
     public boolean addEmployeeToTeam(int teamId, String firstName, String lastName) throws SQLException {
@@ -28,12 +28,12 @@ public class TeamService {
         return teamRepository.deleteEmployeeFromTeam(teamId, userId);
     }
 
-    public String editTeamName(int teamId, String teamName) throws SQLException {
-        return teamRepository.editTeamName(teamId, teamName);
+    public String editTeamName(String teamName) throws SQLException {
+        return teamRepository.editTeamName(teamName);
     }
 
-    public List<String> searchEmployees(String searchName) throws SQLException {
-        return teamRepository.searchEmployees(searchName);
+    public List<String> findMatchingEmployeeNames(String query) throws SQLException {
+        return teamRepository.findMatchingEmployeeNames(query);
     }
 
 

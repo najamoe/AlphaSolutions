@@ -1,13 +1,18 @@
 package com.alphaS.alphasolutions.model;
 
 public class TeamModel {
-    private int teamId;
-    private String teamName;
-    private String projectName;
 
-    public TeamModel(String teamName, String projectName) {
-        this.teamName = teamName;
-        this.projectName = projectName;
+
+    public TeamModel() {
+
+    }
+
+    public int getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
     }
 
     public String getTeamName() {
@@ -18,20 +23,13 @@ public class TeamModel {
         this.teamName = teamName;
     }
 
-    public String getProjectName() {
-        return projectName;
+
+    public TeamModel(int teamId, String teamName) {
+        this.teamId = teamId;
+        this.teamName = teamName;
     }
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
+    private int teamId;
+    private String teamName;
 
-
-    @Override
-    public String toString() {
-        return "TeamModel{" +
-                "teamName='" + teamName + '\'' +
-                ", projectName='" + projectName + '\'' +
-               '}';
-    }
 }
