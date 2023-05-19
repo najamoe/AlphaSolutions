@@ -161,11 +161,13 @@ public class TeamController {
 
     //TODO
 
-    @PostMapping("/project/{projectId}/subproject/delete")
+  /*  @PostMapping("/project/{projectId}/subproject/delete")
     public String deleteSubproject(@RequestParam int teamId, @RequestParam int userId) throws SQLException {
         String message = teamService.deleteEmployeeFromTeam(teamId, userId);
         return message;
     }
+
+*/
 
     //TODO
 
