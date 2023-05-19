@@ -84,10 +84,14 @@
                 <button type="submit" class="fa-solid fa-trash"></button>
               </form>
             </td>
-
           </tr>
-
+          <tr th:if="${#lists.isEmpty(projects)}">
+            <td colspan="7">
+              <p>No projects found.</p>
+            </td>
+          </tr>
           </tbody>
+
         </table>
         <div th:if="${#lists.isEmpty(projects)}">
           <p>No projects found.</p>

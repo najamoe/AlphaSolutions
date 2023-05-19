@@ -118,7 +118,7 @@ class TeamRepositoryTest {
 
         //Create test data
         int teamId = 1;
-        int userId = 10;
+        int employeeId = 10;
 
         //Set up a mock preparedStmt
         PreparedStatement preparedStmt = mock(PreparedStatement.class);
@@ -128,7 +128,7 @@ class TeamRepositoryTest {
         when(preparedStmt.executeUpdate()).thenReturn(1);
 
         //Call the method
-        String result = teamRepository.deleteEmployeeFromTeam(teamId, userId);
+        String result = teamRepository.deleteEmployeeFromTeam(teamId, employeeId);
 
         //Assert result
         assertEquals("Member has been removed from team, successfully", result);
@@ -136,7 +136,7 @@ class TeamRepositoryTest {
         //Verfiy the necessary method were called
         verify(dataSource.getConnection()).prepareStatement(anyString());
         verify(preparedStmt).setInt(eq(1), eq(teamId));
-        verify(preparedStmt).setInt(eq(2), eq(userId));
+        verify(preparedStmt).setInt(eq(2), eq(employeeId));
         verify(preparedStmt).executeUpdate();
 
     }

@@ -41,11 +41,10 @@ public class ProjectRepository {
         return "Failed to create project";
     }
 
-    public List<ProjectModel> readProjects(int employeeId) throws SQLException {
+    public List<ProjectModel> readProjects() throws SQLException {
         Connection con = dataSource.getConnection();
-        String sql = "SELECT * FROM taskcompass.Project WHERE user_id = ?";
+        String sql = "SELECT * FROM taskcompass.Project";
         PreparedStatement stmt = con.prepareStatement(sql);
-        stmt.setInt(1, employeeId);
         ResultSet rs = stmt.executeQuery();
 
         List<ProjectModel> projects = new ArrayList<>();
@@ -56,7 +55,7 @@ public class ProjectRepository {
             LocalDate startDate = rs.getDate("start_date").toLocalDate();
             LocalDate endDate = rs.getDate("end_date").toLocalDate();
             int clientId = rs.getInt("client_id");
-            int userId = rs.getInt("user_id");
+            int employeeId = rs.getInt("employee_id");
 
             ProjectModel project = new ProjectModel();
             project.setProjectId(projectId);
@@ -65,7 +64,7 @@ public class ProjectRepository {
             project.setStartDate(startDate);
             project.setEndDate(endDate);
             project.setClientId(clientId);
-            project.setUserId(userId);
+            project.setEmployeeId(employeeId);
 
             projects.add(project);
         }
@@ -76,6 +75,7 @@ public class ProjectRepository {
 
         return projects;
     }
+
     public List<ProjectModel> searchProject(String search) throws SQLException {
         List<ProjectModel> projects = new ArrayList<>();
 
@@ -140,10 +140,8 @@ public class ProjectRepository {
             throw new RuntimeException(e);
         }
     }
-
-
-
-
 }
+
+
 
 

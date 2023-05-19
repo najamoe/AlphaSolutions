@@ -7,9 +7,9 @@ CREATE TABLE taskcompass.Employee (
                                       username varchar(255),
                                       password varchar(255),
                                       phone_no int,
-                                      user_country varchar(255),
+                                      employee_country varchar(255),
                                       title varchar(255),
-                                      user_id int PRIMARY KEY AUTO_INCREMENT
+                                      employee_id int PRIMARY KEY AUTO_INCREMENT
 );
 
 
@@ -41,9 +41,9 @@ CREATE TABLE taskcompass.Project (
                                      start_date date,
                                      end_date date,
                                      client_id int,
-                                     user_id int,
+                                     employee_id int,
                                      project_id int primary key AUTO_INCREMENT,
-                                     FOREIGN KEY (user_id) REFERENCES Employee (user_id),
+                                     FOREIGN KEY (employee_id) REFERENCES Employee (employee_id),
                                      FOREIGN KEY (client_id) REFERENCES Client (client_id)
 );
 
@@ -64,27 +64,27 @@ CREATE TABLE taskcompass.Team (
                                   name varchar(255),
                                   project_name varchar(255),
                                   team_id int PRIMARY KEY AUTO_INCREMENT,
-                                  user_id int,
+                                  employee_id int,
                                   teamemployees_id int
 );
 
 CREATE TABLE taskcompass.Team_employees(
-                                           user_id int,
+                                           employee_id int,
                                            team_id int,
                                            teamemployees_id int PRIMARY KEY AUTO_INCREMENT
 );
 
 ALTER TABLE taskcompass.Team
-    ADD CONSTRAINT fk_team_user_id
-        FOREIGN KEY (user_id) REFERENCES taskcompass.Employee (user_id);
+    ADD CONSTRAINT fk_team_employee_id
+        FOREIGN KEY (employee_id) REFERENCES taskcompass.Employee (employee_id);
 
 ALTER TABLE taskcompass.Team
     ADD CONSTRAINT fk_team_teamemployees_id
         FOREIGN KEY (teamemployees_id) REFERENCES taskcompass.Team_employees (teamemployees_id);
 
 ALTER TABLE taskcompass.Team_employees
-    ADD CONSTRAINT fk_teamemployees_user_id
-        FOREIGN KEY (user_id) REFERENCES taskcompass.Employee (user_id);
+    ADD CONSTRAINT fk_teamemployees_employee_id
+        FOREIGN KEY (employee_id) REFERENCES taskcompass.Employee (employee_id);
 
 ALTER TABLE taskcompass.Team_employees
     ADD CONSTRAINT fk_teamemployees_team_id

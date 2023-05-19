@@ -1,4 +1,4 @@
-INSERT INTO taskcompass.Employee (first_name, last_name, email, username, password, phone_no, user_country, title)
+INSERT INTO taskcompass.Employee (first_name, last_name, email, username, password, phone_no, employee_country, title)
 VALUES ('John', 'Doe', 'john.doe@example.com', 'johndoe', '1234', 12345678, 'DK', 'Developer'),
        ('Jane', 'Smith', 'jane.smith@example.com', 'janesmith', '1234', 98765432, 'DK', 'Project Manager'),
        ('Mike', 'Johnson', 'mike.johnson@example.com', 'mikejohnson', '1234', 56789012, 'DK', 'Designer');
@@ -16,7 +16,7 @@ VALUES
     ('Develop Backend', 'Develop Backend for the website', '6:00:00', 'Backend Developer', 'Not Started', 'Red'),
     ('Write Tests', 'Write unit tests for the website', '1:00:00', 'Quality Assurance', 'Completed', 'Green');
 
-INSERT INTO taskcompass.Project (project_name, project_description, start_date, end_date, client_id, user_id)
+INSERT INTO taskcompass.Project (project_name, project_description, start_date, end_date, client_id, employee_id)
 VALUES
     ('Project A', 'Development of Website', '2022-01-01', '2022-12-31', 1, 1),
     ('Project B', 'Design of Mobile App', '2023-01-01', '2023-12-31', 2, 2),
@@ -31,13 +31,13 @@ VALUES
     ('Subproject 3A', 'Data Collection', 3),
     ('Subproject 3B', 'Data Analysis', 3);
 
-INSERT INTO taskcompass.Team (name, project_name, user_id)
+INSERT INTO taskcompass.Team (name, project_name, employee_id)
 VALUES
     ('Team A', 'Project A', 1),
     ('Team B', 'Project B', 2),
     ('Team C', 'Project C', 3);
 
-INSERT INTO taskcompass.Team_employees (user_id, team_id)
+INSERT INTO taskcompass.Team_employees (employee_id, team_id)
 VALUES
     (1, 1),
     (2, 2),
