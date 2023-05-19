@@ -76,11 +76,6 @@ public class ProjectRepository {
 
         return projects;
     }
-
-
-
-
-
     public List<ProjectModel> searchProject(String search) throws SQLException {
         List<ProjectModel> projects = new ArrayList<>();
 
@@ -123,13 +118,14 @@ public class ProjectRepository {
     }
 
     //Now deletes project and associated subprojects (deleteSubproject handles deletion of subprojects and all their associated tasks)
-    public String deleteProject(int projectId) {
+
+    public String deletedProject(int projectId) {
         try (Connection con = dataSource.getConnection()) {
             String subprojectsSql = "DELETE FROM taskcompass.Sub_project WHERE project_id=?";
             PreparedStatement subprojectsStmt = con.prepareStatement(subprojectsSql);
             subprojectsStmt.setInt(1, projectId);
-
             int subprojectsDeleted = subprojectsStmt.executeUpdate();
+
             String projectSql = "DELETE FROM taskcompass.Project WHERE project_id=?";
             PreparedStatement projectStmt = con.prepareStatement(projectSql);
             projectStmt.setInt(1, projectId);
@@ -137,12 +133,15 @@ public class ProjectRepository {
 
             if (projectDeleted > 0) {
                 return "Project deleted successfully";
+            } else {
+                return "Project with ID " + projectId + " does not exist";
             }
-            return "Project with ID " + projectId + " does not exist";
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+
 
 
 }
