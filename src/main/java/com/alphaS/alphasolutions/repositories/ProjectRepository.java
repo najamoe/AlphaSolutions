@@ -41,10 +41,11 @@ public class ProjectRepository {
         return "Failed to create project";
     }
 
-    public List<ProjectModel> readProjects() throws SQLException {
+    public List<ProjectModel> readProjects(int employeeId) throws SQLException {
         Connection con = dataSource.getConnection();
-        String sql = "SELECT * FROM taskcompass.Project";
+        String sql = "SELECT * FROM taskcompass.Project WHERE user_id = ?";
         PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setInt(1, employeeId);
         ResultSet rs = stmt.executeQuery();
 
         List<ProjectModel> projects = new ArrayList<>();
@@ -75,6 +76,7 @@ public class ProjectRepository {
 
         return projects;
     }
+
 
 
 

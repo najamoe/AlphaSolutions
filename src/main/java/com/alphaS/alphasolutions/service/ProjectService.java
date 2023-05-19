@@ -22,7 +22,7 @@ public class ProjectService {
     }
 
     public List<ProjectModel> readProjects() throws SQLException {
-        return projectRepository.readProjects();
+        return projectRepository.readProjects(1);
     }
 
 

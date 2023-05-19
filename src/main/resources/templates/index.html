@@ -205,7 +205,7 @@
         .card-fullname {
             position: absolute;
             color: white;
-            bottom: 1;
+            bottom: 1px;
             font-size: 22px;
             font-weight: 700;
             text-align: center;
@@ -305,11 +305,11 @@
                 <h2>Login</h2>
                 <form action="/signin" method="post">
                     <div class="user-box">
-                        <input type="text" name="username" required=""/>
+                        <input type="text" name="username" id="username" required=""/>
                         <label for="username">Username</label>
                     </div>
                     <div class="user-box">
-                        <input type="password" name="password" required=""/>
+                        <input type="text" name="password" id="password" required=""/>
                         <label for="password">Password</label>
                     </div>
                     <div th:if="${error}" class="error-message">
