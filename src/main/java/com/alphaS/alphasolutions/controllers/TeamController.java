@@ -147,8 +147,8 @@ public class TeamController {
     public ResponseEntity<String> removeEmployeeFromTeam(HttpServletRequest request) {
         try {
             int teamId = Integer.parseInt(request.getParameter("teamId"));
-            int userId = Integer.parseInt(request.getParameter("userId"));
-            String message = teamService.deleteEmployeeFromTeam(teamId, userId);
+            int employeeId = Integer.parseInt(request.getParameter("employeeId"));
+            String message = teamService.deleteEmployeeFromTeam(teamId, employeeId);
             return ResponseEntity.ok().body(message);
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to remove team member");
@@ -162,8 +162,8 @@ public class TeamController {
     //TODO
 /*
     @PostMapping("/project/{projectId}/subproject/delete")
-    public String deleteSubproject(@RequestParam int teamId, @RequestParam int userId) throws SQLException {
-        String message = teamService.deleteEmployeeFromTeam(teamId, userId);
+    public String deleteSubproject(@RequestParam int teamId, @RequestParam int employeeId) throws SQLException {
+        String message = teamService.deleteEmployeeFromTeam(teamId, employeeId);
         return message;
     }
 */

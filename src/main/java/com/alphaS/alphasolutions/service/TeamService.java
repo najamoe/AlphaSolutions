@@ -24,8 +24,8 @@ public class TeamService {
         return teamRepository.addEmployeeToTeam(teamId, firstName, lastName);
     }
 
-    public String deleteEmployeeFromTeam(int teamId, int userId) throws SQLException {
-        return teamRepository.deleteEmployeeFromTeam(teamId, userId);
+    public String deleteEmployeeFromTeam(int teamId, int employeeId) throws SQLException {
+        return teamRepository.deleteEmployeeFromTeam(teamId, employeeId);
     }
 
     public String editTeamName(String teamName) throws SQLException {

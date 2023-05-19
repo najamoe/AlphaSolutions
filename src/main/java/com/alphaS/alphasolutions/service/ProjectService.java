@@ -20,8 +20,9 @@ public class ProjectService {
         return projectRepository.createProject(projectName, projectDescription, startDate, endDate);
     }
     public List<ProjectModel> readProjects() throws SQLException {
-        return projectRepository.readProjects(1);
+        return projectRepository.readProjects();
     }
+
 
     public List<ProjectModel> searchProject(String search) throws SQLException {
         return projectRepository.searchProject(search);

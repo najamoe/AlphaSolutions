@@ -10,16 +10,16 @@ public class ProjectModel {
     private LocalDate startDate;
     private LocalDate endDate;
     private int clientId;
-    private int userId;
+    private int employeeId;
 
-    public ProjectModel(int projectId, String projectName, String projectDescription, LocalDate startDate, LocalDate endDate, int clientId, int userId) {
+    public ProjectModel(int projectId, String projectName, String projectDescription, LocalDate startDate, LocalDate endDate, int clientId, int employeeId) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.projectDescription = projectDescription;
         this.startDate = startDate;
         this.endDate = endDate;
         this.clientId = clientId;
-        this.userId = userId;
+        this.employeeId = employeeId;
     }
 
     public ProjectModel() {
@@ -74,12 +74,12 @@ public class ProjectModel {
         this.clientId = clientId;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getEmployeeId() {
+        return employeeId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ProjectModel {
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", client_id=" + clientId +
-                ", user_id=" + userId +
+                ", employee_id=" + employeeId +
                 '}';
     }
 }

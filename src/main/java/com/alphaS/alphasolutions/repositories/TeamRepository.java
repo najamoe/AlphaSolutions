@@ -42,8 +42,8 @@ public class TeamRepository {
 
     //Method for adding a member to a team
     public boolean addEmployeeToTeam(int teamId, String firstName, String lastName) throws SQLException {
-        String sql = "INSERT INTO taskcompass.user_team (user_id, team_id) " +
-                "SELECT u.user_id, ? " +
+        String sql = "INSERT INTO taskcompass.employee_team (employee_id, team_id) " +
+                "SELECT u.employee_id, ? " +
                 "FROM taskcompass.Employee u " +
                 "WHERE u.first_name = ? AND u.last_name = ?";
         try (Connection con = dataSource.getConnection();
@@ -93,20 +93,20 @@ public class TeamRepository {
     // tjek om den kan printe team navet ud som fejlbeskjed
 
     //Method for removing a member form a team
-    public String deleteEmployeeFromTeam(int teamId, int userId) throws SQLException {
+    public String deleteEmployeeFromTeam(int teamId, int employeeId) throws SQLException {
         String message;
 
         try (Connection con = dataSource.getConnection()) {
-            String sql = "DELETE FROM taskcompass.Team_users WHERE team_id = ? AND user_id = ?";
+            String sql = "DELETE FROM taskcompass.Team_employee WHERE team_id = ? AND employee_id = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setInt(1, teamId);
-            preparedStatement.setInt(2, userId);
+            preparedStatement.setInt(2, employeeId);
             int rowsDeleted = preparedStatement.executeUpdate();
 
             if (rowsDeleted > 0) {
                 message = "Member has been removed from team, successfully";
             } else {
-                message = userId + " is not a member of the " + teamId + " team";
+                message = employeeId + " is not a member of the " + teamId + " team";
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

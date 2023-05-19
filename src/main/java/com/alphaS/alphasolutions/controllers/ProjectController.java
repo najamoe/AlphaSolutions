@@ -31,15 +31,18 @@ public class ProjectController {
         return "createproject";
     }
     @PostMapping("/createproject")
-    public String createProject(@ModelAttribute("project") ProjectModel project) {
+    public String createProject(@ModelAttribute("project") ProjectModel project, Model model) {
         try {
             projectService.createProject(project.getProjectName(), project.getProjectDescription(), project.getStartDate(), project.getEndDate());
+            List<ProjectModel> projects = projectService.readProjects(); // Hent opdaterede projektliste
+            model.addAttribute("projects", projects); // Tilføj projekter til modellen
             return "projectsuccess";
         } catch (SQLException e) {
             e.printStackTrace();
             return "projecterror";
         }
     }
+
 
     //
     @GetMapping("/readprojects")
@@ -49,11 +52,13 @@ public class ProjectController {
             model.addAttribute("projects", projects);
             return "readprojects";
         } catch (SQLException e) {
-            String errorMessage = "Failed to retrieve projects";
+            String errorMessage = "Failed to retrieve projects from the database. Please try again later.";
             model.addAttribute("error", errorMessage);
             return "readprojects";
         }
     }
+
+
     @GetMapping("/projects/{projectId}")
     public String readProject(@PathVariable int projectId) {
         try {
