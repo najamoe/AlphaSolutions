@@ -17,10 +17,12 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
+    //Creates a project, only for the logged in employee
     public String createProject(ProjectModel project, String username, String password) throws SQLException {
         return projectRepository.createProject(project, username, password);
     }
 
+    //For the entire list of projects associated with the logged in employee
     public List<ProjectModel> readProjects(String username, String password) throws SQLException {
         return projectRepository.readProjects(username, password);
     }
@@ -34,4 +36,7 @@ public class ProjectService {
     }
 
 
+    public ProjectModel readSpecificProject(int projectId, String username, String password) {
+        return projectRepository.readSpecificProject(projectId, username, password);
+    }
 }
