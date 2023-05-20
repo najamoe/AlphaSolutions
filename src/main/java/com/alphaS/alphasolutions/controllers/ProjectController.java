@@ -52,9 +52,6 @@ public class ProjectController {
             return "projecterror";
         }
     }
-
-
-
     @GetMapping("/readprojects")
     public String readCreatedProjects(Model model, HttpSession session) {
         try {
