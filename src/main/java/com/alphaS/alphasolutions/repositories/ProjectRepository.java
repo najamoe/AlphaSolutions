@@ -46,7 +46,6 @@ public class ProjectRepository {
     }
 
 
-
     public List<ProjectModel> readProjects(String username, String password) throws SQLException {
         Connection con = dataSource.getConnection();
         String sql = "SELECT * FROM taskcompass.Project p " +
