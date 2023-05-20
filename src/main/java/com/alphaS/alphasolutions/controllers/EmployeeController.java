@@ -19,35 +19,31 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-
     //user objet
     //mere ren
     @GetMapping("/signin")
     public String showLoginForm(Model model) {
-     /*
-        model.addAttribute("username", ""); // Set an empty initial value for the username
-        model.addAttribute("password", ""); // Set an empty initial value for the password
-         */
         return "index";
     }
-
-
 
     @PostMapping("/signin")
     public String signInPostMapping(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, Model model) {
         try {
             EmployeeModel employee = employeeService.logIn(username, password);
             if (employee == null) {
-               model.addAttribute("error", "Username or password is incorrect");
-               return "index";
-            }  session.setAttribute("username",username);
-            session.setAttribute("password",password);
+                model.addAttribute("error", "Username or password is incorrect");
+                return "index";
+            }
+            session.setAttribute("username", username);
+            session.setAttribute("password", password);
+            session.setAttribute("employeeId", employee.getEmployeeId()); // Add this line
             return "redirect:/dashboard";
-        }catch (Exception e) {
+        } catch (Exception e) {
             model.addAttribute("error", "Username or password is incorrect");
             return "index";
         }
     }
+
 
     @GetMapping("/account")
     public String showAccount(Model model) {

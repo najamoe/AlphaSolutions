@@ -26,6 +26,9 @@ public class ProjectModel {
 
     }
 
+    public ProjectModel(int projectId, String projectName, String projectDescription, LocalDate startDate, LocalDate endDate, int employeeId) {
+    }
+
     public int getProjectId() {
         return projectId;
     }

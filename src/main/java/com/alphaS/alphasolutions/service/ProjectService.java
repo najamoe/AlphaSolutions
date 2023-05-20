@@ -16,11 +16,13 @@ public class ProjectService {
     public ProjectService(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
     }
-    public String createProject(String projectName, String projectDescription, LocalDate startDate, LocalDate endDate) throws SQLException {
-        return projectRepository.createProject(projectName, projectDescription, startDate, endDate);
+
+    public String createProject(ProjectModel project, String username, String password) throws SQLException {
+        return projectRepository.createProject(project, username, password);
     }
-    public List<ProjectModel> readProjects() throws SQLException {
-        return projectRepository.readProjects();
+
+    public List<ProjectModel> readProjects(String username, String password) throws SQLException {
+        return projectRepository.readProjects(username, password);
     }
 
 

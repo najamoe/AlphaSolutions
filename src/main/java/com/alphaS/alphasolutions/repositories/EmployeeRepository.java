@@ -21,9 +21,11 @@ public class EmployeeRepository {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     // Retrieve employee details from the result set
+                    int employeeId = rs.getInt("employee_id");
                     String employeeUsername = rs.getString("username");
                     String employeePassword = rs.getString("password");
-                    EmployeeModel employee = new EmployeeModel(username, password);
+
+                    EmployeeModel employee = new EmployeeModel(employeeId, username, password);
                     return employee;
                 } else {
                     throw new SQLException("Could not validate user");
@@ -31,6 +33,10 @@ public class EmployeeRepository {
             }
         }
     }
+
+
+
+
 
 }
 

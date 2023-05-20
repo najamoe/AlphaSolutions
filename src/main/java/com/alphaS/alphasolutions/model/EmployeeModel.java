@@ -2,7 +2,7 @@ package com.alphaS.alphasolutions.model;
 
 public class EmployeeModel {
 
-    private String employeeId;
+    private int employeeId;
     private String firstName;
     private String lastName;
     private String email;
@@ -12,8 +12,9 @@ public class EmployeeModel {
     private String country;
     private String jobTitle;
 
-    public EmployeeModel(String employeeId, String firstName, String lastName, String email, String username, String password, int phoneNo, String country, String jobTitle) {
+    public EmployeeModel(int employeeId, String firstName, String lastName, String email, String username, String password, int phoneNo, String country, String jobTitle) {
         this.employeeId = employeeId;
+        this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.username = username;
@@ -22,21 +23,17 @@ public class EmployeeModel {
         this.country = country;
         this.jobTitle = jobTitle;
     }
-    public EmployeeModel() {
 
+    public EmployeeModel(int employeeId, String username, String password) {
     }
 
-    public EmployeeModel(String username, String password) {
-    }
-
-    public String getEmployeeId() {
+    public int getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(String employeeId) {
+    public void setEmployeeId(int employeeId) {
         this.employeeId = employeeId;
     }
-
 
     public String getFirstName() {
         return firstName;
@@ -104,8 +101,8 @@ public class EmployeeModel {
 
     @Override
     public String toString() {
-        return "UserModel{" +
-                "employeeId='" + employeeId + '\'' +
+        return "EmployeeModel{" +
+                "employeeId=" + employeeId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +

@@ -45,6 +45,22 @@ public class ClientRepository {
         }
     }
 
+    public String getClientNameById(int clientId) throws SQLException {
+        Connection con = dataSource.getConnection();
+        String sql = "SELECT client_name FROM taskcompass.client WHERE client_id = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setInt(1, clientId);
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getString("client_name");
+            } else {
+                return null; // or handle the case when the client is not found
+            }
+        }
+    }
+
+
     //TODO: READ
     //TODO: Sage recommends us to base our methods by id's. will be easier to identify our clients (e.x EditProject method)
     public String editClient(String clientName, String contactPoNo, String contactPerson, String companyPoNo, String address, String zipCode, String country, String clientId) throws SQLException {
