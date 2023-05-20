@@ -15,7 +15,6 @@ public class ClientService {
         this.clientRepository = repository;
     }
 
-
     public String createClient(String clientName, String contactPoNo, String contactPerson, String companyPoNo, String address, String zipCode, String country, String clientId) throws SQLException {
        return clientRepository.createClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country, clientId);
 
