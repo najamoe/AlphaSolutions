@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -26,13 +28,13 @@ public class ProjectController {
         this.clientService = clientService;
     }
 
-    @GetMapping("/createproject")
+    @GetMapping("/createproject{projectId}")
     public String createProject(Model model) {
         model.addAttribute("project", new ProjectModel());
         return "createproject";
     }
 
-    @PostMapping("/createproject")
+    @PostMapping("/createproject{projectId}")
     public String createProject(@ModelAttribute("project") ProjectModel project, Model model, HttpSession session) {
         try {
             String username = (String) session.getAttribute("username");
@@ -69,21 +71,46 @@ public class ProjectController {
         }
     }
 
+    @GetMapping("/project/details/{projectId}")
+    public String readSpecificProject(@PathVariable("projectId") int projectId, Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        String password = (String) session.getAttribute("password");
 
-    @GetMapping("/search")
-    public String searchProject() {
-      return "search";
-    }
-    @PostMapping("/search")
-    public String searchProjectPost(@RequestParam String projectName, Model model) {
-        try {
-            List<ProjectModel> projects = projectService.searchProject(projectName);
-            model.addAttribute("projects", projects);
-            return "search";
-        } catch (SQLException e) {
-            return "error";
+        ProjectModel project = projectService.readSpecificProject(projectId, username, password);
+        if (project == null) {
+            // Handle case where project is not found
+            return "projectNotFound";
         }
+
+        model.addAttribute("project", project);
+        return "project";
     }
+
+
+    @PostMapping("/project/details/{projectId}")
+    public String editSpecificProject(@PathVariable("projectId") int projectId,
+                                      @RequestParam("newProjectName") String newProjectName,
+                                      @RequestParam("newProjectDescription") String newProjectDescription,
+                                      @RequestParam("newStartDate") String newStartDate,
+                                      @RequestParam("newEndDate") String newEndDate,
+                                      Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        String password = (String) session.getAttribute("password");
+        LocalDate startDate = LocalDate.parse(newStartDate);
+        LocalDate endDate = LocalDate.parse(newEndDate);
+
+        String result = projectService.editProject(projectId, newProjectName, newProjectDescription, startDate, endDate);
+
+        // Update the model with the updated project attributes
+        ProjectModel project = projectService.readSpecificProject(projectId, username, password);
+        model.addAttribute("project", project);
+
+        // Add the result message to the model for display
+        model.addAttribute("result", result);
+
+        return "project";
+    }
+
 
     @PostMapping("/project/delete/{projectId}")
     public String deleteProject(@PathVariable("projectId") int projectId) {
@@ -107,14 +134,6 @@ public class ProjectController {
         return "deletedproject";
     }
 
-
-    //endpoints for showing the project
-    @GetMapping("/project")
-    public String viewProject() {
-
-
-        return "project";
-    }
 
 
 }

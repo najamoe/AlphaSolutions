@@ -84,28 +84,34 @@ public class ProjectRepository {
 
         return projects;
     }
-
-    public List<ProjectModel> searchProject(String search) throws SQLException {
-        List<ProjectModel> projects = new ArrayList<>();
-
-        Connection con = dataSource.getConnection();
-        String sql = "SELECT p.* FROM taskcompass.project p " +
-                "INNER JOIN taskcompass.client c ON p.client_id = c.client_id " +
-                "WHERE p.project_name LIKE ? OR p.project_id LIKE ? OR c.clientName LIKE ?";
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, "%" + search + "%");
-            stmt.setString(2, "%" + search + "%");
-            stmt.setString(3, "%" + search + "%");
+    public ProjectModel readSpecificProject(int projectId, String username, String password) {
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "SELECT * FROM taskcompass.Project p " +
+                    "JOIN taskcompass.Employee e ON p.employee_id = e.employee_id " +
+                    "WHERE p.project_id = ? AND e.username = ? AND e.password = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, projectId);
+            stmt.setString(2, username);
+            stmt.setString(3, password);
             ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
+
+            if (rs.next()) {
                 ProjectModel project = new ProjectModel();
                 project.setProjectId(rs.getInt("project_id"));
                 project.setProjectName(rs.getString("project_name"));
-                projects.add(project);
+                project.setProjectDescription(rs.getString("project_description"));
+                project.setStartDate(rs.getDate("start_date").toLocalDate());
+                project.setEndDate(rs.getDate("end_date").toLocalDate());
+                project.setClientId(rs.getInt("client_id"));
+                project.setEmployeeId(rs.getInt("employee_id"));
+                return project;
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return projects;
+        return null; // Return null if the project is not found or not attached to the employee
     }
+
 
     public String editProject(int projectId, String newProjectName, String newProjectDescription, LocalDate newStartDate, LocalDate newEndDate) {
         try (Connection con = dataSource.getConnection()) {
@@ -149,6 +155,7 @@ public class ProjectRepository {
             throw new RuntimeException(e);
         }
     }
+
 
 }
 

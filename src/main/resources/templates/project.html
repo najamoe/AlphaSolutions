@@ -10,57 +10,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
   <style>
-    #welcomecontainer {
+    #projectcontainer {
       background-color: white;
       margin: 50px 40px 20px 50px; /*Top, right, bottom, left*/
       border-radius: 10px;
     }
-
-    #projectwindow{
-      margin: 30px 40px 20px 50px; /*Top, right, bottom, left*/
-      border-radius: 10px;
-      background-color: white;
-      height: 220px;
-    }
-
-    #viewprojectswindow{
-      background-color: #f3f6fd;
-      height: 130px;
-      width: 130px;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 40px;
-      margin-left: 60px;
-    }
-    #closedprojectswindow{
-      background-color: #f3f6fd;
-      height: 130px;
-      width: 130px;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 40px;
-      margin-left: 60px;
-    }
-
-    #newprojectswindow{
-      background-color: #f3f6fd;
-      height: 130px;
-      width: 130px;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 40px;
-      margin-left: 60px;
-    }
-    #searchprojectswindow{
-      background-color: #f3f6fd;
-      height: 130px;
-      width: 130px;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 40px;
-      margin-left: 60px;
-    }
-
 
   </style>
 </head>
@@ -69,98 +23,27 @@
 <body>
 <div layout:fragment="content">
 
-  <div class="container" id="projectnamecontainer">
+  <div class="container" id="projectcontainer">
     <div class="projectname">
       <div class="row">
         <div class="col-md-12" id="projectname">
-          <table>
-            <thead>
-            <tr>
-              <th>Project ID</th>
-              <th>Name</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="project : ${projects}">
-              <td th:text="${project.projectId}"></td>
-              <td th:text="${project.projectName}"></td>
-            </tr>
-            </tbody>
-          </table>
+          <form action="#" th:action="@{/project/details/{projectId}(projectId=${project.projectId})}" th:object="${project}" method="post">
 
-          <!-- New section to display the newly created project ID -->
-          <div th:if="${newProjectId}">
-            <h3>Newly Created Project ID: <span th:text="${newProjectId}"></span></h3>
-          </div>
+          <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName" name="newProjectName" th:value="${project.projectName}" />
+
+            <label for="projectDescription">Project Description:</label>
+            <input type="text" id="projectDescription" name="newProjectDescription" th:value="${project.projectDescription}" />
+
+            <label for="startDate">Start Date:</label>
+            <input type="text" id="startDate" name="newStartDate" th:value="${project.startDate}" />
+
+            <label for="endDate">End Date:</label>
+            <input type="text" id="endDate" name="newEndDate" th:value="${project.endDate}" />
+
+            <input type="submit" value="Update Project" />
+          </form>
         </div>
-      </div>
-    </div>
-  </div>
-
-
-
-  <div class="container" id="Timecontainer">
-    <div class="projectdetail">
-      <div class="row">
-        <div class="col-md-12" id="Timedetail">
-          <h2>Time details</h2>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="container" id="projectdetailcontainer">
-    <div class="projectdetail">
-      <div class="row">
-        <div class="col-md-12" id="projectdetail">
-          <h2>Project details</h2>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="container" id="clientdetailcontainer">
-    <div class="projectdetail">
-      <div class="row">
-        <div class="col-md-12" id="clientdetail">
-      <h2>client details</h2>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="container" id="subprojectdetailcontainer">
-    <div class="projectdetail">
-      <div class="row">
-        <div class="col-md-12" id="subprojectdetail">
-          <h2>subproject details</h2>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="container" id="projectwindow">
-    <div class="project">
-      <div class="row">
-        <div class="col-md-3" id="viewprojectswindow">
-          <i class="fa-solid fa-folder" style="font-size: 26px; color: darkgoldenrod"></i>
-          <a href="/readprojects">View Projects</a>
-        </div>
-        <div class="col-md-3" id="closedprojectswindow">
-          <i class="fa-solid fa-check" style="font-size: 26px; color: darkgoldenrod"></i>
-          <p>test closed project</p>
-        </div>
-        <div class="col-md-3" id="newprojectswindow">
-          <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
-          <a href="/createproject">Create new project</a>
-        </div>
-        <div class="col-md-3" id="searchprojectswindow">
-          <i class="fa-solid fa-magnifying-glass" style="font-size: 26px; color: darkgoldenrod"></i>
-          <a href="/search">Search Project</a>
-        </div>
-
-
-
       </div>
     </div>
   </div>
