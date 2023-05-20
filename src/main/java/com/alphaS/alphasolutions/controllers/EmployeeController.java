@@ -44,12 +44,6 @@ public class EmployeeController {
         }
     }
 
-
-    @GetMapping("/account")
-    public String showAccount(Model model) {
-        return "account";
-    }
-
     @GetMapping("/dashboard")
     public String showDashboard(Model model) {
         return "dashboard";

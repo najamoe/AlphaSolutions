@@ -85,28 +85,6 @@ public class ProjectRepository {
         return projects;
     }
 
-    public List<ProjectModel> searchProject(String search) throws SQLException {
-        List<ProjectModel> projects = new ArrayList<>();
-
-        Connection con = dataSource.getConnection();
-        String sql = "SELECT p.* FROM taskcompass.project p " +
-                "INNER JOIN taskcompass.client c ON p.client_id = c.client_id " +
-                "WHERE p.project_name LIKE ? OR p.project_id LIKE ? OR c.clientName LIKE ?";
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, "%" + search + "%");
-            stmt.setString(2, "%" + search + "%");
-            stmt.setString(3, "%" + search + "%");
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                ProjectModel project = new ProjectModel();
-                project.setProjectId(rs.getInt("project_id"));
-                project.setProjectName(rs.getString("project_name"));
-                projects.add(project);
-            }
-        }
-        return projects;
-    }
-
     public String editProject(int projectId, String newProjectName, String newProjectDescription, LocalDate newStartDate, LocalDate newEndDate) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "UPDATE taskcompass.project SET project_name=?, project_description=?, start_date=?, end_date=? WHERE project_id=?";

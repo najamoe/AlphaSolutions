@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -70,20 +71,6 @@ public class ProjectController {
     }
 
 
-    @GetMapping("/search")
-    public String searchProject() {
-      return "search";
-    }
-    @PostMapping("/search")
-    public String searchProjectPost(@RequestParam String projectName, Model model) {
-        try {
-            List<ProjectModel> projects = projectService.searchProject(projectName);
-            model.addAttribute("projects", projects);
-            return "search";
-        } catch (SQLException e) {
-            return "error";
-        }
-    }
 
     @PostMapping("/project/delete/{projectId}")
     public String deleteProject(@PathVariable("projectId") int projectId) {

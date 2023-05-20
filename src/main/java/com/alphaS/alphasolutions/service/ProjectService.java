@@ -25,11 +25,6 @@ public class ProjectService {
         return projectRepository.readProjects(username, password);
     }
 
-
-    public List<ProjectModel> searchProject(String search) throws SQLException {
-        return projectRepository.searchProject(search);
-    }
-
     public String editProject(int projectId, String newProjectName, String newProjectDescription, LocalDate newStartDate, LocalDate newEndDate) {
         return projectRepository.editProject(projectId, newProjectName, newProjectDescription, newStartDate, newEndDate);
     }
