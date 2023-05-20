@@ -85,12 +85,6 @@ public class ProjectRepository {
         return projects;
     }
 
-
-
-
-
-
-
     public List<ProjectModel> searchProject(String search) throws SQLException {
         List<ProjectModel> projects = new ArrayList<>();
 
