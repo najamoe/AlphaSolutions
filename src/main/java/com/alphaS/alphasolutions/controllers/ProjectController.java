@@ -70,7 +70,6 @@ public class ProjectController {
     }
 
 
-
     @GetMapping("/search")
     public String searchProject() {
       return "search";
