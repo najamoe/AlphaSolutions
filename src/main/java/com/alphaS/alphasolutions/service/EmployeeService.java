@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 @Service
 public class EmployeeService {
-    private final EmployeeRepository employeeRepository;
+    private static EmployeeRepository employeeRepository;
 
     public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
@@ -18,4 +18,5 @@ public class EmployeeService {
         return employeeRepository.logIn(username, password);
 
     }
+
 }

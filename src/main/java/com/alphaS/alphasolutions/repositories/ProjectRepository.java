@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -18,33 +19,42 @@ public class ProjectRepository {
         this.dataSource = dataSource;
     }
 
-    public String createProject(String projectName, String projectDescription, LocalDate startDate, LocalDate endDate) throws SQLException {
+    public String createProject(ProjectModel project, String username, String password) throws SQLException {
         Connection con = dataSource.getConnection();
-        String sql = "INSERT INTO taskcompass.project (project_name, project_description, start_date, end_date) VALUES (?,?,?,?)";
-        PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        String sql = "INSERT INTO taskcompass.Project (project_name, project_description, start_date, end_date, employee_id) " +
+                "SELECT ?, ?, ?, ?, e.employee_id " +
+                "FROM taskcompass.Employee e " +
+                "WHERE e.username = ? AND e.password = ?";
+        try (PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, project.getProjectName());
+            stmt.setString(2, project.getProjectDescription());
+            stmt.setDate(3, Date.valueOf(project.getStartDate()));
+            stmt.setDate(4, Date.valueOf(project.getEndDate()));
+            stmt.setString(5, username);
+            stmt.setString(6, password);
+            int rowsInserted = stmt.executeUpdate();
 
-        stmt.setString(1, projectName);
-        stmt.setString(2, projectDescription);
-        stmt.setDate(3, Date.valueOf(startDate));
-        stmt.setDate(4, Date.valueOf(endDate));
-
-        // Udfør SQL-forespørgslen og få resultatet
-        int rowsInserted = stmt.executeUpdate();
-
-        if (rowsInserted > 0) {
-            ResultSet rs = stmt.getGeneratedKeys();
-            if (rs.next()) {
-                int projectId = rs.getInt(1);
-                return "Project successfully created" + projectId;
+            if (rowsInserted > 0) {
+                ResultSet rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    int projectId = rs.getInt(1);
+                    return "Project successfully created " + projectId;
+                }
             }
+            return "Failed to create project";
         }
-        return "Failed to create project";
     }
 
-    public List<ProjectModel> readProjects() throws SQLException {
+
+
+    public List<ProjectModel> readProjects(String username, String password) throws SQLException {
         Connection con = dataSource.getConnection();
-        String sql = "SELECT * FROM taskcompass.Project";
+        String sql = "SELECT * FROM taskcompass.Project p " +
+                "JOIN taskcompass.Employee e ON p.employee_id = e.employee_id " +
+                "WHERE e.username = ? AND e.password = ?";
         PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setString(1, username);
+        stmt.setString(2, password);
         ResultSet rs = stmt.executeQuery();
 
         List<ProjectModel> projects = new ArrayList<>();
@@ -75,6 +85,12 @@ public class ProjectRepository {
 
         return projects;
     }
+
+
+
+
+
+
 
     public List<ProjectModel> searchProject(String search) throws SQLException {
         List<ProjectModel> projects = new ArrayList<>();
@@ -140,6 +156,7 @@ public class ProjectRepository {
             throw new RuntimeException(e);
         }
     }
+
 }
 
 
