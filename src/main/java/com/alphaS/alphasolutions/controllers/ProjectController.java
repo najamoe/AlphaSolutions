@@ -39,20 +39,15 @@ public class ProjectController {
             String password = (String) session.getAttribute("password");
 
             String result = projectService.createProject(project, username, password);
-            System.out.println("Result: " + result);
 
             if (result.startsWith("Project successfully created")) {
                 int projectId = Integer.parseInt(result.substring(result.lastIndexOf(" ") + 1));
-                System.out.println("Project ID: " + projectId);
-                model.addAttribute("projectId", projectId);
                 return "projectsuccess";
             } else {
                 model.addAttribute("error", result);
                 return "projecterror";
             }
         } catch (SQLException e) {
-            System.out.println("An error occurred while creating the project.");
-            e.printStackTrace();
             model.addAttribute("error", "An error occurred while creating the project.");
             return "projecterror";
         }
