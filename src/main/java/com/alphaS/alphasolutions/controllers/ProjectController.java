@@ -28,13 +28,13 @@ public class ProjectController {
         this.clientService = clientService;
     }
 
-    @GetMapping("/createproject{projectId}")
+    @GetMapping("/createproject")
     public String createProject(Model model) {
         model.addAttribute("project", new ProjectModel());
         return "createproject";
     }
 
-    @PostMapping("/createproject{projectId}")
+    @PostMapping("/createproject")
     public String createProject(@ModelAttribute("project") ProjectModel project, Model model, HttpSession session) {
         try {
             String username = (String) session.getAttribute("username");
