@@ -33,6 +33,7 @@ CREATE TABLE taskcompass.Task (
                                   task_id int PRIMARY KEY AUTO_INCREMENT,
                                   status_name varchar(255),
                                   status_color varchar(255)
+
 );
 
 CREATE TABLE taskcompass.Project (

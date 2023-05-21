@@ -24,20 +24,6 @@ public class TeamController {
         this.teamService = teamService;
     }
 
-    /*
-    @PostMapping("/createTeam")
-    public ResponseEntity<String> createTeam(@RequestParam("teamName") String teamName, @RequestParam("subProjectId") int subProjectId) {
-        try {
-            String result = teamService.createTeam(teamName, subProjectId);
-            return ResponseEntity.ok(result);
-        } catch (SQLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create team");
-        }
-    }
-
-     */
-
-
     @GetMapping("/project/{subProjectId}/createTeam")
     public String createSubproject(@PathVariable int subProjectId, Model model) {
         model.addAttribute("subproject", new TeamModel());
@@ -50,10 +36,6 @@ public class TeamController {
         model.addAttribute("team", new SubprojectModel());
         return "createTeam";
     }
-
-
-
-
 
 
     @PostMapping("/{teamId}/addEmployeeToTeam")
@@ -84,51 +66,6 @@ public class TeamController {
 
 
 
-
-
-
-
-/*
-    @PostMapping("/addEmployeeToTeam")
-    public ResponseEntity<String> addEmployeeToTeam(@RequestParam("teamId") int teamId, @RequestParam("employeeName") String employeeName) {
-        try {
-            String[] nameParts = employeeName.split(" ", 2);
-            if (nameParts.length != 2) {
-                return ResponseEntity.badRequest().body("Invalid employee name");
-            }
-            String firstName = nameParts[0];
-            String lastName = nameParts[1];
-
-            boolean added = teamService.addEmployeeToTeam(teamId, firstName, lastName);
-            if (added) {
-                return ResponseEntity.ok("Employee added to the team");
-            } else {
-                return ResponseEntity.badRequest().body("Failed to add employee to the team");
-            }
-        } catch (SQLException ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding employee to the team");
-        }
-    }
-
- */
-
-
-
-    /*
-    @PostMapping("/editTeamName")
-    public ResponseEntity<String> editTeamName(@RequestParam int teamId, @RequestParam String teamName) {
-        try {
-            String message = teamService.editTeamName( teamName);
-            return ResponseEntity.ok().body(message);
-        } catch (SQLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to edit team name");
-        }
-    }
-
-     */
-
-    //TODO
-
     @PostMapping("/project/{subProjectId}/Teams/{teamId}/edit")
     @ResponseBody
     public ResponseEntity<String> editTeam(@RequestParam String teamName) {
@@ -141,7 +78,7 @@ public class TeamController {
         }
     }
 
-    //TODO
+
 
     @PostMapping("/removeEmployeeFromTeam")
     public ResponseEntity<String> removeEmployeeFromTeam(HttpServletRequest request) {
@@ -155,19 +92,17 @@ public class TeamController {
         }
     }
 
-
-
-
-
-    //TODO
-/*
-    @PostMapping("/project/{projectId}/subproject/delete")
-    public String deleteSubproject(@RequestParam int teamId, @RequestParam int employeeId) throws SQLException {
-        String message = teamService.deleteEmployeeFromTeam(teamId, employeeId);
-        return message;
+    @GetMapping("/team/{teamId}/members")
+    @ResponseBody
+    public ResponseEntity<List<String>> displayTeamMembers(@PathVariable int teamId) {
+        try {
+            List<String> teamMembers = teamService.displayTeamMembers(teamId);
+            return ResponseEntity.ok(teamMembers);
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
-*/
-    //TODO
+
 
 
 

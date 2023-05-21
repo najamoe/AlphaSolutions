@@ -84,6 +84,7 @@ public class ProjectRepository {
 
         return projects;
     }
+
     public ProjectModel readSpecificProject(int projectId, String username, String password) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "SELECT * FROM taskcompass.Project p " +

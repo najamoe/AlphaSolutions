@@ -88,6 +88,33 @@ public class TeamRepository {
     }
 
 
+    public List<String> displayTeamMembers(int teamId) throws SQLException {
+        List<String> teamMembers = new ArrayList<>();
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement stmt = con.prepareStatement(
+                     "SELECT e.first_name, e.last_name, e.title " +
+                             "FROM taskcompass.Employee e " +
+                             "JOIN taskcompass.Team_employees tm ON e.employee_id = tm.employee_id " +
+                             "WHERE tm.team_id = ?")) {
+
+            stmt.setInt(1, teamId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String firstName = rs.getString("first_name");
+                    String lastName = rs.getString("last_name");
+                    String jobTitle = rs.getString("title");
+
+                    String teamMember = firstName + " " + lastName + " - " + jobTitle;
+                    teamMembers.add(teamMember);
+                }
+            }
+        }
+
+        return teamMembers;
+    }
+
+
 
     //TODO lav en metode for af både slette et team men også alle medlember i det team
     // tjek om den kan printe team navet ud som fejlbeskjed
@@ -118,6 +145,7 @@ public class TeamRepository {
 
 
 
+
     //Method for editing a team name
     public String editTeamName(String teamName) {
         try (Connection con = dataSource.getConnection()) {
@@ -133,6 +161,7 @@ public class TeamRepository {
             throw new RuntimeException(e);
         }
     }
+
 
    /*
     public String editTeamName(int teamId, String teamName) throws SQLException {

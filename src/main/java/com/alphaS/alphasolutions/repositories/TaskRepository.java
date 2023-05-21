@@ -134,15 +134,33 @@ public class TaskRepository {
             if (rowsUpdated > 0) {
                 return "Changes for task " + taskId + " successfully updated";
             }
-            return "Failed to edit subproject";
+            return "Failed to edit task";
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    // Method for assigning employee to a task
+    public String assignEmployeeToTask(int taskId, int employeeId) {
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "UPDATE taskcompass.Task SET assigned_employee_id = ? WHERE task_id = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, employeeId);
+            stmt.setInt(2, taskId);
+            int rowsUpdated = stmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                return "Employee assigned to the task";
+            } else {
+                return "Failed to assign user to the task";
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
 
     }
-
-
 
 
 }

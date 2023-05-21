@@ -29,6 +29,13 @@ public class TaskService {
         return taskRepository.editTask(taskId,taskName,taskDescription, estTime, deadline, jobTitleNeeded, status, color);
     }
 
+    // Method for assigning a user to a task
+    public String assignEmployeeToTask(int taskId, int employeeId) {
+        return taskRepository.assignEmployeeToTask(taskId, employeeId);
+
+    }
+
+
 
 
 
