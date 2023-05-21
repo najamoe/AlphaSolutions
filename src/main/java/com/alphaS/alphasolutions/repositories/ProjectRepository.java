@@ -84,6 +84,7 @@ public class ProjectRepository {
 
         return projects;
     }
+
     public ProjectModel readSpecificProject(int projectId, String username, String password) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "SELECT * FROM taskcompass.Project p " +
@@ -132,6 +133,24 @@ public class ProjectRepository {
         }
     }
 
+    public ProjectModel addClientToProject(int projectId, int clientId, String username, String password) {
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "UPDATE taskcompass.Project SET client_id = ? WHERE project_id = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, clientId);
+            stmt.setInt(2, projectId);
+            int rowsUpdated = stmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                // Retrieve the updated project
+                return readSpecificProject(projectId, username, password);
+            } else {
+                throw new SQLException("Failed to add client to project");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     //Now deletes project and associated subprojects (deleteSubproject handles deletion of subprojects and all their associated tasks)
 
     public String deletedProject(int projectId) {
@@ -155,9 +174,8 @@ public class ProjectRepository {
             throw new RuntimeException(e);
         }
     }
-
-
 }
+
 
 
 
