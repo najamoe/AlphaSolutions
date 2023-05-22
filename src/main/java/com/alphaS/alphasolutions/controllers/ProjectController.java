@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -35,7 +36,7 @@ public class ProjectController {
     }
 
     @PostMapping("/createproject")
-    public String createProject(@ModelAttribute("project") ProjectModel project, Model model, HttpSession session) {
+    public String createProject(@ModelAttribute("project") ProjectModel project, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         try {
             String username = (String) session.getAttribute("username");
             String password = (String) session.getAttribute("password");
@@ -44,7 +45,8 @@ public class ProjectController {
 
             if (result.startsWith("Project successfully created")) {
                 int projectId = Integer.parseInt(result.substring(result.lastIndexOf(" ") + 1));
-                return "projectsuccess";
+                redirectAttributes.addFlashAttribute("projectId", projectId); // Pass projectId as a flash attribute
+                return "redirect:/createclient"; // Redirect to the createclient endpoint
             } else {
                 model.addAttribute("error", result);
                 return "projecterror";

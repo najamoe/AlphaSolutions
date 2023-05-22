@@ -14,12 +14,12 @@ public class ClientService {
         this.clientRepository = repository;
     }
 
-    public String createClient(String clientName, String contactPoNo, String contactPerson, String companyPoNo, String address, String zipCode, String country, String clientId) throws SQLException {
-       return clientRepository.createClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country, clientId);
+    public int createClient(String clientName, int contactPoNo, String contactPerson, int companyPoNo, String address, int zipCode, String country) throws SQLException {
+       return clientRepository.createClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country);
 
     }
 
-    public String editClient(String clientName, String contactPoNo, String contactPerson, String companyPoNo, String address, String zipCode, String country, String clientId) throws SQLException {
+    public String editClient(String clientName, int contactPoNo, String contactPerson, int companyPoNo, String address, int zipCode, String country, int clientId) throws SQLException {
        return clientRepository.editClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country, clientId);
 
     }
