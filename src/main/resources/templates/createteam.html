@@ -64,7 +64,7 @@
   </div>
 
   <div class="container-box">
-    <form action="addEmployeeToTeam.html">
+    <form th:action="@{'/subprojectsuccess/' + ${projectId} + '/createteam'}" method="post">
       <div class="form-group">
         <label class="form-label" for="teamName">Team Name</label>
         <input class="form-input" type="text" id="teamName" name="teamName" required/>
@@ -74,6 +74,7 @@
         <button class="form-button" type="submit">Next</button>
       </div>
     </form>
+
   </div>
 </div>
 

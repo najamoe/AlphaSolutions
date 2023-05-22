@@ -1,6 +1,5 @@
 package com.alphaS.alphasolutions.controllers;
 
-import com.alphaS.alphasolutions.model.EmployeeModel;
 import com.alphaS.alphasolutions.model.SubprojectModel;
 import com.alphaS.alphasolutions.model.TeamModel;
 import com.alphaS.alphasolutions.service.TeamService;
@@ -12,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -24,17 +22,21 @@ public class TeamController {
         this.teamService = teamService;
     }
 
-    @GetMapping("/project/{subProjectId}/createTeam")
-    public String createSubproject(@PathVariable int subProjectId, Model model) {
-        model.addAttribute("subproject", new TeamModel());
-        return "createTeam";
-    }
 
-    @PostMapping("/project/{subProjectId}/createTeam")
-    public String CreateSubprojectForm(@PathVariable int subProjectId, Model model) {
+
+    @GetMapping("/subprojectsuccess/{subProjectId}/createteam")
+    public String createSubproject(@PathVariable int subProjectId, Model model) {
         model.addAttribute("subProjectId", subProjectId);
         model.addAttribute("team", new SubprojectModel());
-        return "createTeam";
+        return "addemployeeteteam";
+    }
+
+
+    @PostMapping("/subprojectsuccess/{subProjectId}/createteam")
+    public String createSubproject(@PathVariable int subProjectId, Model model, @ModelAttribute TeamModel teamModel) throws SQLException {
+        String result = teamService.createTeam(subProjectId, teamModel);
+        model.addAttribute("teamName", teamModel.getTeamName());
+        return "subprojectsuccess";
     }
 
 
@@ -66,7 +68,7 @@ public class TeamController {
 
 
 
-    @PostMapping("/project/{subProjectId}/Teams/{teamId}/edit")
+    @PostMapping("/project/{projectId}/Teams/{teamId}/edit")
     @ResponseBody
     public ResponseEntity<String> editTeam(@RequestParam String teamName) {
         try {

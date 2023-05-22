@@ -22,7 +22,7 @@
             border-radius: 10px;
         }
 
-        #addsubprojectswindow, #newprojectswindow, #searchprojecswindow {
+        #addsubprojectswindow, #newprojectswindow, #searchprojecswindow, #createteamwindow {
             background-color: #f3f6fd;
             height: 130px;
             width: 130px;
@@ -52,7 +52,7 @@
         <div class="project">
             <div class="row">
                 <div class="col-md-3" id="addsubprojectswindow">
-                    <i class="fa-solid fa-cubes-stacked" style="font-size: 26px; color: darkgoldenrod"></i>
+                    <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
                     <a href="/createtask/{subprojectId}">Add tasks</a>
                 </div>
                 <div class="col-md-3" id="newprojectswindow">
@@ -62,6 +62,10 @@
                 <div class="col-md-3" id="searchprojecswindow">
                     <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
                     <a href="/dashboard">Return to dashboard</a>
+                </div>
+                <div class="col-md-3" id="createteamwindow">
+                    <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
+                    <a th:href="@{'/subprojectsuccess/' + ${projectId} + '/createteam'}">Create team</a>
                 </div>
             </div>
         </div>

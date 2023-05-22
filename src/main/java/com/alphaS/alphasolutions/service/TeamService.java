@@ -1,10 +1,10 @@
 package com.alphaS.alphasolutions.service;
 
+import com.alphaS.alphasolutions.model.TeamModel;
 import com.alphaS.alphasolutions.repositories.TeamRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,8 +16,9 @@ public class TeamService {
         this.teamRepository = teamRepository;
     }
 
-    public String createTeam(String teamName) throws SQLException {
-       return teamRepository.createTeam(teamName);
+    public String createTeam(int subProjectId, TeamModel teamModel) throws SQLException {
+        // Kalder subprojectRepository.createSubProject() metoden og returnerer resultatet
+        return teamRepository.createTeam(teamModel.getTeamName(), subProjectId);
     }
 
     public boolean addEmployeeToTeam(int teamId, String firstName, String lastName) throws SQLException {
