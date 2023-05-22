@@ -62,11 +62,11 @@ ALTER TABLE taskcompass.Sub_project
 
 
 CREATE TABLE taskcompass.Team (
-                                  name varchar(255),
-                                  project_name varchar(255),
+                                  team_name varchar(255),
                                   team_id int PRIMARY KEY AUTO_INCREMENT,
                                   employee_id int,
-                                  teamemployees_id int
+                                  teamemployees_id int,
+
 );
 
 CREATE TABLE taskcompass.Team_employees(
@@ -98,3 +98,7 @@ ALTER TABLE taskcompass.Task
 alter table taskcompass.task
     add column subproject_id int,
     ADD foreign key(subproject_id) REFERENCES taskcompass.sub_project(subproject_id);
+
+alter table taskcompass.team
+add column subproject_id int,
+    add foreign key (subproject_id) REFERENCES taskcompass.sub_project(subproject_id) ;
