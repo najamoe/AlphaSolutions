@@ -10,12 +10,6 @@ VALUES
     ('XYZ Ltd.', 22222222, 'Jane Doe', 88888888, '456 Maple Ave.', 2950, 'DK'),
     ('PQR Co.', 33333333, 'Bob Johnson', 77777777, '789 Oak St.', 3450, 'DK');
 
-INSERT INTO taskcompass.Task (task_name, description_task, est_time, title_needed, status_name, status_color)
-VALUES
-    ('Design UI', 'Design UI for the website', '2:30:00', 'Designer', 'In Progress', 'Yellow'),
-    ('Develop Backend', 'Develop Backend for the website', '6:00:00', 'Backend Developer', 'Not Started', 'Red'),
-    ('Write Tests', 'Write unit tests for the website', '1:00:00', 'Quality Assurance', 'Completed', 'Green');
-
 INSERT INTO taskcompass.Project (project_name, project_description, start_date, end_date, client_id, employee_id)
 VALUES
     ('Project A', 'Development of Website', '2022-01-01', '2022-12-31', 1, 1),
@@ -30,6 +24,13 @@ VALUES
     ('Subproject 2B', 'Mobile App Development', 2),
     ('Subproject 3A', 'Data Collection', 3),
     ('Subproject 3B', 'Data Analysis', 3);
+
+INSERT INTO taskcompass.Task (task_name, description_task, est_time, title_needed, status_name, status_color, employee_id, subproject_id )
+VALUES
+    ('Design UI', 'Design UI for the website', '2:30:00', 'Designer', 'In Progress', 'Yellow', '1', '1'),
+    ('Develop Backend', 'Develop Backend for the website', '6:00:00', 'Backend Developer', 'Not Started', 'Red', '2', '2'),
+    ('Write Tests', 'Write unit tests for the website', '1:00:00', 'Quality Assurance', 'Completed', 'Green', '1', '2');
+
 
 INSERT INTO taskcompass.Team (name, project_name, employee_id)
 VALUES
