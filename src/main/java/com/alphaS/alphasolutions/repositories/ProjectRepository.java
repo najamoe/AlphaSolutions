@@ -58,7 +58,6 @@ public class ProjectRepository {
         stmt.setString(1, username);
         stmt.setString(2, password);
         ResultSet rs = stmt.executeQuery();
-
         List<ProjectModel> projects = new ArrayList<>();
         while (rs.next()) {
             int projectId = rs.getInt("project_id");

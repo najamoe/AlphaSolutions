@@ -48,9 +48,33 @@ public class ClientRepository {
         }
     }
 
+    public List<ClientModel> readClients() throws SQLException {
+        Connection con = dataSource.getConnection();
+        String sql = "SELECT * FROM taskcompass.Client ";
+        PreparedStatement stmt = con.prepareStatement(sql);
 
+        ResultSet rs = stmt.executeQuery();
+        List<ClientModel> clients = new ArrayList<>();
+        while (rs.next()) {
+            ClientModel client = new ClientModel();
+            client.setClientName(rs.getString("client_name"));
+            client.setContactPoNo(rs.getInt("contact_po_no"));
+            client.setContactPerson(rs.getString("contact_person"));
+            client.setCompanyPoNo(rs.getInt("company_po_no"));
+            client.setAddress(rs.getString("address"));
+            client.setZipcode(rs.getInt("zip_code"));
+            client.setCountry(rs.getString("country"));
+            client.setClientId(rs.getInt("client_id"));
+            clients.add(client);
+        }
 
-    //TODO: READ
+        rs.close();
+        stmt.close();
+        con.close();
+
+        return clients;
+    }
+
     //TODO: Sage recommends us to base our methods by id's. will be easier to identify our clients (e.x EditProject method)
     public String editClient(String clientName, int contactPoNo, String contactPerson, int companyPoNo, String address, int zipCode, String country, int clientId) throws SQLException {
         Connection con = dataSource.getConnection();

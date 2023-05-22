@@ -16,7 +16,10 @@ public class ClientService {
 
     public int createClient(String clientName, int contactPoNo, String contactPerson, int companyPoNo, String address, int zipCode, String country) throws SQLException {
        return clientRepository.createClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country);
+    }
 
+    public List<ClientModel> readClients() throws SQLException {
+        return clientRepository.readClients();
     }
 
     public String editClient(String clientName, int contactPoNo, String contactPerson, int companyPoNo, String address, int zipCode, String country, int clientId) throws SQLException {

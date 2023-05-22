@@ -90,11 +90,21 @@ public class ClientController {
     }
 
 
+    @GetMapping("/readclients")
+    public String readClients(Model model, HttpSession session) {
+        try {
+            List<ClientModel> clients = clientService.readClients();
+            model.addAttribute("clients", clients);
 
-    //TODO: READ
+            return "readclients";
+        } catch (SQLException e) {
+            String errorMessage = "Failed to retrieve projects from the database. Please try again later.";
+            model.addAttribute("error", errorMessage);
+            return "readclients";
+        }
+    }
 
-
-    @PostMapping("/clients/edit")
+   @PostMapping("/clients/edit")
     public ResponseEntity<String> editClient(@RequestParam String clientName,
                                              @RequestParam int contactPoNo,
                                              @RequestParam String contactPerson,
