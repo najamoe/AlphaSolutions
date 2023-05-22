@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.awt.*;
 import java.sql.*;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -144,7 +145,7 @@ public class TaskRepository {
     // Method for assigning employee to a task
     public String assignEmployeeToTask(int taskId, int employeeId) {
         try (Connection con = dataSource.getConnection()) {
-            String sql = "UPDATE taskcompass.Task SET assigned_employee_id = ? WHERE task_id = ?";
+            String sql = "UPDATE taskcompass.Task SET employee_id = ? WHERE task_id = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, employeeId);
             stmt.setInt(2, taskId);
@@ -161,6 +162,8 @@ public class TaskRepository {
 
 
     }
+
+
 
 
 }
