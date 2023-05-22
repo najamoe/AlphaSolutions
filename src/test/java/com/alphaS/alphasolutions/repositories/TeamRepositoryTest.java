@@ -1,4 +1,4 @@
-/*package com.alphaS.alphasolutions.repositories;
+package com.alphaS.alphasolutions.repositories;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,8 +8,6 @@ import org.mockito.MockitoAnnotations;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.Arrays;
-import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertFalse;
@@ -142,4 +140,3 @@ class TeamRepositoryTest {
     }
 
 }
-*/

@@ -22,7 +22,7 @@
             border-radius: 10px;
         }
 
-        #addsubprojectswindow, #newprojectswindow, #searchprojecswindow, #createteamwindow {
+        #addsubprojectswindow, #addteamwindow, #addtaskswindow #dashboardwindow {
             background-color: #f3f6fd;
             height: 130px;
             width: 130px;
@@ -51,21 +51,22 @@
     <div class="container" id="projectwindow">
         <div class="project">
             <div class="row">
-                <div class="col-md-3" id="addsubprojectswindow">
-                    <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
-                    <a href="/createtask/{subprojectId}">Add tasks</a>
+                <div class="col-md-3" id="addteamwindow">
+                    <i class="fa-solid fa-people-group" style="font-size: 26px; color: darkgoldenrod"></i>
+                    <a th:href="@{/createteam/{subprojectId}(subprojectId=${subprojectId})}">Add team</a>
                 </div>
-                <div class="col-md-3" id="newprojectswindow">
+
+                <div class="col-md-3" id="addtaskswindow">
+                    <i class="fa-solid fa-cubes-stacked" style="font-size: 26px; color: darkgoldenrod"></i>
+                    <a href="@{'/createtask/' + ${subprojectId}}">Add tasks</a>
+                </div>
+                <div class="col-md-3" id="addsubprojectswindow">
                     <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
                     <a href="/project/{projectId}/createsubproject">Add more subprojects</a>
                 </div>
-                <div class="col-md-3" id="searchprojecswindow">
+                <div class="col-md-3" id="dashboardwindow">
                     <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
                     <a href="/dashboard">Return to dashboard</a>
-                </div>
-                <div class="col-md-3" id="createteamwindow">
-                    <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
-                    <a th:href="@{'/subprojectsuccess/' + ${projectId} + '/createteam'}">Create team</a>
                 </div>
             </div>
         </div>

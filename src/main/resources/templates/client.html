@@ -69,27 +69,58 @@
       </div>
     </div>
   </div>
-  <div class="container" id="howtocaontainer">
-    <div class="howto">
-      <div class="row">
-        <div class="col-md-12" id="howtomsg">
-          <h1 class="welcome-heading">How to</h1>
-          <p class="howto-text">Below you can chose between viewing your existing projects, or creating a new project</p>
-          <p class="howto-text">If you wish to add a client to an existing project, simply select "view projects", choose the project you wish to add a client to, and click on the "i" button on the right side</p>
+
+  <div class="container" id="projectwindow">
+
+    <div class="container" id="projectcontainer">
+      <div class="projectname">
+        <div class="row">
+          <div class="col-md-12" id="projectname">
+            <form action="#" th:action="@{/client/details/{clientId}(clientId=${client.clientId})}"
+                  th:object="${client}" method="post">
+
+              <label for="clientName">Client Name:</label>
+              <input type="text" id="clientName" name="newClientName" th:value="${client.clientName}"/>
+
+              <label for="contactPoNo">Contact Phone No.:</label>
+              <input type="text" id="contactPoNo" name="newContactPoNo" th:value="${client.contactPoNo}"/>
+
+              <label for="contactPerson">Contact Person:</label>
+              <input type="text" id="contactPerson" name="newContactPerson" th:value="${client.contactPerson}"/>
+
+              <label for="companyPoNo">Company Phone No.:</label>
+              <input type="text" id="companyPoNo" name="newCompanyPoNo" th:value="${client.companyPoNo}"/>
+
+              <label for="address">Address:</label>
+              <input type="text" id="address" name="newAddress" th:value="${client.address}"/>
+
+              <label for="zipCode">Zip code:</label>
+              <input type="text" id="zipCode" name="newZipCode" th:value="${client.zipcode}"/>
+
+              <label for="country">Country:</label>
+              <input type="text" id="country" name="newCountry" th:value="${client.country}"/>
+
+              <input type="submit" value="Update Client"/>
+
+              <div th:if="${result}">
+                <p th:text="${result}" class="result-message"></p>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="container" id="projectwindow">
-    <div class="project">
+
+
+            <div class="project">
       <div class="row">
+        <div class="col-md-3" id="newswindow">
+        <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
+        <a href="/createproject">Create new project</a>
+        </div>
         <div class="col-md-3" id="viewprojectswindow">
           <i class="fa-solid fa-folder" style="font-size: 26px; color: darkgoldenrod"></i>
           <a href="/readprojects">View Projects</a>
-        </div>
-        <div class="col-md-3" id="newswindow">
-          <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
-          <a href="/createproject">Create new project</a>
         </div>
         <div class="col-md-3" id="newprojectswindow">
           <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>

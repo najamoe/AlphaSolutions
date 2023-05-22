@@ -72,7 +72,7 @@
   <div class="container" id="howtocontainer">
     <div class="welcome">
       <div class="row">
-        <div class="col-md-12" id="welcomemsg">
+        <div class="col-md-12" id="howtomsg">
           <h1 class="welcome-heading">How to</h1>
           <p class="welcome-text">in order to edit or delete a given client, use the buttons on the right</p>
         </div>
@@ -109,7 +109,15 @@
             <td th:text="${client.zipcode}"></td>
             <td th:text="${client.country}"></td>
             <td>
-
+              <a th:href="@{/client/details/{ClientId}(ClientId=${client.clientId})}">
+                <i class="fa-solid fa-circle-info"></i>
+              </a>
+            </td>
+            <td>
+              <form th:action="@{/client/delete/{clientId}(clientId=${client.clientId})}" method="post">
+                <input type="hidden" name="_method" value="delete" />
+                <button type="submit" class="fa-solid fa-trash"></button>
+              </form>
             </td>
           </tr>
           <tr th:if="${#lists.isEmpty(clients)}">
@@ -119,13 +127,9 @@
           </tr>
           </tbody>
         </table>
-
-
       </div>
     </div>
   </div>
-
-
 
 
 </div>

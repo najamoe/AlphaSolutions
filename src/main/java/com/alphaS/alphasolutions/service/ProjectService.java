@@ -32,15 +32,14 @@ public class ProjectService {
     }
 
     public String deleteProject(int projectId) {
-        return projectRepository.deletedProject(projectId);
+        return projectRepository.deleteProject(projectId);
     }
-
 
     public ProjectModel readSpecificProject(int projectId, String username, String password) {
         return projectRepository.readSpecificProject(projectId, username, password);
     }
 
-    //Ad client to specific project:
+    //Add client to specific project:
     public ProjectModel addClientToProject(int projectId, int clientId, String username, String password){
         return projectRepository.addClientToProject(projectId, clientId, username, password);
     }

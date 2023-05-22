@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -22,22 +23,27 @@ public class TeamController {
         this.teamService = teamService;
     }
 
-
-
-    @GetMapping("/subprojectsuccess/{subProjectId}/createteam")
-    public String createSubproject(@PathVariable int subProjectId, Model model) {
-        model.addAttribute("subProjectId", subProjectId);
-        model.addAttribute("team", new SubprojectModel());
-        return "addemployeeteteam";
+    @GetMapping("/createteam/{subprojectId}")
+    public String createTeamForm(@PathVariable int subprojectId, Model model) {
+        model.addAttribute("subprojectId", subprojectId);
+        model.addAttribute("teamModel", new TeamModel());
+        return "createteam";
     }
 
-
-    @PostMapping("/subprojectsuccess/{subProjectId}/createteam")
-    public String createSubproject(@PathVariable int subProjectId, Model model, @ModelAttribute TeamModel teamModel) throws SQLException {
-        String result = teamService.createTeam(subProjectId, teamModel);
+    @PostMapping("/createteam/{subprojectId}")
+    public String createTeamForm(@PathVariable int subprojectId, @ModelAttribute TeamModel teamModel, Model model) {
+        String result = teamService.createTeam(teamModel, subprojectId);
         model.addAttribute("teamName", teamModel.getTeamName());
-        return "subprojectsuccess";
+        return "teamsuccess";
+
+
+    @GetMapping("/teamsuccess/{subprojectId}")
+    public String showTeamSuccess(@PathVariable int subprojectId, Model model) {
+        model.addAttribute("subprojectId", subprojectId);
+        return "teamsuccess";
     }
+
+
 
 
     @PostMapping("/{teamId}/addEmployeeToTeam")

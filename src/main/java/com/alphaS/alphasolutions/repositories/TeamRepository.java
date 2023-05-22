@@ -19,20 +19,23 @@ public class TeamRepository {
 
 
     //Method for creating a team within a chosen subProject
-    public String createTeam(String teamName, int subProjectId) throws SQLException {
-        try (Connection con = dataSource.getConnection();) {
-            String sql = "INSERT INTO taskcompass.Team (name, subProject_Id) VALUES (?, ?)";
+public String createTeam(String teamName, int subprojectId) {
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "INSERT INTO taskcompass.Team (team_name, subproject_id) VALUES (?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, teamName);
-            stmt.setInt(2, subProjectId);
+            stmt.setInt(2, subprojectId);
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
                 ResultSet rs = stmt.getGeneratedKeys();
                 if (rs.next()) {
                     int teamId = rs.getInt(1);
-                    return teamName + " successfully added";
+                    rs.close();
+                    stmt.close();
+                    return "Team successfully added with ID: " + teamId;
                 }
             }
+            stmt.close();
             return "Failed to add team";
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -163,7 +166,7 @@ public class TeamRepository {
     }
 
 
-   /*
+
     public String editTeamName(int teamId, String teamName) throws SQLException {
         try (Connection con = dataSource.getConnection()) {
             String sql = "UPDATE taskcompass.Team SET name = ? WHERE team_id = ?";
@@ -180,5 +183,5 @@ public class TeamRepository {
         }
     }
 
-    */
+
 }
