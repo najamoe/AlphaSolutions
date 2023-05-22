@@ -32,7 +32,7 @@ VALUES
     ('Subproject 3', 'Description for Subproject 3', 2);
 
 -- Insert sample data into the Team table
-INSERT INTO taskcompass.Team (name, project_name, employee_id, subproject_id)
+INSERT INTO taskcompass.Team (team_name, project_name, employee_id, subproject_id)
 VALUES
     ('Team 1', 'Project 1', 1, 1),
     ('Team 2', 'Project 2', 2, 3),

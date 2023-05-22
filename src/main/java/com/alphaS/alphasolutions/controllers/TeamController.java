@@ -1,6 +1,5 @@
 package com.alphaS.alphasolutions.controllers;
 
-import com.alphaS.alphasolutions.model.EmployeeModel;
 import com.alphaS.alphasolutions.model.SubprojectModel;
 import com.alphaS.alphasolutions.model.TeamModel;
 import com.alphaS.alphasolutions.service.TeamService;
@@ -10,9 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -24,18 +23,27 @@ public class TeamController {
         this.teamService = teamService;
     }
 
-    @GetMapping("/project/{subProjectId}/createTeam")
-    public String createSubproject(@PathVariable int subProjectId, Model model) {
-        model.addAttribute("subproject", new TeamModel());
-        return "createTeam";
+    @GetMapping("/createteam/{subprojectId}")
+    public String createTeamForm(@PathVariable int subprojectId, Model model) {
+        model.addAttribute("subprojectId", subprojectId);
+        model.addAttribute("teamModel", new TeamModel());
+        return "createteam";
     }
 
-    @PostMapping("/project/{subProjectId}/createTeam")
-    public String CreateSubprojectForm(@PathVariable int subProjectId, Model model) {
-        model.addAttribute("subProjectId", subProjectId);
-        model.addAttribute("team", new SubprojectModel());
-        return "createTeam";
+    @PostMapping("/createteam/{subprojectId}")
+    public String createTeamForm(@PathVariable int subprojectId, @ModelAttribute TeamModel teamModel, Model model) {
+        String result = teamService.createTeam(teamModel, subprojectId);
+        model.addAttribute("teamName", teamModel.getTeamName());
+        return "teamsuccess";
     }
+
+    @GetMapping("/teamsuccess/{subprojectId}")
+    public String showTeamSuccess(@PathVariable int subprojectId, Model model) {
+        model.addAttribute("subprojectId", subprojectId);
+        return "teamsuccess";
+    }
+
+
 
 
     @PostMapping("/{teamId}/addEmployeeToTeam")

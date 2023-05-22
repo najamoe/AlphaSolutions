@@ -1,6 +1,5 @@
 package com.alphaS.alphasolutions.controllers;
 
-import com.alphaS.alphasolutions.model.EmployeeModel;
 import com.alphaS.alphasolutions.model.ProjectModel;
 import com.alphaS.alphasolutions.service.ClientService;
 import com.alphaS.alphasolutions.service.ProjectService;
@@ -13,7 +12,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -49,11 +47,11 @@ public class ProjectController {
                 return "redirect:/createclient"; // Redirect to the createclient endpoint
             } else {
                 model.addAttribute("error", result);
-                return "projecterror";
+                return "error";
             }
         } catch (SQLException e) {
             model.addAttribute("error", "An error occurred while creating the project.");
-            return "projecterror";
+            return "error";
         }
     }
     @GetMapping("/readprojects")

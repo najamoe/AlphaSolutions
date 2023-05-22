@@ -56,8 +56,7 @@ CREATE TABLE taskcompass.Sub_project (
 );
 
 CREATE TABLE taskcompass.Team (
-                                  name VARCHAR(255),
-                                  project_name VARCHAR(255),
+                                  team_name VARCHAR(255),
                                   team_id INT PRIMARY KEY AUTO_INCREMENT,
                                   employee_id INT,
                                   subproject_id INT,

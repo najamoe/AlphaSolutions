@@ -2,17 +2,16 @@ package com.alphaS.alphasolutions.model;
 
 public class TeamModel {
 
+    private String teamName;
+    private int teamId;
+
+    public TeamModel(String teamName, int teamId) {
+        this.teamName = teamName;
+        this.teamId = teamId;
+    }
 
     public TeamModel() {
 
-    }
-
-    public int getTeamId() {
-        return teamId;
-    }
-
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
     }
 
     public String getTeamName() {
@@ -23,13 +22,16 @@ public class TeamModel {
         this.teamName = teamName;
     }
 
-
-    public TeamModel(int teamId, String teamName) {
-        this.teamId = teamId;
-        this.teamName = teamName;
+    public int getTeamId() {
+        return teamId;
     }
 
-    private int teamId;
-    private String teamName;
-
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
+    }
 }
+
+
+
+
+

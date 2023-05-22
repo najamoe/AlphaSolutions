@@ -36,14 +36,12 @@ public class ClientController {
     @GetMapping("/createclient")
     public String clients(Model model, HttpSession session, @ModelAttribute("projectId") Integer projectId) {
         if (projectId == null) {
-            // Handle the case when projectId is null
-            // For example, you can return an error page or redirect to a different URL
-            return "redirect:/projecterror";
+            return "redirect:/error";
         }
 
         model.addAttribute("client", new ClientModel());
         model.addAttribute("projectId", projectId);
-        return "createClient";
+        return "createclient";
     }
 
     @PostMapping("/createclient/{projectId}")
@@ -84,7 +82,6 @@ public class ClientController {
 
     @GetMapping("/clientsuccess/{projectId}")
     public String clientSuccess(@PathVariable("projectId") int projectId, Model model, HttpSession session) {
-        // Add projectId to the model if needed
         model.addAttribute("projectId", projectId);
         return "clientSuccess";
     }
