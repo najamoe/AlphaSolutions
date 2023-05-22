@@ -21,6 +21,9 @@ public class ClientService {
     public List<ClientModel> readClients() throws SQLException {
         return clientRepository.readClients();
     }
+    public List<ClientModel> readSpecificClient(int clientId) throws SQLException {
+        return (List<ClientModel>) clientRepository.readSpecificClient(clientId);
+    }
 
     public String editClient(String clientName, int contactPoNo, String contactPerson, int companyPoNo, String address, int zipCode, String country, int clientId) throws SQLException {
        return clientRepository.editClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country, clientId);
