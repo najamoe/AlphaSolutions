@@ -35,7 +35,7 @@ public class TeamController {
         String result = teamService.createTeam(teamModel, subprojectId);
         model.addAttribute("teamName", teamModel.getTeamName());
         return "teamsuccess";
-    }
+
 
     @GetMapping("/teamsuccess/{subprojectId}")
     public String showTeamSuccess(@PathVariable int subprojectId, Model model) {
@@ -74,7 +74,7 @@ public class TeamController {
 
 
 
-    @PostMapping("/project/{subProjectId}/Teams/{teamId}/edit")
+    @PostMapping("/project/{projectId}/Teams/{teamId}/edit")
     @ResponseBody
     public ResponseEntity<String> editTeam(@RequestParam String teamName) {
         try {

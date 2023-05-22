@@ -19,7 +19,7 @@ public class TeamRepository {
 
 
     //Method for creating a team within a chosen subProject
-    public String createTeam(String teamName, int subprojectId) {
+public String createTeam(String teamName, int subprojectId) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "INSERT INTO taskcompass.Team (team_name, subproject_id) VALUES (?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -41,9 +41,6 @@ public class TeamRepository {
             throw new RuntimeException(e);
         }
     }
-
-
-
 
 
     //Method for adding a member to a team
