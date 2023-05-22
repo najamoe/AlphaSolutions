@@ -1,45 +1,57 @@
+-- Insert sample data into the Employee table
 INSERT INTO taskcompass.Employee (first_name, last_name, email, username, password, phone_no, employee_country, title)
-VALUES ('John', 'Doe', 'john.doe@example.com', 'johndoe', '1234', 12345678, 'DK', 'Developer'),
-       ('Jane', 'Smith', 'jane.smith@example.com', 'janesmith', '1234', 98765432, 'DK', 'Project Manager'),
-       ('Mike', 'Johnson', 'mike.johnson@example.com', 'mikejohnson', '1234', 56789012, 'DK', 'Designer');
+VALUES
+    ('John', 'Doe', 'johndoe@example.com', 'johndoe', '1234', 12345678, 'USA', 'Manager'),
+    ('Jane', 'Smith', 'janesmith@example.com', 'janesmith', '1234', 98765210, 'UK', 'Developer'),
+    ('Mike', 'Johnson', 'mikejohnson@example.com', 'mikejohnson', 'password3', 23478901, 'Canada', 'Designer');
 
-
+-- Insert sample data into the Client table
 INSERT INTO taskcompass.Client (client_name, contact_po_no, contact_person, company_po_no, address, zip_code, country)
 VALUES
-    ('ABC Inc.', 11111111, 'John Smith', 99999999, '123 Main St.', 3400, 'DK'),
-    ('XYZ Ltd.', 22222222, 'Jane Doe', 88888888, '456 Maple Ave.', 2950, 'DK'),
-    ('PQR Co.', 33333333, 'Bob Johnson', 77777777, '789 Oak St.', 3450, 'DK');
+    ('ABC Company', 1234789, 'John Smith', 9876521, '123 Main St', 12345, 'DK'),
+    ('XYZ Corporation', 9854321, 'Jane Doe', 1234789, '456 Elm St', 54321, 'DK');
 
+-- Insert sample data into the Task table
+INSERT INTO taskcompass.Task (task_name, description_task, est_time, title_needed, employee_id)
+VALUES
+    ('Task 1', 'Description for Task 1', '10:00:00', 'Title Needed for Task 1', 1),
+    ('Task 2', 'Description for Task 2', '05:30:00', 'Title Needed for Task 2', 2),
+    ('Task 3', 'Description for Task 3', '08:45:00', 'Title Needed for Task 3', 3);
+
+-- Insert sample data into the Project table
 INSERT INTO taskcompass.Project (project_name, project_description, start_date, end_date, client_id, employee_id)
 VALUES
-    ('Project A', 'Development of Website', '2022-01-01', '2022-12-31', 1, 1),
-    ('Project B', 'Design of Mobile App', '2023-01-01', '2023-12-31', 2, 2),
-    ('Project C', 'Data Analytics', '2024-01-01', '2024-12-31', 3, 3);
+    ('Project 1', 'Description for Project 1', '2023-01-01', '2023-02-28', 1, 1),
+    ('Project 2', 'Description for Project 2', '2023-03-01', '2023-04-30', 2, 2);
 
+-- Insert sample data into the Sub_project table
 INSERT INTO taskcompass.Sub_project (sub_project_name, sub_project_description, project_id)
 VALUES
-    ('Subproject 1A', 'Development of Frontend', 1),
-    ('Subproject 1B', 'Development of Backend', 1),
-    ('Subproject 2A', 'UI/UX Design', 2),
-    ('Subproject 2B', 'Mobile App Development', 2),
-    ('Subproject 3A', 'Data Collection', 3),
-    ('Subproject 3B', 'Data Analysis', 3);
+    ('Subproject 1', 'Description for Subproject 1', 1),
+    ('Subproject 2', 'Description for Subproject 2', 1),
+    ('Subproject 3', 'Description for Subproject 3', 2);
 
-INSERT INTO taskcompass.Task (task_name, description_task, est_time, title_needed, status_name, status_color, employee_id, subproject_id )
+-- Insert sample data into the Team table
+INSERT INTO taskcompass.Team (name, project_name, employee_id, subproject_id)
 VALUES
-    ('Design UI', 'Design UI for the website', '2:30:00', 'Designer', 'In Progress', 'Yellow', '1', '1'),
-    ('Develop Backend', 'Develop Backend for the website', '6:00:00', 'Backend Developer', 'Not Started', 'Red', '2', '2'),
-    ('Write Tests', 'Write unit tests for the website', '1:00:00', 'Quality Assurance', 'Completed', 'Green', '1', '2');
+    ('Team 1', 'Project 1', 1, 1),
+    ('Team 2', 'Project 2', 2, 3),
+    ('Team 3', 'Project 2', 3, 3);
 
-
-INSERT INTO taskcompass.Team (name, project_name, employee_id)
-VALUES
-    ('Team A', 'Project A', 1),
-    ('Team B', 'Project B', 2),
-    ('Team C', 'Project C', 3);
-
+-- Insert sample data into the Team_employees table
 INSERT INTO taskcompass.Team_employees (employee_id, team_id)
 VALUES
     (1, 1),
+    (2, 1),
     (2, 2),
     (3, 3);
+
+-- Update sample data in the Task table to associate with subprojects
+UPDATE taskcompass.Task SET subproject_id = 1 WHERE task_id = 1;
+UPDATE taskcompass.Task SET subproject_id = 2 WHERE task_id = 2;
+UPDATE taskcompass.Task SET subproject_id = 3 WHERE task_id = 3;
+
+-- Update sample data in the Team table to associate with subprojects
+UPDATE taskcompass.Team SET subproject_id = 1 WHERE team_id = 1;
+UPDATE taskcompass.Team SET subproject_id = 3 WHERE team_id = 2;
+UPDATE taskcompass.Team SET subproject_id = 3 WHERE team_id = 3;
