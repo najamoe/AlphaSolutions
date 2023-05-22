@@ -75,28 +75,56 @@ public class ClientRepository {
         return clients;
     }
 
-    //TODO: Sage recommends us to base our methods by id's. will be easier to identify our clients (e.x EditProject method)
-    public String editClient(String clientName, int contactPoNo, String contactPerson, int companyPoNo, String address, int zipCode, String country, int clientId) throws SQLException {
-        Connection con = dataSource.getConnection();
-        String sql = "UPDATE taskcompass.client SET client_name=?, contact_po_no=?, contact_person=?, company_po_no=?, address=?, zip_code=?, country=?, client_id=? WHERE client_id=?";
-        PreparedStatement stmt = con.prepareStatement(sql);
+    public ClientModel readSpecificClient(int clientId) {
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "SELECT * FROM taskcompass.Client WHERE client_id = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, clientId);
+            ResultSet rs = stmt.executeQuery();
 
-        stmt.setString(1, clientName);
-        stmt.setInt(2, contactPoNo);
-        stmt.setString(3, contactPerson);
-        stmt.setInt(4, companyPoNo);
-        stmt.setString(5, address);
-        stmt.setInt(6, zipCode);
-        stmt.setString(7, country);
-        stmt.setInt(8, clientId);
+            if (rs.next()) {
+                ClientModel client = new ClientModel();
+                client.setClientName(rs.getString("client_name"));
+                client.setContactPoNo(rs.getInt("contact_po_no"));
+                client.setContactPerson(rs.getString("contact_person"));
+                client.setCompanyPoNo(rs.getInt("company_po_no"));
+                client.setAddress(rs.getString("address"));
+                client.setZipcode(rs.getInt("zip_code"));
+                client.setCountry(rs.getString("country"));
+                client.setClientId(rs.getInt("client_id"));
+                return client;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null; // Return null if the client is not found
+    }
 
-        int rowsUpdated = stmt.executeUpdate();
-        if (rowsUpdated > 0) {
-            return "Client successfully updated in database";
-        } else {
-            return "Something went wrong, no client updated";
+    public String editClient(String newClientName, int newContactPoNo, String newContactPerson, int newCompanyPoNo,
+                             String newAddress, int newZipCode, String newCountry, int clientId) {
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "UPDATE taskcompass.Client SET client_name=?, contact_po_no=?, contact_person=?, " +
+                    "company_po_no=?, address=?, zip_code=?, country=? WHERE client_id=?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, newClientName);
+            stmt.setInt(2, newContactPoNo);
+            stmt.setString(3, newContactPerson);
+            stmt.setInt(4, newCompanyPoNo);
+            stmt.setString(5, newAddress);
+            stmt.setInt(6, newZipCode);
+            stmt.setString(7, newCountry);
+            stmt.setInt(8, clientId);
+
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                return "Client successfully updated with your changes";
+            }
+            return "Failed to edit client";
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
+
 
     public List<ClientModel> searchClient(String search) throws SQLException {
         List<ClientModel> clients = new ArrayList<>();

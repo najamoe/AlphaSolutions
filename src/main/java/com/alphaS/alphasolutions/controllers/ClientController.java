@@ -104,22 +104,41 @@ public class ClientController {
         }
     }
 
-   @PostMapping("/clients/edit")
-    public ResponseEntity<String> editClient(@RequestParam String clientName,
-                                             @RequestParam int contactPoNo,
-                                             @RequestParam String contactPerson,
-                                             @RequestParam int companyPoNo,
-                                             @RequestParam String address,
-                                             @RequestParam int zipCode,
-                                             @RequestParam String country,
-                                             @RequestParam int clientId) {
-        try {
-            String result = clientService.editClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country, clientId);
-            return ResponseEntity.ok(result);
-        } catch (SQLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to edit client");
+    @GetMapping("/client/details/{clientId}")
+    public String readSpecificClient(@PathVariable("clientId") int clientId, Model model) throws SQLException {
+        ClientModel client = (ClientModel) clientService.readSpecificClient(clientId);
+        if (client == null) {
+            // Handle case where client is not found
+            return "clientNotFound";
         }
+
+        model.addAttribute("client", client);
+        return "client";
     }
+
+    @PostMapping("/client/details/{clientId}")
+    public String editSpecificClient(@PathVariable("clientId") int clientId,
+                                     @RequestParam("newClientName") String newClientName,
+                                     @RequestParam("newContactPoNo") int newContactPoNo,
+                                     @RequestParam("newContactPerson") String newContactPerson,
+                                     @RequestParam("newCompanyPoNo") int newCompanyPoNo,
+                                     @RequestParam("newAddress") String newAddress,
+                                     @RequestParam("newZipCode") int newZipCode,
+                                     @RequestParam("newCountry") String newCountry,
+                                     Model model) throws SQLException {
+        String result = clientService.editClient(newClientName, newContactPoNo, newContactPerson, newCompanyPoNo,
+                newAddress, newZipCode, newCountry, clientId);
+
+        // Update the model with the updated client attributes
+        ClientModel client = (ClientModel) clientService.readSpecificClient(clientId);
+        model.addAttribute("client", client);
+
+        // Add the result message to the model for display
+        model.addAttribute("result", result);
+
+        return "client";
+    }
+
     @PostMapping("/clients/delete")
     public ResponseEntity<String> deleteClient(@RequestParam int clientID){
         boolean deletionStatus = clientService.deleteClient(clientID);
