@@ -16,9 +16,6 @@ public class SubprojectRepository {
     public SubprojectRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-
-
-
     public String createSubProject(String subProjectName, String subProjectDescription, int projectId) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "INSERT INTO taskcompass.Sub_project (sub_project_name, sub_project_description, project_id) VALUES (?, ?, ?)";
@@ -31,7 +28,7 @@ public class SubprojectRepository {
                 ResultSet rs = stmt.getGeneratedKeys();
                 if (rs.next()) {
                     int subProjectId = rs.getInt(1);
-                    return "Subproject successfully added with ID: " + subProjectId;
+                    return  subProjectName + " is successfully added ";
                 }
             }
             return "Failed to add subproject";
