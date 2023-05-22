@@ -153,22 +153,16 @@ public class ProjectRepository {
             throw new RuntimeException(e);
         }
     }
-    //Now deletes project and associated subprojects (deleteSubproject handles deletion of subprojects and all their associated tasks)
 
-    public String deletedProject(int projectId) {
+    public String deleteProject(int projectId) {
         try (Connection con = dataSource.getConnection()) {
-            String subprojectsSql = "DELETE FROM taskcompass.Sub_project WHERE project_id=?";
-            PreparedStatement subprojectsStmt = con.prepareStatement(subprojectsSql);
-            subprojectsStmt.setInt(1, projectId);
-            int subprojectsDeleted = subprojectsStmt.executeUpdate();
-
             String projectSql = "DELETE FROM taskcompass.Project WHERE project_id=?";
             PreparedStatement projectStmt = con.prepareStatement(projectSql);
             projectStmt.setInt(1, projectId);
             int projectDeleted = projectStmt.executeUpdate();
 
             if (projectDeleted > 0) {
-                return "Project deleted successfully";
+                return "Project and associated records deleted successfully";
             } else {
                 return "Project with ID " + projectId + " does not exist";
             }
@@ -176,6 +170,8 @@ public class ProjectRepository {
             throw new RuntimeException(e);
         }
     }
+
+
 }
 
 

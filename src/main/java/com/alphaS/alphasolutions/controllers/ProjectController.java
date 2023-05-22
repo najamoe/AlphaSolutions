@@ -114,21 +114,22 @@ public class ProjectController {
     }
 
 
+    @GetMapping("/project/delete/{projectId}")
+    public String showDeleteProjectPage(@PathVariable("projectId") int projectId, Model model) {
+        model.addAttribute("projectId", projectId);
+        return "deletedproject";
+    }
+
     @PostMapping("/project/delete/{projectId}")
     public String deleteProject(@PathVariable("projectId") int projectId) {
         String deletionMessage = projectService.deleteProject(projectId);
+        String errorOnDelete = "An error occured, project not deleted";
 
-        if (deletionMessage.equals("Project deleted successfully")) {
+        if (deletionMessage.equals("Project and associated records deleted successfully")) {
             return "redirect:/deletedproject";
         } else {
-            return "redirect:/readproject.html?error=" + deletionMessage;
+            return "redirect:/readproject.html?error=" + errorOnDelete;
         }
-    }
-    @GetMapping("/project/delete/{projectId}")
-    public String showDeleteProjectPage(@PathVariable("projectId") int projectId, Model model) {
-
-        model.addAttribute("projectId", projectId);
-        return "deletedproject";
     }
 
     @GetMapping("/deletedproject")
