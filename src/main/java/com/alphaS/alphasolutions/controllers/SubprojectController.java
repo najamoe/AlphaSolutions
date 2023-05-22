@@ -25,15 +25,19 @@ public class SubprojectController {
     @GetMapping("/project/{projectId}/createsubproject")
     public String createSubproject(@PathVariable int projectId, Model model) {
         model.addAttribute("subproject", new SubprojectModel());
-        return "createsubproject";
+        return "/createsubproject";
     }
 
     @PostMapping("/project/{projectId}/createsubproject")
-    public String CreateSubprojectForm(@PathVariable int projectId, Model model) {
-        model.addAttribute("projectId", projectId);
-        model.addAttribute("subProject", new SubprojectModel());
-        return "createsubproject";
+    public String createSubproject(@PathVariable int projectId, @ModelAttribute SubprojectModel subprojectModel, Model model) {
+        String result = subprojectService.createSubproject(projectId, subprojectModel);
+        model.addAttribute("subprojectName", subprojectModel.getSubProjectName());
+        return "subprojectsuccess";
     }
+
+
+
+
 
     @GetMapping("/project/{projectId}/readsubproject")
     @ResponseBody

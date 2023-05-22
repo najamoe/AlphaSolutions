@@ -20,9 +20,12 @@ public class SubprojectService {
         this.subprojectRepository = subprojectRepository;
     }
 
-    public String createSubProject(String subProjectName, String subProjectDescription) {
-        return subprojectRepository.createSubProject(subProjectName, subProjectDescription);
+    public String createSubproject(int projectId, SubprojectModel subprojectModel) {
+        // Kalder subprojectRepository.createSubProject() metoden og returnerer resultatet
+        return subprojectRepository.createSubProject(subprojectModel.getSubProjectName(), subprojectModel.getSubProjectDescription(), projectId);
     }
+
+
 
     public List<SubprojectModel> readSubProject(int projectId) {
         return subprojectRepository.readSubProject(projectId);
