@@ -36,6 +36,9 @@ public class TeamService {
         return teamRepository.findMatchingEmployeeNames(query);
     }
 
+    public List<String> displayTeamMembers(int teamId) throws SQLException {
+        return teamRepository.displayTeamMembers(teamId);
+    }
 
 
 }

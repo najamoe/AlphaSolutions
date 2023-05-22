@@ -13,6 +13,7 @@ public class TaskModel {
     private String jobTitleNeeded;
     private String status;
     private Color color;
+    private EmployeeModel assignedEmployee;
 
     public TaskModel(int taskId, String taskName, String taskDescription, LocalTime estTime, LocalDate deadline, String jobTitleNeeded, String status, Color color) {
         this.taskId = taskId;

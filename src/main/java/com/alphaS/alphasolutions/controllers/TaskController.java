@@ -62,4 +62,18 @@ public class TaskController {
             return ResponseEntity.badRequest().body("Failed to edit " + task.getTaskName());
         }
     }
+
+
+    @PostMapping("/{taskId}/assign")
+    public ResponseEntity<String> assignEmployeeToTask(@PathVariable int taskId, @RequestParam int employeeId) {
+        try {
+            String result = taskService.assignEmployeeToTask(taskId, employeeId);
+            return ResponseEntity.ok(result);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to assign user to the task");
+        }
+    }
+
+
 }

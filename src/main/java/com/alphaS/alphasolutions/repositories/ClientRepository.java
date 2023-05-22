@@ -5,10 +5,7 @@ import org.springframework.stereotype.Repository;
 
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,47 +18,53 @@ public class ClientRepository {
         this.dataSource = dataSource;
     }
 
-    public String createClient(String clientName, String contactPoNo, String contactPerson, String companyPoNo, String address, String zipCode, String country, String clientId) throws SQLException {
-        Connection con = dataSource.getConnection();
-        String sql = "INSERT INTO taskcompass.client (client_name, contact_po_no, contact_person, company_po_no, address, zip_code, country, client_id) VALUES (?,?,?,?,?,?,?,?)";
-        PreparedStatement stmt = con.prepareStatement(sql);
+    public int createClient(String clientName, int contactPoNo, String contactPerson, int companyPoNo, String address, int zipCode, String country) throws SQLException {
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "INSERT INTO taskcompass.client (client_name, contact_po_no, contact_person, company_po_no, address, zip_code, country) VALUES (?,?,?,?,?,?,?)";
+            PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-        stmt.setString(1, clientName);
-        stmt.setString(2, contactPoNo);
-        stmt.setString(3, contactPerson);
-        stmt.setString(4, companyPoNo);
-        stmt.setString(5, address);
-        stmt.setString(6, zipCode);
-        stmt.setString(7, country);
-        stmt.setString(8, clientId);
+            stmt.setString(1, clientName);
+            stmt.setInt(2, contactPoNo);
+            stmt.setString(3, contactPerson);
+            stmt.setInt(4, companyPoNo);
+            stmt.setString(5, address);
+            stmt.setInt(6, zipCode);
+            stmt.setString(7, country);
 
-        // Execute the query and get the result set
-        int rowsInserted = stmt.executeUpdate();
+            // Execute the query and get the number of rows inserted
+            int rowsInserted = stmt.executeUpdate();
 
-        if (rowsInserted > 0) {
-            return "Client successfully created";
-        } else {
-            return "Something went wrong, no client added";
+            if (rowsInserted > 0) {
+                // Retrieve the auto-generated clientId
+                ResultSet rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    return rs.getInt(1);
+                } else {
+                    throw new SQLException("Failed to retrieve auto-generated clientId");
+                }
+            } else {
+                throw new SQLException("Something went wrong, no client added");
+            }
         }
     }
 
 
+
     //TODO: READ
     //TODO: Sage recommends us to base our methods by id's. will be easier to identify our clients (e.x EditProject method)
-    public String editClient(String clientName, String contactPoNo, String contactPerson, String companyPoNo, String address, String zipCode, String country, String clientId) throws SQLException {
+    public String editClient(String clientName, int contactPoNo, String contactPerson, int companyPoNo, String address, int zipCode, String country, int clientId) throws SQLException {
         Connection con = dataSource.getConnection();
         String sql = "UPDATE taskcompass.client SET client_name=?, contact_po_no=?, contact_person=?, company_po_no=?, address=?, zip_code=?, country=?, client_id=? WHERE client_id=?";
         PreparedStatement stmt = con.prepareStatement(sql);
 
         stmt.setString(1, clientName);
-        stmt.setString(2, contactPoNo);
+        stmt.setInt(2, contactPoNo);
         stmt.setString(3, contactPerson);
-        stmt.setString(4, companyPoNo);
+        stmt.setInt(4, companyPoNo);
         stmt.setString(5, address);
-        stmt.setString(6, zipCode);
+        stmt.setInt(6, zipCode);
         stmt.setString(7, country);
-        stmt.setString(8, clientId);
-        stmt.setString(9, clientId);
+        stmt.setInt(8, clientId);
 
         int rowsUpdated = stmt.executeUpdate();
         if (rowsUpdated > 0) {

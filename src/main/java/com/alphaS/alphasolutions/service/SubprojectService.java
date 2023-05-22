@@ -4,6 +4,11 @@ import com.alphaS.alphasolutions.model.SubprojectModel;
 import com.alphaS.alphasolutions.repositories.SubprojectRepository;
 import org.springframework.stereotype.Service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.Duration;
 import java.util.List;
 
 @Service
@@ -33,5 +38,18 @@ public class SubprojectService {
     public String deleteSubproject(int subProjectId) {
      return  subprojectRepository.deleteSubproject(subProjectId);
     }
+
+    public String getTotalEstimatedTimeForSubproject(int subprojectId) {
+        return subprojectRepository.getTotalEstimatedTimeForSubproject(subprojectId);
+    }
+
+    public String getCombinedTimeForProject(int projectId) {
+        return subprojectRepository.getCombinedTimeForProject(projectId);
+    }
+
+
+
+
+
 
 }

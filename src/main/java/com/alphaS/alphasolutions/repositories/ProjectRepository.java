@@ -4,6 +4,7 @@ import com.alphaS.alphasolutions.model.*;
 import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +19,8 @@ public class ProjectRepository {
     public ProjectRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
+
+
 
     public String createProject(ProjectModel project, String username, String password) throws SQLException {
         Connection con = dataSource.getConnection();
@@ -84,6 +87,7 @@ public class ProjectRepository {
 
         return projects;
     }
+
     public ProjectModel readSpecificProject(int projectId, String username, String password) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "SELECT * FROM taskcompass.Project p " +
@@ -132,6 +136,24 @@ public class ProjectRepository {
         }
     }
 
+    public ProjectModel addClientToProject(int projectId, int clientId, String username, String password) {
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "UPDATE taskcompass.Project SET client_id = ? WHERE project_id = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, clientId);
+            stmt.setInt(2, projectId);
+            int rowsUpdated = stmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                // Retrieve the updated project
+                return readSpecificProject(projectId, username, password);
+            } else {
+                throw new SQLException("Failed to add client to project");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     //Now deletes project and associated subprojects (deleteSubproject handles deletion of subprojects and all their associated tasks)
 
     public String deletedProject(int projectId) {
@@ -155,6 +177,8 @@ public class ProjectRepository {
             throw new RuntimeException(e);
         }
     }
+}
+
 
 
 }
