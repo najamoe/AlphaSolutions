@@ -16,18 +16,20 @@ public class SubprojectRepository {
         this.dataSource = dataSource;
     }
 //Test
-    public String createSubProject(String subProjectName, String subProjectDescription) {
+
+    public String createSubProject(String subProjectName, String subProjectDescription, int projectId) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "INSERT INTO taskcompass.Sub_project (sub_project_name, sub_project_description, project_id) VALUES (?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, subProjectName);
             stmt.setString(2, subProjectDescription);
+            stmt.setInt(3, projectId);
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
                 ResultSet rs = stmt.getGeneratedKeys();
                 if (rs.next()) {
                     int subProjectId = rs.getInt(1);
-                    return "Subproject successfully added" + subProjectId;
+                    return "Subproject successfully added with ID: " + subProjectId;
                 }
             }
             return "Failed to add subproject";
@@ -35,6 +37,8 @@ public class SubprojectRepository {
             throw new RuntimeException(e);
         }
     }
+
+
 
     public List<SubprojectModel> readSubProject(int projectId) {
         List<SubprojectModel> subProjects = new ArrayList<>();

@@ -25,6 +25,9 @@ public class TaskModel {
         this.color = color;
     }
 
+    public TaskModel() {
+    }
+
     public int getTaskId() {
         return taskId;
     }
