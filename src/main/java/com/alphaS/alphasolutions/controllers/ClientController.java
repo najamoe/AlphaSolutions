@@ -139,13 +139,26 @@ public class ClientController {
         return "client";
     }
 
-    @PostMapping("/clients/delete")
-    public ResponseEntity<String> deleteClient(@RequestParam int clientID){
-        boolean deletionStatus = clientService.deleteClient(clientID);
-        if (deletionStatus) {
-            return new ResponseEntity<>("Client with ID " + clientID + " was deleted", HttpStatus.OK);
+    @PostMapping("/client/delete/{clientId}")
+    public String deleteClient(@PathVariable("clientId") int clientId) {
+        String deletionMessage = clientService.deleteClient(clientId);
+        String errorOnDelete ="An error occured, client not deleted";
+        if (deletionMessage.equals("Client deleted successfully")) {
+            return "redirect:/deletedclient";
         } else {
-            return new ResponseEntity<>("Failed to delete client with ID " + clientID, HttpStatus.INTERNAL_SERVER_ERROR);
+            return "redirect:/readclients.html?error=" + errorOnDelete;
         }
     }
+
+    @GetMapping("/client/delete/{clientId}")
+    public String showDeleteClientPage(@PathVariable("clientId") int clientId, Model model) {
+        model.addAttribute("clientId", clientId);
+        return "deletedclient";
+    }
+
+    @GetMapping("/deletedclient")
+    public String showDeletedClientPage(Model model) {
+        return "deletedclient";
+    }
+
 }

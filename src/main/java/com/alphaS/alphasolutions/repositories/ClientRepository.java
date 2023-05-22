@@ -1,9 +1,7 @@
 package com.alphaS.alphasolutions.repositories;
 
-import com.alphaS.alphasolutions.model.ClientModel;
+import com.alphaS.alphasolutions.model.*;
 import org.springframework.stereotype.Repository;
-
-
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
@@ -125,48 +123,21 @@ public class ClientRepository {
         }
     }
 
-
-    public List<ClientModel> searchClient(String search) throws SQLException {
-        List<ClientModel> clients = new ArrayList<>();
-
-        Connection con = dataSource.getConnection();
-        String sql = "SELECT * FROM taskcompass.client WHERE client_name LIKE ? OR contact_person LIKE ? OR contact_po_no LIKE ? OR company_po_no LIKE ? OR address LIKE ? OR zip_code LIKE ? OR country LIKE ? OR client_id LIKE ?";
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
-
-            // Set the search term as the parameter value for each placeholder
-            String likeSearchTerm = "%" + search + "%";
-            for (int i = 1; i <= 8; i++) {
-                stmt.setString(i, likeSearchTerm);
-            }
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    ClientModel client = new ClientModel();
-                    client.setClientId(rs.getInt("client_id"));
-                    client.setClientName(rs.getString("client_name"));
-                    client.setContactPerson(rs.getString("contact_person"));
-                    client.setContactPoNo(rs.getInt("contact_po_no"));
-                    client.setCompanyPoNo(rs.getInt("company_po_no"));
-                    client.setAddress(rs.getString("address"));
-                    client.setZipcode(rs.getInt("zip_code"));
-                    client.setCountry(rs.getString("country"));
-                    clients.add(client);
-                }
-            }
-        }
-        return clients;
-    }
-
-    public boolean deleteClient(int clientId) {
+    public String deletedClient(int clientId) {
         try (Connection con = dataSource.getConnection()) {
-            String sql = "DELETE FROM taskcompass.client WHERE client_id =?";
+            String sql = "DELETE FROM taskcompass.Client WHERE client_id = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setInt(1, clientId);
             int rowsDeleted = preparedStatement.executeUpdate();
-            return rowsDeleted > 0;
+            if (rowsDeleted > 0) {
+                return "Client deleted successfully";
+            } else {
+                return "Client with ID " + clientId + " does not exist";
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
 
 }

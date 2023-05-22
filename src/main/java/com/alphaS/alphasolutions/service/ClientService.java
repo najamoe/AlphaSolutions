@@ -10,8 +10,8 @@ import java.util.List;
 @Service
 public class ClientService {
     private final ClientRepository clientRepository;
-    public ClientService(ClientRepository repository) {
-        this.clientRepository = repository;
+    public ClientService(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
     }
 
     public int createClient(String clientName, int contactPoNo, String contactPerson, int companyPoNo, String address, int zipCode, String country) throws SQLException {
@@ -21,8 +21,8 @@ public class ClientService {
     public List<ClientModel> readClients() throws SQLException {
         return clientRepository.readClients();
     }
-    public List<ClientModel> readSpecificClient(int clientId) throws SQLException {
-        return (List<ClientModel>) clientRepository.readSpecificClient(clientId);
+    public ClientModel readSpecificClient(int clientId) {
+        return clientRepository.readSpecificClient(clientId);
     }
 
     public String editClient(String clientName, int contactPoNo, String contactPerson, int companyPoNo, String address, int zipCode, String country, int clientId) throws SQLException {
@@ -30,12 +30,7 @@ public class ClientService {
 
     }
 
-    public List<ClientModel> searchClient(String search) throws SQLException {
-       return clientRepository.searchClient(search);
-
-    }
-
-    public boolean deleteClient(int clientId) {
-        return clientRepository.deleteClient(clientId);
+    public String deleteClient(int clientId) {
+        return clientRepository.deletedClient(clientId);
     }
 }
