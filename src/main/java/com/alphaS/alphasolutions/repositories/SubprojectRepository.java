@@ -16,9 +16,9 @@ public class SubprojectRepository {
     public SubprojectRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-    public String createSubProject(String subProjectName, String subProjectDescription, int projectId) {
+    public int createSubProject(String subProjectName, String subProjectDescription, int projectId) {
         try (Connection con = dataSource.getConnection()) {
-            String sql = "INSERT INTO taskcompass.Sub_project (sub_project_name, sub_project_description, project_id) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO taskcompass.Subproject (sub_project_name, sub_project_description, project_id) VALUES (?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, subProjectName);
             stmt.setString(2, subProjectDescription);
@@ -28,14 +28,15 @@ public class SubprojectRepository {
                 ResultSet rs = stmt.getGeneratedKeys();
                 if (rs.next()) {
                     int subProjectId = rs.getInt(1);
-                    return  subProjectName + " is successfully added ";
+                    return subProjectId;
                 }
             }
-            return "Failed to add subproject";
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+        return -1; // Return a default value or handle the failure case as per your requirement
     }
+
 
 
 
@@ -43,7 +44,7 @@ public class SubprojectRepository {
         List<SubprojectModel> subProjects = new ArrayList<>();
 
         try (Connection con = dataSource.getConnection()) {
-            String sql = "SELECT * FROM taskcompass.sub_project WHERE project_id = ?";
+            String sql = "SELECT * FROM taskcompass.subproject WHERE project_id = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, projectId);
             ResultSet rs = stmt.executeQuery();
@@ -63,9 +64,25 @@ public class SubprojectRepository {
         return subProjects;
     }
 
+    public void addTaskToSubproject(int taskId, int subprojectId) {
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "UPDATE taskcompass.Task SET subproject_id = ? WHERE task_id = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, subprojectId);
+            stmt.setInt(2, taskId);
+            int rowsUpdated = stmt.executeUpdate();
+
+            if (rowsUpdated <= 0) {
+                throw new SQLException("Failed to add task to subproject");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public String editSubproject(String SubProjectName, String SubProjectDescription) {
         try (Connection con = dataSource.getConnection()) {
-            String sql = "UPDATE taskcompass.Sub_project SET sub_project_name=?, sub_project_description=? WHERE sub_project_id=?";
+            String sql = "UPDATE taskcompass.Subproject SET sub_project_name=?, sub_project_description=? WHERE subproject_id=?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, SubProjectName);
             stmt.setString(2, SubProjectDescription);
@@ -86,7 +103,7 @@ public class SubprojectRepository {
             PreparedStatement tasksStmt = con.prepareStatement(tasksSql);
             tasksStmt.setInt(1, subProjectId);
             tasksStmt.executeUpdate();
-            String subprojectSql = "DELETE FROM taskcompass.Sub_project WHERE subproject_id=?";
+            String subprojectSql = "DELETE FROM taskcompass.Subproject WHERE subproject_id=?";
             PreparedStatement subprojectStmt = con.prepareStatement(subprojectSql);
             subprojectStmt.setInt(1, subProjectId);
             int subprojectDeleted = subprojectStmt.executeUpdate();
@@ -100,10 +117,11 @@ public class SubprojectRepository {
         }
     }
 
+    /*
     //Total time for all tasks in one Subproject
     public String getTotalEstimatedTimeForSubproject(int subprojectId) {
         try (Connection con = dataSource.getConnection()) {
-            String sql = "SELECT SUM(est_time) FROM taskcompass.Task t INNER JOIN taskcompass.Sub_project_task st ON t.task_id = st.task_id WHERE st.subproject_id = ?";
+            String sql = "SELECT SUM(est_time) FROM taskcompass.Task t INNER JOIN taskcompass.Subproject_task st ON t.task_id = st.task_id WHERE st.subproject_id = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, subprojectId);
             ResultSet rs = stmt.executeQuery();
@@ -127,7 +145,7 @@ public class SubprojectRepository {
     public String getCombinedTimeForProject(int projectId) {
         try (Connection con = dataSource.getConnection()) {
             // Retrieve the subprojects associated with the project
-            String subprojectsSql = "SELECT * FROM taskcompass.sub_project WHERE project_id = ?";
+            String subprojectsSql = "SELECT * FROM taskcompass.subproject WHERE project_id = ?";
             PreparedStatement subprojectsStmt = con.prepareStatement(subprojectsSql);
             subprojectsStmt.setInt(1, projectId);
             ResultSet subprojectsRs = subprojectsStmt.executeQuery();
@@ -155,7 +173,7 @@ public class SubprojectRepository {
     }
 
 
-
+*/
 
 
 }

@@ -7,8 +7,6 @@ CREATE TABLE taskcompass.Employee (
                                       username VARCHAR(255),
                                       password VARCHAR(255),
                                       phone_no INT,
-                                      employee_country VARCHAR(255),
-                                      title VARCHAR(255),
                                       employee_id INT PRIMARY KEY AUTO_INCREMENT
 );
 
@@ -27,10 +25,7 @@ CREATE TABLE taskcompass.Task (
                                   task_name VARCHAR(255),
                                   description_task VARCHAR(255),
                                   est_time TIME,
-                                  title_needed VARCHAR(255),
                                   task_id INT PRIMARY KEY AUTO_INCREMENT,
-                                  status_name VARCHAR(255),
-                                  status_color VARCHAR(255),
                                   employee_id INT,
                                   FOREIGN KEY (employee_id) REFERENCES taskcompass.Employee (employee_id) ON DELETE CASCADE
 );
@@ -55,27 +50,10 @@ CREATE TABLE taskcompass.Sub_project (
                                          FOREIGN KEY (project_id) REFERENCES taskcompass.Project (project_id) ON DELETE CASCADE
 );
 
-CREATE TABLE taskcompass.Team (
-                                  team_name VARCHAR(255),
-                                  team_id INT PRIMARY KEY AUTO_INCREMENT,
-                                  employee_id INT,
-                                  subproject_id INT,
-                                  FOREIGN KEY (employee_id) REFERENCES taskcompass.Employee (employee_id) ON DELETE CASCADE,
-                                  FOREIGN KEY (subproject_id) REFERENCES taskcompass.Sub_project (subproject_id) ON DELETE CASCADE
-);
 
-CREATE TABLE taskcompass.Team_employees(
-                                           employee_id INT,
-                                           team_id INT,
-                                           teamemployees_id INT PRIMARY KEY AUTO_INCREMENT,
-                                           FOREIGN KEY (employee_id) REFERENCES taskcompass.Employee (employee_id) ON DELETE CASCADE,
-                                           FOREIGN KEY (team_id) REFERENCES taskcompass.Team (team_id) ON DELETE CASCADE
-);
+
 
 ALTER TABLE taskcompass.Task
     ADD COLUMN subproject_id INT,
     ADD FOREIGN KEY (subproject_id) REFERENCES taskcompass.Sub_project (subproject_id) ON DELETE CASCADE;
 
-ALTER TABLE taskcompass.Team
-    ADD COLUMN teamemployees_id INT,
-    ADD FOREIGN KEY (teamemployees_id) REFERENCES taskcompass.Team_employees (teamemployees_id) ON DELETE CASCADE;

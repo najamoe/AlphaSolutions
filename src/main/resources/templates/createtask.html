@@ -63,22 +63,27 @@
 <div class="container-box">
   <h1 class="welcome-heading">Add task</h1>
   <p class="welcome-text">Follow the steps below to add a task to your subproject</p>
-  <form method="post">
-    <form th:action="@{/createtask/{subprojectId}}" th:object="${task}" method="post">
-      <div class="form-group">
-        <label class="form-label" for="taskName">Task Name:</label>
-        <input class="form-input" type="text" id="taskName" th:field="*{taskName}" required/>
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="taskDescription">Task Description:</label>
-        <textarea class="form-textarea" id="taskDescription" th:field="*{taskDescription}" required></textarea>
-      </div>
-      <div class="form-button-container">
-        <button class="form-button" type="submit">Add Task</button>
-        <button class="form-button" type="submit">Done</button>
-      </div>
-    </form>
+  <form th:action="@{/createtask/{subprojectId}(subprojectId=${subprojectId})}" th:object="${taskModel}" method="post">
+    <div class="form-group">
+      <label class="form-label" for="taskName">Task Name:</label>
+      <input class="form-input" type="text" id="taskName" th:field="*{taskName}" required/>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="taskDescription">Task Description:</label>
+      <textarea class="form-textarea" id="taskDescription" th:field="*{taskDescription}" required></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="estTime">Estimated Time:</label>
+      <input class="form-input" type="text" id="estTime" th:field="*{estTime}" th:attr="pattern='\\d{2}:\\d{2}'" required/>
+      <small class="form-text">Format: HH:mm (e.g., 08:30)</small>
+    </div>
+    <div class="form-button-container">
+      <button class="form-button" type="submit">Add Task</button>
+      <button class="form-button" type="submit">Done</button>
+    </div>
   </form>
+
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
