@@ -39,8 +39,5 @@ public class ProjectService {
         return projectRepository.readSpecificProject(projectId, username, password);
     }
 
-    //Add client to specific project:
-    public ProjectModel addClientToProject(int projectId, int clientId, String username, String password){
-        return projectRepository.addClientToProject(projectId, clientId, username, password);
-    }
+   
 }

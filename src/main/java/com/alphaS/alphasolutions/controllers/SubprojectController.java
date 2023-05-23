@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.Duration;
 import java.util.List;
@@ -30,11 +31,20 @@ public class SubprojectController {
     }
 
     @PostMapping("/clientsuccess/{projectId}/createsubproject")
-    public String createSubproject(@PathVariable int projectId, @ModelAttribute SubprojectModel subprojectModel, Model model) {
-        String result = subprojectService.createSubproject(projectId, subprojectModel);
+    public String createSubproject(@PathVariable int projectId, @ModelAttribute SubprojectModel subprojectModel, Model model, RedirectAttributes redirectAttributes) {
+        int subprojectId = subprojectService.createSubproject(projectId, subprojectModel);
+        redirectAttributes.addAttribute("subprojectId", subprojectId);
         model.addAttribute("subprojectName", subprojectModel.getSubProjectName());
+        return "redirect:/subprojectsuccess";
+    }
+
+    @GetMapping("/subprojectsuccess")
+    public String subprojectSuccess(@RequestParam("subprojectId") int subprojectId, Model model) {
+        // Retrieve the subproject details or perform any necessary actions
+        model.addAttribute("subprojectId", subprojectId);
         return "subprojectsuccess";
     }
+
 
     @GetMapping("/project/{projectId}/readsubproject")
     @ResponseBody
@@ -59,7 +69,7 @@ public class SubprojectController {
         String message = subprojectService.deleteSubproject(subprojectId);
         return message;
     }
-
+/*
     @GetMapping("/project/{projectId}/subproject/{subprojectId}/estimatedtime")
     public String getTotalEstimatedTimeForSubproject(@PathVariable int subprojectId) {
         try {
@@ -87,6 +97,8 @@ public class SubprojectController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to calculate combined time for project");
         }
     }
+
+ */
 }
 
 

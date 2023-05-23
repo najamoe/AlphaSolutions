@@ -20,12 +20,9 @@ public class SubprojectService {
         this.subprojectRepository = subprojectRepository;
     }
 
-    public String createSubproject(int projectId, SubprojectModel subprojectModel) {
-        // Kalder subprojectRepository.createSubProject() metoden og returnerer resultatet
+    public int createSubproject(int projectId, SubprojectModel subprojectModel) {
         return subprojectRepository.createSubProject(subprojectModel.getSubProjectName(), subprojectModel.getSubProjectDescription(), projectId);
     }
-
-
 
     public List<SubprojectModel> readSubProject(int projectId) {
         return subprojectRepository.readSubProject(projectId);
@@ -39,6 +36,7 @@ public class SubprojectService {
      return  subprojectRepository.deleteSubproject(subProjectId);
     }
 
+    /*
     public String getTotalEstimatedTimeForSubproject(int subprojectId) {
         return subprojectRepository.getTotalEstimatedTimeForSubproject(subprojectId);
     }
@@ -49,7 +47,7 @@ public class SubprojectService {
 
 
 
-
+*/
 
 
 }

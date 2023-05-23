@@ -17,23 +17,20 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public String createTask(String taskName, String taskDescription, LocalTime estTime, LocalDate deadline, String jobTitleNeeded, String status, Color color, int subProjectId) throws SQLException {
-        return taskRepository.createTask(taskName, taskDescription, estTime, deadline, jobTitleNeeded, status, color, subProjectId);
+    public String createTask(String taskName, String taskDescription, LocalTime estTime) throws SQLException {
+        return taskRepository.createTask(taskName, taskDescription, estTime);
     }
 
-    public String deleteTaskFromSubproject(int subProjetId, int taskId) throws SQLException {
-        return taskRepository.deleteTaskFromSubproject(subProjetId,taskId);
+    public String deleteTaskFromSubproject(int taskId) throws SQLException {
+        return taskRepository.deleteTaskFromSubproject(taskId);
     }
 
-    public String editTask(int taskId, String taskName, String taskDescription, LocalTime estTime, LocalDate deadline, String jobTitleNeeded, String status, Color color) throws SQLException {
-        return taskRepository.editTask(taskId,taskName,taskDescription, estTime, deadline, jobTitleNeeded, status, color);
+    public String editTask(int taskId, String taskName, String taskDescription, LocalTime estTime) throws SQLException {
+        return taskRepository.editTask(taskId,taskName,taskDescription, estTime);
     }
 
-    // Method for assigning a user to a task
-    public String assignEmployeeToTask(int taskId, int employeeId) {
-        return taskRepository.assignEmployeeToTask(taskId, employeeId);
 
-    }
+
 
 
 

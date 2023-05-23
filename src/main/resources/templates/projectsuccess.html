@@ -26,13 +26,13 @@
     #addclientwindow{
       background-color: #f3f6fd;
       height: 130px;
-      width: 400px;
+      width: 200px;
       padding: 20px;
       border-radius: 10px;
       margin-top: 40px;
       margin-left: 60px;
     }
-    #addsubprojectswindow, #newprojectswindow, #searchprojecswindow{
+    #addsubprojectswindow, #newprojectswindow, #dashboardwindow{
         background-color: #f3f6fd;
         height: 130px;
         width: 130px;
@@ -81,34 +81,17 @@
                 <i class="fa-regular fa-address-card" style="font-size: 26px; color: darkgoldenrod"></i>
                 <a href="/createclient">Add client to your new project</a>
               </div>
-          </div>
+                <div class="col-md-3" id="dashboardwindow">
+                    <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
+                    <a href="/dashboard">Return to dashboard</a>
+                </div>
+            </div>
         </div>
       </div>
     </div>
-
-
-    <div class="container" id="projectsuccesswindow">
-      <div class="newprojectsuccess">
-        <div class="row">
-                <div class="col-md-3" id="addsubprojectswindow">
-                  <i class="fa-solid fa-cubes-stacked" style="font-size: 26px; color: darkgoldenrod"></i>
-                  <p>Add tasks</p>
-                </div>
-                <div class="col-md-3" id="newprojectswindow">
-                  <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
-                  <a href="/createproject">Create new project</a>
-                </div>
-                <div class="col-md-3" id="searchprojecswindow">
-                  <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
-                  <a href="/dashboard">Return to dashboard</a>
-                </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
+    </div>
 </div>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
