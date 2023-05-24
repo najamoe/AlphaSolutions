@@ -40,7 +40,6 @@ public class SubprojectController {
 
     @GetMapping("/subprojectsuccess")
     public String subprojectSuccess(@RequestParam("subprojectId") int subprojectId, Model model) {
-        // Retrieve the subproject details or perform any necessary actions
         model.addAttribute("subprojectId", subprojectId);
         return "subprojectsuccess";
     }

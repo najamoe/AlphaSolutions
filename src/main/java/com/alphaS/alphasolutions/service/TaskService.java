@@ -1,5 +1,6 @@
 package com.alphaS.alphasolutions.service;
 
+import com.alphaS.alphasolutions.model.TaskModel;
 import com.alphaS.alphasolutions.repositories.TaskRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,8 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public String createTask(String taskName, String taskDescription, LocalTime estTime) throws SQLException {
-        return taskRepository.createTask(taskName, taskDescription, estTime);
+    public int createTask(int subprojectId, TaskModel taskModel){
+        return taskRepository.createTask(taskModel.getTaskName(), taskModel.getTaskDescription(), taskModel.getEstTime(), subprojectId);
     }
 
     public String deleteTaskFromSubproject(int taskId) throws SQLException {

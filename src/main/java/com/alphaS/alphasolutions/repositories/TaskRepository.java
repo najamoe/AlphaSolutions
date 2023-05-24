@@ -17,38 +17,31 @@ public class TaskRepository {
     }
 
     //Method for creating a task to a subproject
-    public String createTask(String taskName, String taskDescription, LocalTime estTime) {
+    public int createTask(String taskName, String taskDescription, LocalTime estTime, int subprojectId) {
         try (Connection con = dataSource.getConnection()) {
-            String taskSql = "INSERT INTO taskcompass.Task (task_name, description_task, est_time) VALUES (?, ?, ?)";
+            String taskSql = "INSERT INTO taskcompass.Task (task_name, description_task, est_time, subproject_id) VALUES (?, ?, ?, ?)";
             PreparedStatement taskStmt = con.prepareStatement(taskSql, Statement.RETURN_GENERATED_KEYS);
 
             taskStmt.setString(1, taskName);
             taskStmt.setString(2, taskDescription);
             taskStmt.setTime(3, Time.valueOf(estTime));
+            taskStmt.setInt(4, subprojectId);
 
             int rowsInserted = taskStmt.executeUpdate();
 
-            // get the generated task ID
-            ResultSet rs = taskStmt.getGeneratedKeys();
-            rs.next();
-            int taskId = rs.getInt(1);
-
-            if (rowsInserted> 0) {
-                return "Task successfully added";
-            } else {
-                return "Something went wrong, task not added";
+            if (rowsInserted > 0) {
+                ResultSet rs = taskStmt.getGeneratedKeys();
+                if (rs.next()) {
+                    int taskId = rs.getInt(1);
+                    return taskId;
+                }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
-            return "Something went wrong, task not added";
         }
+        return -1; // Return a default value or handle the failure case as per your requirement
     }
 
-
-
-
-    //TODO kig på boolean
 
     //Method for removing a task form a subproject
     public String deleteTaskFromSubproject(int taskId)  {

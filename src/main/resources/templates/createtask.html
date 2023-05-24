@@ -68,7 +68,8 @@
 <div class="container-box">
   <h1 class="welcome-heading">Add task</h1>
   <p class="welcome-text">Follow the steps below to add a task to your subproject</p>
-  <form th:action="@{/createtask/{subprojectId}(subprojectId=${subprojectId})}" th:object="${taskModel}" method="post">
+  <form th:action="@{/subprojectsuccess/{subprojectId}/createtask(subprojectId=${subprojectId})}" th:object="${taskModel}" method="post">
+
     <div class="form-group">
       <label class="form-label" for="taskName">Task Name:</label>
       <input class="form-input" type="text" id="taskName" th:field="*{taskName}" required/>

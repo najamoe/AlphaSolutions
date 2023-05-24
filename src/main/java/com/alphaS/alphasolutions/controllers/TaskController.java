@@ -30,42 +30,28 @@ public class TaskController {
         this.taskRepository = taskRepository;
         this.subprojectController = subprojectController;
     }
-    @GetMapping("/createtask/{subprojectId}")
-    public String showCreateTaskForm(@PathVariable("subprojectId") int subprojectId, Model model) {
+    @GetMapping("/subprojectsuccess/{subprojectId}/createtask")
+    public String addTaskToSubproject(@PathVariable int subprojectId, Model model) {
         TaskModel taskModel = new TaskModel();
         model.addAttribute("taskModel", new TaskModel());
         model.addAttribute("subprojectId", subprojectId);
         return "createtask";
     }
 
-    @PostMapping("/createtask/{subprojectId}")
+    @PostMapping("/subprojectsuccess/{subprojectId}/createtask")
     public String addTaskToSubproject(
-            @PathVariable("subprojectId") int subprojectId,
-            @ModelAttribute("task") TaskModel taskmodel,
-            Model model,
-            RedirectAttributes redirectAttributes
-    ) throws SQLException {
-        // Create the task using the repository
-        String message = taskRepository.createTask(taskmodel.getTaskName(), taskmodel.getTaskDescription(), taskmodel.getEstTime());
-
-        if (message.equals("Task successfully added")) {
-            // Add the task to the subproject using the repository
-            redirectAttributes.addFlashAttribute("successMessage", "Task added successfully.");
-            return "redirect:/tasksuccess/" + subprojectId;
-        } else {
-            // Failed to add the task
-            model.addAttribute("message", message);
-            return "error";
-        }
+            @PathVariable int subprojectId, @ModelAttribute("task") TaskModel taskModel, Model model,
+            RedirectAttributes redirectAttributes)  {
+            int taskId = taskService.createTask(subprojectId, taskModel);
+            redirectAttributes.addAttribute("taskId", taskId);
+            model.addAttribute("taskName", taskModel.getTaskName());
+            return "redirect:/tasksuccess";
     }
 
 
-
-
-
-    @GetMapping("/tasksuccess/{subprojectId}")
-    public String clientSuccess(@PathVariable("subprojectId") int subprojectId, Model model) {
-        model.addAttribute("projectId", subprojectId);
+    @GetMapping("/tasksuccess")
+    public String taskSuccess(@RequestParam("taskId") int taskId, Model model) {
+        model.addAttribute("taskId", taskId);
         return "taskSuccess";
     }
 
