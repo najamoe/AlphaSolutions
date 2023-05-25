@@ -62,10 +62,6 @@ public class SubprojectController {
         return "subproject";
     }
 
-
-
-
-
     @PostMapping("/project/{projectId}/subprojects/{subprojectId}/edit")
     @ResponseBody
     public ResponseEntity<String> editSubproject(@RequestParam String SubprojectName, @RequestParam String SubprojectDescription) {
@@ -82,37 +78,6 @@ public class SubprojectController {
         String message = subprojectService.deleteSubproject(subprojectId);
         return message;
     }
-
-/*
-    @GetMapping("/project/{projectId}/subproject/{subprojectId}/estimatedtime")
-    public String getTotalEstimatedTimeForSubproject(@PathVariable int subprojectId) {
-        try {
-            Duration estimatedTime = Duration.parse(subprojectService.getTotalEstimatedTimeForSubproject(subprojectId));
-            long totalMinutes = estimatedTime.toMinutes();
-            long days = totalMinutes / (24 * 60);
-            long hours = (totalMinutes % (24 * 60)) / 60;
-            long minutes = totalMinutes % 60;
-
-            return String.format("%d days, %d hours, %d minutes", days, hours, minutes);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "error";
-        }
-    }
-
-    @GetMapping("/project/{projectId}/combinedtime")
-    @ResponseBody
-    public ResponseEntity<String> getCombinedTimeForProject(@PathVariable int projectId) {
-        try {
-            String combinedTime = subprojectService.getCombinedTimeForProject(projectId);
-            return ResponseEntity.ok(combinedTime);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to calculate combined time for project");
-        }
-    }
-
- */
 }
 
 
