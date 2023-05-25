@@ -1,10 +1,13 @@
 package com.alphaS.alphasolutions.repositories;
+import com.alphaS.alphasolutions.model.TaskModel;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 
 import java.sql.*;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Repository
@@ -41,32 +44,34 @@ public class TaskRepository {
         }
         return -1; // Return a default value or handle the failure case as per your requirement
     }
-
-
-    //Method for removing a task form a subproject
-    public String deleteTaskFromSubproject(int taskId)  {
-        String message;
-
+    public List<TaskModel> readTasks(int subprojectId) throws SQLException {
         try (Connection con = dataSource.getConnection()) {
-            String sql = "DELETE FROM taskcompass.Task WHERE task_id = ?";
-            PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setInt(1, taskId);
-            int rowsDeleted = preparedStatement.executeUpdate();
+            String taskSql = "SELECT * FROM taskcompass.task WHERE subproject_id = ?";
 
-            if (rowsDeleted > 0) {
-                message = taskId + " has been deleted";
-            } else {
-                message = taskId + " was not deleted";
+            PreparedStatement taskStmt = con.prepareStatement(taskSql);
+            taskStmt.setInt(1, subprojectId);
+            ResultSet taskRs = taskStmt.executeQuery();
+
+            List<TaskModel> tasks = new ArrayList<>();
+            while (taskRs.next()) {
+                TaskModel task = new TaskModel();
+                task.setTaskId(taskRs.getInt("task_id"));
+                task.setTaskName(taskRs.getString("task_name"));
+                task.setTaskDescription(taskRs.getString("description_task"));
+                // Convert java.sql.Time to LocalTime
+                java.sql.Time sqlTime = taskRs.getTime("est_time");
+                if (sqlTime != null) {
+                    task.setEstTime(sqlTime.toLocalTime());
+                }
+                tasks.add(task);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return tasks;
         }
-
-        return message;
-
     }
 
-    //Method for editing task information
+
+
+
     public String editTask(int taskId, String taskName, String taskDescription, LocalTime estTime) throws SQLException {
         try (Connection con = dataSource.getConnection()){
             String sql = "UPDATE taskcompass.Task SET task_name = ?, description_task = ?, est_time = ?  WHERE task_id = ?";
@@ -84,10 +89,25 @@ public class TaskRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
+    //Method for removing a task form a subproject
+    public String deleteTaskFromSubproject(int taskId)  {
+        String message;
 
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "DELETE FROM taskcompass.Task WHERE task_id = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, taskId);
+            int rowsDeleted = preparedStatement.executeUpdate();
 
-
+            if (rowsDeleted > 0) {
+                return taskId + " has been deleted";
+            } else {
+                return taskId + " was not deleted";
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -1,6 +1,5 @@
 package com.alphaS.alphasolutions.model;
 
-import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -10,9 +9,7 @@ public class TaskModel {
     private String taskDescription;
     private LocalTime estTime;
 
-    private EmployeeModel assignedEmployee;
-
-    public TaskModel(int taskId, String taskName, String taskDescription, LocalTime estTime, LocalDate deadline, String jobTitleNeeded, String status, Color color) {
+    public TaskModel(int taskId, String taskName, String taskDescription, LocalTime estTime) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
@@ -52,15 +49,6 @@ public class TaskModel {
 
     public void setEstTime(LocalTime estTime) {
         this.estTime = estTime;
-    }
-
-
-    public EmployeeModel getAssignedEmployee() {
-        return assignedEmployee;
-    }
-
-    public void setAssignedEmployee(EmployeeModel assignedEmployee) {
-        this.assignedEmployee = assignedEmployee;
     }
 
 

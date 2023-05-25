@@ -26,7 +26,9 @@ public class ProjectService {
     public List<ProjectModel> readProjects(String username, String password) throws SQLException {
         return projectRepository.readProjects(username, password);
     }
-
+    public ProjectModel readSpecificProject(int projectId, String username, String password) {
+        return projectRepository.readSpecificProject(projectId, username, password);
+    }
     public String editProject(int projectId, String newProjectName, String newProjectDescription, LocalDate newStartDate, LocalDate newEndDate) {
         return projectRepository.editProject(projectId, newProjectName, newProjectDescription, newStartDate, newEndDate);
     }
@@ -35,9 +37,7 @@ public class ProjectService {
         return projectRepository.deleteProject(projectId);
     }
 
-    public ProjectModel readSpecificProject(int projectId, String username, String password) {
-        return projectRepository.readSpecificProject(projectId, username, password);
-    }
+
 
    
 }

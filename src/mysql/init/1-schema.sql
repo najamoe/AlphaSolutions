@@ -47,9 +47,9 @@ CREATE TABLE taskcompass.Task (
                                   task_name VARCHAR(255),
                                   description_task VARCHAR(255),
                                   est_time TIME,
-                                  project_id INT,
+                                  subproject_id INT,
                                   task_id INT PRIMARY KEY AUTO_INCREMENT,
-                                  FOREIGN KEY (project_id) REFERENCES taskcompass.project (project_id) ON DELETE CASCADE
+                                  FOREIGN KEY (subproject_id) REFERENCES taskcompass.subproject (subproject_id) ON DELETE CASCADE
 );
 
 ALTER TABLE taskcompass.Client

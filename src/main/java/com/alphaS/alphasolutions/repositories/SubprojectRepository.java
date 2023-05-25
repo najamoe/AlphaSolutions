@@ -1,9 +1,11 @@
 package com.alphaS.alphasolutions.repositories;
 import com.alphaS.alphasolutions.model.SubprojectModel;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import javax.sql.DataSource;
 import java.sql.*;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,45 +42,68 @@ public class SubprojectRepository {
 
 
 
-    public List<SubprojectModel> readSubProject(int projectId) {
-        List<SubprojectModel> subProjects = new ArrayList<>();
 
-        try (Connection con = dataSource.getConnection()) {
-            String sql = "SELECT * FROM taskcompass.subproject WHERE project_id = ?";
+    public List<SubprojectModel> readSubProjects(int projectId) throws SQLException {
+        try (Connection con = dataSource.getConnection()){
+            String sql = "SELECT * FROM taskcompass.Subproject WHERE project_id =?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, projectId);
             ResultSet rs = stmt.executeQuery();
-
+            List<SubprojectModel> subProjects = new ArrayList<>();
             while (rs.next()) {
                 SubprojectModel subProject = new SubprojectModel();
-                subProject.setSubProjectId(rs.getInt("sub_project_id"));
+                subProject.setSubProjectId(rs.getInt("subproject_id"));
                 subProject.setSubProjectName(rs.getString("sub_project_name"));
                 subProject.setSubProjectDescription(rs.getString("sub_project_description"));
-
                 subProjects.add(subProject);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return subProjects;
         }
 
-        return subProjects;
     }
 
-    public void addTaskToSubproject(int taskId, int subprojectId) {
-        try (Connection con = dataSource.getConnection()) {
-            String sql = "UPDATE taskcompass.Task SET subproject_id = ? WHERE task_id = ?";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, subprojectId);
-            stmt.setInt(2, taskId);
-            int rowsUpdated = stmt.executeUpdate();
 
-            if (rowsUpdated <= 0) {
-                throw new SQLException("Failed to add task to subproject");
+    public SubprojectModel readSpecificSubproject(int projectId) {
+        try (Connection con = dataSource.getConnection()) {
+            // Retrieve subproject details by projectId
+            String subprojectSql = "SELECT * FROM taskcompass.Subproject WHERE project_id = ?";
+            PreparedStatement subprojectStmt = con.prepareStatement(subprojectSql);
+            subprojectStmt.setInt(1, projectId);
+            ResultSet subprojectRs = subprojectStmt.executeQuery();
+
+            if (subprojectRs.next()) {
+                SubprojectModel subproject = new SubprojectModel();
+                subproject.setSubProjectId(subprojectRs.getInt("subproject_id"));
+                subproject.setSubProjectName(subprojectRs.getString("sub_project_name"));
+                subproject.setSubProjectDescription(subprojectRs.getString("sub_project_description"));
+
+                return subproject;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        return null; // Return null if the subproject is not found for the given projectId
     }
+
+    public int getSubprojectId(){
+        try (Connection con = dataSource.getConnection()) {
+            String subprojectSql = "SELECT subproject_id FROM taskcompass.Subproject";
+            PreparedStatement subprojectStmt = con.prepareStatement(subprojectSql);
+            ResultSet subprojectRs = subprojectStmt.executeQuery();
+
+            if (subprojectRs.next()) {
+                int subProjectId = subprojectRs.getInt("subproject_id");
+                return subProjectId;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return -1; // Return a default value or handle the failure case as per your requirement
+    }
+
+
 
     public String editSubproject(String SubProjectName, String SubProjectDescription) {
         try (Connection con = dataSource.getConnection()) {
@@ -116,65 +141,5 @@ public class SubprojectRepository {
             throw new RuntimeException(e);
         }
     }
-
-    /*
-    //Total time for all tasks in one Subproject
-    public String getTotalEstimatedTimeForSubproject(int subprojectId) {
-        try (Connection con = dataSource.getConnection()) {
-            String sql = "SELECT SUM(est_time) FROM taskcompass.Task t INNER JOIN taskcompass.Subproject_task st ON t.task_id = st.task_id WHERE st.subproject_id = ?";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, subprojectId);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                int totalSeconds = rs.getInt(1);
-                long days = totalSeconds / (60 * 60 * 24);
-                long hours = (totalSeconds % (60 * 60 * 24)) / (60 * 60);
-                long minutes = (totalSeconds % (60 * 60)) / 60;
-
-                return String.format("%d days, %d hours, %d minutes", days, hours, minutes);
-            }
-
-            return "Error";
-        } catch (SQLException e) {
-            throw new RuntimeException("Error", e);
-        }
-    }
-
-    //Total time for all subprojects task in project
-    public String getCombinedTimeForProject(int projectId) {
-        try (Connection con = dataSource.getConnection()) {
-            // Retrieve the subprojects associated with the project
-            String subprojectsSql = "SELECT * FROM taskcompass.subproject WHERE project_id = ?";
-            PreparedStatement subprojectsStmt = con.prepareStatement(subprojectsSql);
-            subprojectsStmt.setInt(1, projectId);
-            ResultSet subprojectsRs = subprojectsStmt.executeQuery();
-
-            Duration combinedTime = Duration.ZERO;
-
-            // Create an instance of SubprojectRepository
-            SubprojectRepository subprojectRepository = new SubprojectRepository(dataSource);
-
-            // Iterate over the subprojects and calculate the combined time
-            while (subprojectsRs.next()) {
-                int subprojectId = subprojectsRs.getInt("sub_project_id");
-                String subprojectTime = subprojectRepository.getTotalEstimatedTimeForSubproject(subprojectId);
-                combinedTime = combinedTime.plus(Duration.parse(subprojectTime));
-            }
-
-            long days = combinedTime.toDays();
-            long hours = combinedTime.toHoursPart();
-            long minutes = combinedTime.toMinutesPart();
-
-            return String.format("%d days, %d hours, %d minutes", days, hours, minutes);
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to calculate combined time for project", e);
-        }
-    }
-
-
-*/
-
-
 }
 

@@ -73,11 +73,11 @@ public class ClientRepository {
         return clients;
     }
 
-    public ClientModel readSpecificClient(int clientId) {
+    public ClientModel readSpecificClient(int projectId) {
         try (Connection con = dataSource.getConnection()) {
-            String sql = "SELECT * FROM taskcompass.Client WHERE client_id = ?";
+            String sql = "SELECT * FROM taskcompass.Client WHERE project_id = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, clientId);
+            stmt.setInt(1, projectId);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {

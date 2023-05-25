@@ -1,7 +1,9 @@
 package com.alphaS.alphasolutions.controllers;
 
 import com.alphaS.alphasolutions.model.SubprojectModel;
+import com.alphaS.alphasolutions.model.TaskModel;
 import com.alphaS.alphasolutions.service.SubprojectService;
+import com.alphaS.alphasolutions.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.sql.SQLException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +21,11 @@ import java.util.Map;
 public class SubprojectController {
 
     private final SubprojectService subprojectService;
+    private final TaskService taskService;
 
-    public SubprojectController(SubprojectService subprojectService) {
+    public SubprojectController(SubprojectService subprojectService, TaskService taskService) {
         this.subprojectService = subprojectService;
+        this.taskService = taskService;
     }
 
     @GetMapping("/clientsuccess/{projectId}/createsubproject")
@@ -45,12 +50,16 @@ public class SubprojectController {
     }
 
 
-    @GetMapping("/project/{projectId}/readsubproject")
-    @ResponseBody
-    public ResponseEntity<List<SubprojectModel>> readSubproject(@PathVariable int projectId) {
-        List<SubprojectModel> subprojects = subprojectService.readSubProject(projectId);
-        return ResponseEntity.ok(subprojects);
+    @GetMapping("/subproject/{projectId}")
+    public String getSubproject(@PathVariable("projectId") int projectId, Model model) throws SQLException {
+        SubprojectModel subproject = subprojectService.readSpecificSubproject(projectId);
+        int subprojectId = subprojectService.getSubprojectId(); // Retrieve subprojectId from subproject object
+        List<TaskModel> tasks = taskService.readSpecificTask(subprojectId);
+        model.addAttribute("subproject", subproject);
+        model.addAttribute("tasks", tasks);
+        return "subproject";
     }
+
 
     @PostMapping("/project/{projectId}/subprojects/{subprojectId}/edit")
     @ResponseBody
@@ -68,6 +77,7 @@ public class SubprojectController {
         String message = subprojectService.deleteSubproject(subprojectId);
         return message;
     }
+
 /*
     @GetMapping("/project/{projectId}/subproject/{subprojectId}/estimatedtime")
     public String getTotalEstimatedTimeForSubproject(@PathVariable int subprojectId) {

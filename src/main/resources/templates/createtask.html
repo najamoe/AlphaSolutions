@@ -66,6 +66,7 @@
 <div layout:fragment="content">
 
 <div class="container-box">
+  <p class="welcome-text" th:text="${message}"></p>
   <h1 class="welcome-heading">Add task</h1>
   <p class="welcome-text">Follow the steps below to add a task to your subproject</p>
   <form th:action="@{/subprojectsuccess/{subprojectId}/createtask(subprojectId=${subprojectId})}" th:object="${taskModel}" method="post">
@@ -87,6 +88,18 @@
       <button class="form-button" type="submit">Done</button>
     </div>
   </form>
+
+  <div class="container" id="finish-container">
+    <div class="project">
+      <div class="row">
+        <div class="col-md-3" id="finishwindow">
+          <i class="fa-solid fa-check" style="font-size: 26px; color: darkgoldenrod"></i>
+          <a th:href="@{/tasksuccess/{subprojectId}(subprojectId=${subprojectId})}">End project-setup</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 </div>
 </div>
