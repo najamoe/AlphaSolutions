@@ -15,22 +15,18 @@ public class ClientService {
     }
 
     public int createClient(String clientName, int contactPoNo, String contactPerson, int companyPoNo, String address, int zipCode, String country) throws SQLException {
-       return clientRepository.createClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country);
+        return clientRepository.createClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country);
     }
 
     public List<ClientModel> readClients() throws SQLException {
         return clientRepository.readClients();
     }
-    public ClientModel readSpecificClient(int projectId) {
-        return clientRepository.readSpecificClient(projectId);
+    public ClientModel readSpecificClient(int clientId) {
+        return clientRepository.readSpecificClient(clientId);
     }
 
     public String editClient(String clientName, int contactPoNo, String contactPerson, int companyPoNo, String address, int zipCode, String country, int clientId) throws SQLException {
-       return clientRepository.editClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country, clientId);
-
+        return clientRepository.editClient(clientName, contactPoNo, contactPerson, companyPoNo, address, zipCode, country, clientId);
     }
 
-    public String deleteClient(int clientId) {
-        return clientRepository.deletedClient(clientId);
     }
-}

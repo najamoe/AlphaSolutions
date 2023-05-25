@@ -124,17 +124,14 @@
             // Get the modal elements
             var projectModal = document.getElementById("projectModal");
             var clientModal = document.getElementById("clientModal");
-            var clientModal = document.getElementById("subprojectModal");
 
             // Get the buttons that open the modals
             var projectEditButton = document.getElementById("projectEditButton");
             var clientEditButton = document.getElementById("clientEditButton");
-            var clientEditButton = document.getElementById("subprojectEditButton");
 
             // Get the <span> elements that close the modals
             var projectCloseButton = document.getElementById("projectCloseButton");
             var clientCloseButton = document.getElementById("clientCloseButton");
-            var clientCloseButton = document.getElementById("subprojectCloseButton");
 
             // Function to open the project modal
             function openProjectModal() {
@@ -285,68 +282,6 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12" id="detailcontainer">
-            <div class="container-fluid">
-                <div>
-                    <h2>Subproject Details</h2>
-                    <p>ID: <span th:text="${subproject.subprojectId}"></span></p>
-                    <p>Name: <span th:text="${subproject.subProjectName}"></span></p>
-                    <p>Description: <span th:text="${subproject.subProjectDescription}"></span></p>
-                </div>
-                <div class="edit-button-container">
-                    <button id="subprojectEditButton">Edit Client</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="subprojectModal" class="modal">
-        <div class="modal-content">
-            <span id="subprojectCloseButton" class="close">&times;</span>
-            <form action="#" th:action="@{/subproject/edit}" th:object="${subproject}" method="post">
-            <label for="projectName">Subproject Name:</label>
-                <input type="text" id="projectName" name="newSubprojectName" th:value="${subproject.subProjectName}"/>
-
-                <label for="projectDescription">Subproject Description:</label>
-                <input type="text" id="projectDescription" name="newSubprojectDescription" th:value="${subproject.subProjectDescription}"/>
-
-                <input type="submit" value="Update Project"/>
-
-                <div th:if="${result}">
-                    <p th:text="${result}" class="result-message"></p>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
-    <div class="row">
-        <div class="col-md-12" id="detailcontainer">
-            <div class="container-fluid">
-
-                <table>
-                    <tr>
-                        <th>Task Name</th>
-                        <th>Task Description</th>
-                        <th>Estimated Time</th>
-                    </tr>
-                    <tr th:each="task : ${tasks}">
-                        <td th:text="${task.taskName}"></td>
-                        <td th:text="${task.taskDescription}"></td>
-                        <td th:text="${task.estDays} + ' days ' + ${task.estHours} + ' hours ' + ${task.estMinutes} + ' minutes'"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">Total Time for Subproject:</td>
-                        <td>
-                            <span th:text="${taskTime}"></span>
-                        </td>
-                    </tr>
-
-                </table>
-            </div>
-        </div>
-    </div>
 
 
     <div class="contatiner" id="optioncontainer">

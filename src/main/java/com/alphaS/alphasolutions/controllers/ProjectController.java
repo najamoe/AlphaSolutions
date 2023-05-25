@@ -82,20 +82,11 @@ public class ProjectController {
         String username = (String) session.getAttribute("username");
         String password = (String) session.getAttribute("password");
 
-        ProjectModel project = (ProjectModel) projectService.readSpecificProject(projectId, username, password);
+        ProjectModel project = projectService.readSpecificProject(projectId, username, password);
         ClientModel client = (ClientModel) clientService.readSpecificClient(projectId);
-        SubprojectModel subproject = (SubprojectModel) subprojectService.readSpecificSubproject(projectId);
 
-        int subprojectId = subprojectService.getSubprojectId(projectId); // Retrieve subprojectId from subproject object
-        List<TaskModel> tasks = taskService.readSpecificTask(subprojectId);
-        String taskTime = taskService.getTotalTime(subprojectId); // Get total time as a stringmodel.addAttribute("project", project);
         model.addAttribute("project", project);
         model.addAttribute("client", client);
-        model.addAttribute("clientModel", new ClientModel()); // Add an empty client model to the model
-        model.addAttribute("subproject", subproject);
-        model.addAttribute("subprojectModel", new SubprojectModel());// Add an empty client model to the model
-        model.addAttribute("tasks", tasks);
-        model.addAttribute("taskTime", taskTime);
         return "project";
     }
 
