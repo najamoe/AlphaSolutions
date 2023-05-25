@@ -1,9 +1,10 @@
 package com.alphaS.alphasolutions.controllers;
 
+import com.alphaS.alphasolutions.model.ClientModel;
 import com.alphaS.alphasolutions.model.ProjectModel;
-import com.alphaS.alphasolutions.service.ClientService;
-import com.alphaS.alphasolutions.service.ProjectService;
-import com.alphaS.alphasolutions.service.EmployeeService;
+import com.alphaS.alphasolutions.model.SubprojectModel;
+import com.alphaS.alphasolutions.model.TaskModel;
+import com.alphaS.alphasolutions.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,11 +21,15 @@ public class ProjectController {
     private final ProjectService projectService;
     private final EmployeeService employeeService;
     private final ClientService clientService;
+  private final TaskService taskService;
+  private final SubprojectService subprojectService;
 
-    public ProjectController(ProjectService projectService, EmployeeService employeeService, ClientService clientService) {
+    public ProjectController(ProjectService projectService, EmployeeService employeeService, ClientService clientService, TaskService taskService, SubprojectService subprojectService) {
         this.projectService = projectService;
         this.employeeService = employeeService;
         this.clientService = clientService;
+        this.taskService = taskService;
+        this.subprojectService = subprojectService;
     }
 
     @GetMapping("/createproject")
@@ -71,22 +76,32 @@ public class ProjectController {
         }
     }
 
+    //For reading project details on project template
     @GetMapping("/project/details/{projectId}")
-    public String readSpecificProject(@PathVariable("projectId") int projectId, Model model, HttpSession session) {
+    public String readSpecificProject(@PathVariable("projectId") int projectId, Model model, HttpSession session) throws SQLException {
         String username = (String) session.getAttribute("username");
         String password = (String) session.getAttribute("password");
 
-        ProjectModel project = projectService.readSpecificProject(projectId, username, password);
-        if (project == null) {
-            // Handle case where project is not found
-            return "projectNotFound";
-        }
+        ProjectModel project = (ProjectModel) projectService.readSpecificProject(projectId, username, password);
+        ClientModel client = (ClientModel) clientService.readSpecificClient(projectId);
+        SubprojectModel subproject = (SubprojectModel) subprojectService.readSpecificSubproject(projectId);
 
+        int subprojectId = subprojectService.getSubprojectId(projectId); // Retrieve subprojectId from subproject object
+        List<TaskModel> tasks = taskService.readSpecificTask(subprojectId);
+        String taskTime = taskService.getTotalTime(subprojectId); // Get total time as a stringmodel.addAttribute("project", project);
         model.addAttribute("project", project);
+        model.addAttribute("client", client);
+        model.addAttribute("clientModel", new ClientModel()); // Add an empty client model to the model
+        model.addAttribute("subproject", subproject);
+        model.addAttribute("subprojectModel", new SubprojectModel());// Add an empty client model to the model
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("taskTime", taskTime);
         return "project";
     }
 
 
+
+    //For editing projects
     @PostMapping("/project/details/{projectId}")
     public String editSpecificProject(@PathVariable("projectId") int projectId,
                                       @RequestParam("newProjectName") String newProjectName,

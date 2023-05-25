@@ -95,7 +95,7 @@ public class ClientRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null; // Return null if the client is not found
+        return null;
     }
 
     public String editClient(String newClientName, int newContactPoNo, String newContactPerson, int newCompanyPoNo,

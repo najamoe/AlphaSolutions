@@ -43,11 +43,10 @@ public class SubprojectRepository {
 
 
 
-    public List<SubprojectModel> readSubProjects(int projectId) throws SQLException {
+    public List<SubprojectModel> readSubProjects() throws SQLException {
         try (Connection con = dataSource.getConnection()){
-            String sql = "SELECT * FROM taskcompass.Subproject WHERE project_id =?";
+            String sql = "SELECT * FROM taskcompass.Subproject";
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, projectId);
             ResultSet rs = stmt.executeQuery();
             List<SubprojectModel> subProjects = new ArrayList<>();
             while (rs.next()) {
@@ -63,12 +62,12 @@ public class SubprojectRepository {
     }
 
 
-    public SubprojectModel readSpecificSubproject(int projectId) {
+    public SubprojectModel readSpecificSubproject(int project_id) {
         try (Connection con = dataSource.getConnection()) {
             // Retrieve subproject details by projectId
             String subprojectSql = "SELECT * FROM taskcompass.Subproject WHERE project_id = ?";
             PreparedStatement subprojectStmt = con.prepareStatement(subprojectSql);
-            subprojectStmt.setInt(1, projectId);
+            subprojectStmt.setInt(1, project_id);
             ResultSet subprojectRs = subprojectStmt.executeQuery();
 
             if (subprojectRs.next()) {
@@ -86,7 +85,7 @@ public class SubprojectRepository {
         return null; // Return null if the subproject is not found for the given projectId
     }
 
-    public int getSubprojectId(){
+    public int getSubprojectId(int projectId){
         try (Connection con = dataSource.getConnection()) {
             String subprojectSql = "SELECT subproject_id FROM taskcompass.Subproject";
             PreparedStatement subprojectStmt = con.prepareStatement(subprojectSql);

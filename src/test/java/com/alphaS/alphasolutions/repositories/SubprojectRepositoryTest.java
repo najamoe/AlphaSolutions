@@ -31,7 +31,7 @@ class SubprojectRepositoryTest {
         SubprojectService subprojectService = new SubprojectService();
         int subprojectId = 1; // Provide a valid subproject ID
 
-        SubprojectModel subproject = subprojectService.readSpecificSubproject(subprojectId);
+        SubprojectModel subproject = subprojectService.readSpecificSubproject();
 
         Assertions.assertNotNull(subproject);
         Assertions.assertEquals(subprojectId, subproject.getSubprojectId());

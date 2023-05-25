@@ -1,9 +1,7 @@
 package com.alphaS.alphasolutions.controllers;
 
-import com.alphaS.alphasolutions.model.SubprojectModel;
-import com.alphaS.alphasolutions.model.TaskModel;
-import com.alphaS.alphasolutions.service.SubprojectService;
-import com.alphaS.alphasolutions.service.TaskService;
+import com.alphaS.alphasolutions.model.*;
+import com.alphaS.alphasolutions.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -11,10 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.Duration;
 import java.util.List;
-import java.util.Map;
+
 
 
 @Controller
@@ -53,7 +51,7 @@ public class SubprojectController {
     @GetMapping("/subproject/{projectId}")
     public String getSubproject(@PathVariable("projectId") int projectId, Model model) throws SQLException {
         SubprojectModel subproject = subprojectService.readSpecificSubproject(projectId);
-        int subprojectId = subprojectService.getSubprojectId(); // Retrieve subprojectId from subproject object
+        int subprojectId = subprojectService.getSubprojectId(projectId); // Retrieve subprojectId from subproject object
         List<TaskModel> tasks = taskService.readSpecificTask(subprojectId);
         String taskTime = taskService.getTotalTime(subprojectId); // Get total time as a string
         model.addAttribute("subproject", subproject);
@@ -62,17 +60,20 @@ public class SubprojectController {
         return "subproject";
     }
 
-    @PostMapping("/project/{projectId}/subprojects/{subprojectId}/edit")
-    @ResponseBody
-    public ResponseEntity<String> editSubproject(@RequestParam String SubprojectName, @RequestParam String SubprojectDescription) {
-        try {
-            String result = subprojectService.editSubproject(SubprojectName, SubprojectDescription);
-            return ResponseEntity.ok(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to edit subproject");
-        }
+
+    @PostMapping("/subproject/edit")
+    public String editSubproject(@RequestParam("newSubprojectName") String newSubprojectName,
+                                 @RequestParam("newSubprojectDescription") String newSubprojectDescription, int project_id,
+                                 Model model) {
+        String result = subprojectService.editSubproject(newSubprojectName, newSubprojectDescription);
+        SubprojectModel subproject = subprojectService.readSpecificSubproject(project_id);
+        model.addAttribute("subproject", subproject);
+        model.addAttribute("result", result);
+        return "subproject";
     }
+
+
+
     @PostMapping("/project/{projectId}/subproject/delete")
     public String deleteSubproject(@RequestParam int subprojectId) {
         String message = subprojectService.deleteSubproject(subprojectId);

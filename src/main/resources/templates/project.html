@@ -9,8 +9,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+
     <style>
-        #projectcontainer, #clientcontainer, #subprojectcontainer, #taskcontainer {
+        #detailcontainer {
             background-color: white;
             margin: 50px 40px 30px 50px; /*Top, right, bottom, left*/
             border-radius: 10px;
@@ -41,59 +42,325 @@
             border-radius: 10px;
             margin: 20px 20px 20px 20px;
         }
+
+        .projectname {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .edit-button-container {
+            margin-left: auto;
+        }
+
+        /* CSS styling for the modal */
+        .modal {
+            display: none; /* Hide the modal by default */
+            position: fixed; /* Position it on top of the content */
+            z-index: 1; /* Set a higher z-index to make it appear on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Enable scrolling if needed */
+            background-color: rgba(0, 0, 0, 0.4); /* Add a semi-transparent background color */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* Center the modal vertically and horizontally */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            background-color: #f2f2f2;
+            text-align: left;
+            padding: 10px;
+        }
+
+        tbody td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #e6e6e6;
+        }
+
+        p.no-projects {
+            font-style: italic;
+            color: #999;
+        }
+
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get the modal elements
+            var projectModal = document.getElementById("projectModal");
+            var clientModal = document.getElementById("clientModal");
+            var clientModal = document.getElementById("subprojectModal");
+
+            // Get the buttons that open the modals
+            var projectEditButton = document.getElementById("projectEditButton");
+            var clientEditButton = document.getElementById("clientEditButton");
+            var clientEditButton = document.getElementById("subprojectEditButton");
+
+            // Get the <span> elements that close the modals
+            var projectCloseButton = document.getElementById("projectCloseButton");
+            var clientCloseButton = document.getElementById("clientCloseButton");
+            var clientCloseButton = document.getElementById("subprojectCloseButton");
+
+            // Function to open the project modal
+            function openProjectModal() {
+                projectModal.style.display = "block";
+            }
+
+            // Function to open the client modal
+            function openClientModal() {
+                clientModal.style.display = "block";
+            }
+
+            // Function to close the project modal
+            function closeProjectModal() {
+                projectModal.style.display = "none";
+            }
+
+            // Function to close the client modal
+            function closeClientModal() {
+                clientModal.style.display = "none";
+            }
+
+            // Event listeners to open and close the project modal
+            projectEditButton.addEventListener("click", openProjectModal);
+            projectCloseButton.addEventListener("click", closeProjectModal);
+            window.addEventListener("click", function (event) {
+                if (event.target === projectModal) {
+                    closeProjectModal();
+                }
+            });
+
+            // Event listeners to open and close the client modal
+            clientEditButton.addEventListener("click", openClientModal);
+            clientCloseButton.addEventListener("click", closeClientModal);
+            window.addEventListener("click", function (event) {
+                if (event.target === clientModal) {
+                    closeClientModal();
+                }
+            });
+        });
+    </script>
 </head>
 
 
 <body>
 <div layout:fragment="content">
 
-    <div class="container" id="projectcontainer">
+    <div class="container" id="detailcontainer">
         <div class="projectname">
             <div class="row">
                 <div class="col-md-12" id="projectname">
-                    <form action="#" th:action="@{/project/details/{projectId}(projectId=${project.projectId})}"
-                          th:object="${project}" method="post">
-
-                        <label for="projectName">Project Name:</label>
-                        <input type="text" id="projectName" name="newProjectName" th:value="${project.projectName}"/>
-
-                        <label for="projectDescription">Project Description:</label>
-                        <input type="text" id="projectDescription" name="newProjectDescription"
-                               th:value="${project.projectDescription}"/>
-
-                        <label for="startDate">Start Date:</label>
-                        <input type="text" id="startDate" name="newStartDate" th:value="${project.startDate}"/>
-
-                        <label for="endDate">End Date:</label>
-                        <input type="text" id="endDate" name="newEndDate" th:value="${project.endDate}"/>
-
-                        <input type="submit" value="Update Project"/>
-
-                        <div th:if="${result}">
-                            <p th:text="${result}" class="result-message"></p>
-                        </div>
-                    </form>
+                    <div class="project-details">
+                        <h2>Project Details</h2>
+                        <p>Name: <span th:text="${project.projectName}"></span></p>
+                        <p>Description: <span th:text="${project.projectDescription}"></span></p>
+                        <p>Start date: <span th:text="${project.startDate}"></span></p>
+                        <p>End date: <span th:text="${project.endDate}"></span></p>
+                    </div>
+                    <div class="edit-button-container">
+                        <button id="projectEditButton">Edit Project</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <a th:href="@{'/subproject/' + ${projectId}}">Go to Subproject</a>
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <span id="projectCloseButton" class="close">&times;</span>
+            <form action="#" th:action="@{/project/details/{projectId}(projectId=${project.projectId})}"
+                  th:object="${project}" method="post">
+
+                <label for="projectName">Project Name:</label>
+                <input type="text" id="projectName" name="newProjectName" th:value="${project.projectName}"/>
+
+                <label for="projectDescription">Project Description:</label>
+                <input type="text" id="projectDescription" name="newProjectDescription"
+                       th:value="${project.projectDescription}"/>
+
+                <label for="startDate">Start Date:</label>
+                <input type="text" id="startDate" name="newStartDate" th:value="${project.startDate}"/>
+
+                <label for="endDate">End Date:</label>
+                <input type="text" id="endDate" name="newEndDate" th:value="${project.endDate}"/>
+
+                <input type="submit" value="Update Project"/>
+
+                <div th:if="${result}">
+                    <p th:text="${result}" class="result-message"></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container" id="detailcontainer">
+        <div class="projectname">
+            <div class="row">
+                <div class="col-md-12" id="projectname">
+                    <div class="client-details">
+                        <h2>Client Details</h2>
+                        <p>Client Name: <span th:text="${client.clientName}"></span></p>
+                        <p>Contact PO No: <span th:text="${client.contactPoNo}"></span></p>
+                        <p>Contact Person: <span th:text="${client.contactPerson}"></span></p>
+                        <p>Company PO No: <span th:text="${client.companyPoNo}"></span></p>
+                        <p>Address: <span th:text="${client.address}"></span></p>
+                        <p>Zip Code: <span th:text="${client.zipcode}"></span></p>
+                        <p>Country: <span th:text="${client.country}"></span></p>
+                    </div>
+                    <div class="edit-button-container">
+                        <button id="clientEditButton">Edit Client</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="clientModal" class="modal">
+        <div class="modal-content">
+            <span id="clientCloseButton" class="close">&times;</span>
+            <form action="#" th:action="@{/client/details/{clientId}(clientId=${client.clientId})}"
+                  th:object="${client}" method="post">
+
+                <label for="clientName">Client Name:</label>
+                <input type="text" id="clientName" name="newClientName" th:value="${client.clientName}"/>
+
+                <label for="contactPoNo">Contact PO No:</label>
+                <input type="text" id="contactPoNo" name="newContactPoNo" th:value="${client.contactPoNo}"/>
+
+                <label for="contactPerson">Contact Person:</label>
+                <input type="text" id="contactPerson" name="newContactPerson" th:value="${client.contactPerson}"/>
+
+                <label for="companyPoNo">Company PO No:</label>
+                <input type="text" id="companyPoNo" name="newCompanyPoNo" th:value="${client.companyPoNo}"/>
+
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="newAddress" th:value="${client.address}"/>
+
+                <label for="zipcode">Zip Code:</label>
+                <input type="text" id="zipcode" name="newZipcode" th:value="${client.zipcode}"/>
+
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="newCountry" th:value="${client.country}"/>
+
+                <input type="submit" value="Update Client"/>
+
+                <div th:if="${result}">
+                    <p th:text="${result}" class="result-message"></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" id="detailcontainer">
+            <div class="container-fluid">
+                <div>
+                    <h2>Subproject Details</h2>
+                    <p>ID: <span th:text="${subproject.subprojectId}"></span></p>
+                    <p>Name: <span th:text="${subproject.subProjectName}"></span></p>
+                    <p>Description: <span th:text="${subproject.subProjectDescription}"></span></p>
+                </div>
+                <div class="edit-button-container">
+                    <button id="subprojectEditButton">Edit Client</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="subprojectModal" class="modal">
+        <div class="modal-content">
+            <span id="subprojectCloseButton" class="close">&times;</span>
+            <form action="#" th:action="@{/subproject/edit}" th:object="${subproject}" method="post">
+            <label for="projectName">Subproject Name:</label>
+                <input type="text" id="projectName" name="newSubprojectName" th:value="${subproject.subProjectName}"/>
+
+                <label for="projectDescription">Subproject Description:</label>
+                <input type="text" id="projectDescription" name="newSubprojectDescription" th:value="${subproject.subProjectDescription}"/>
+
+                <input type="submit" value="Update Project"/>
+
+                <div th:if="${result}">
+                    <p th:text="${result}" class="result-message"></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12" id="detailcontainer">
+            <div class="container-fluid">
+
+                <table>
+                    <tr>
+                        <th>Task Name</th>
+                        <th>Task Description</th>
+                        <th>Estimated Time</th>
+                    </tr>
+                    <tr th:each="task : ${tasks}">
+                        <td th:text="${task.taskName}"></td>
+                        <td th:text="${task.taskDescription}"></td>
+                        <td th:text="${task.estDays} + ' days ' + ${task.estHours} + ' hours ' + ${task.estMinutes} + ' minutes'"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Total Time for Subproject:</td>
+                        <td>
+                            <span th:text="${taskTime}"></span>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+    </div>
 
 
     <div class="contatiner" id="optioncontainer">
-    <div class="row">
-        <div class="col-md-3" id="viewprojectsswindow">
-            <i class="fa-regular fa-folder" style="font-size: 26px; color: darkgoldenrod"></i>
-            <a href="/readprojects">View Projects</a>
-        </div>
-        <div class="col-md-3" id="dashboardwindow">
-            <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
-            <a href="/dashboard">Go to dashboard</a>
+        <div class="row">
+            <div class="col-md-3" id="viewprojectsswindow">
+                <i class="fa-regular fa-folder" style="font-size: 26px; color: darkgoldenrod"></i>
+                <a href="/readprojects">View Projects</a>
+            </div>
+            <div class="col-md-3" id="dashboardwindow">
+                <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
+                <a href="/dashboard">Go to dashboard</a>
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 
