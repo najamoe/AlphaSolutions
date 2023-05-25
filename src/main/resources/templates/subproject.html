@@ -111,7 +111,7 @@
     <div class="welcome">
       <div class="row">
         <div class="col-md-12" id="welcomemsg">
-          <h1 class="welcome-heading">Your sybprojects</h1>
+          <h1 class="welcome-heading">Your subprojects</h1>
         </div>
       </div>
     </div>
@@ -145,9 +145,17 @@
             <tr th:each="task : ${tasks}">
               <td th:text="${task.taskName}"></td>
               <td th:text="${task.taskDescription}"></td>
-              <td th:text="${task.estTime}"></td>
+              <td th:text="${task.estDays} + ' days ' + ${task.estHours} + ' hours ' + ${task.estMinutes} + ' minutes'"></td>
             </tr>
+            <tr>
+              <td colspan="3">Total Time for Subproject:</td>
+              <td>
+                <span th:text="${taskTime}"></span>
+              </td>
+            </tr>
+
           </table>
+
         </div>
       </div>
     </div>

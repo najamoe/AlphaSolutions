@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 
 import java.sql.*;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +21,17 @@ public class TaskRepository {
     }
 
     //Method for creating a task to a subproject
-    public int createTask(String taskName, String taskDescription, LocalTime estTime, int subprojectId) {
+    public int createTask(String taskName, String taskDescription, int estDays, int estHours, int estMinutes, int subprojectId) {
         try (Connection con = dataSource.getConnection()) {
-            String taskSql = "INSERT INTO taskcompass.Task (task_name, description_task, est_time, subproject_id) VALUES (?, ?, ?, ?)";
+            String taskSql = "INSERT INTO taskcompass.Task (task_name, description_task, est_days, est_hours, est_minutes, subproject_id) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement taskStmt = con.prepareStatement(taskSql, Statement.RETURN_GENERATED_KEYS);
 
             taskStmt.setString(1, taskName);
             taskStmt.setString(2, taskDescription);
-            taskStmt.setTime(3, Time.valueOf(estTime));
-            taskStmt.setInt(4, subprojectId);
+            taskStmt.setInt(3, estDays);
+            taskStmt.setInt(4, estHours);
+            taskStmt.setInt(5, estMinutes);
+            taskStmt.setInt(6, subprojectId);
 
             int rowsInserted = taskStmt.executeUpdate();
 
@@ -44,9 +47,10 @@ public class TaskRepository {
         }
         return -1; // Return a default value or handle the failure case as per your requirement
     }
+
     public List<TaskModel> readTasks(int subprojectId) throws SQLException {
         try (Connection con = dataSource.getConnection()) {
-            String taskSql = "SELECT * FROM taskcompass.task WHERE subproject_id = ?";
+            String taskSql = "SELECT * FROM taskcompass.Task WHERE subproject_id = ?";
 
             PreparedStatement taskStmt = con.prepareStatement(taskSql);
             taskStmt.setInt(1, subprojectId);
@@ -58,11 +62,9 @@ public class TaskRepository {
                 task.setTaskId(taskRs.getInt("task_id"));
                 task.setTaskName(taskRs.getString("task_name"));
                 task.setTaskDescription(taskRs.getString("description_task"));
-                // Convert java.sql.Time to LocalTime
-                java.sql.Time sqlTime = taskRs.getTime("est_time");
-                if (sqlTime != null) {
-                    task.setEstTime(sqlTime.toLocalTime());
-                }
+                task.setEstDays(taskRs.getInt("est_days"));
+                task.setEstHours(taskRs.getInt("est_hours"));
+                task.setEstMinutes(taskRs.getInt("est_minutes"));
                 tasks.add(task);
             }
             return tasks;
@@ -72,15 +74,19 @@ public class TaskRepository {
 
 
 
-    public String editTask(int taskId, String taskName, String taskDescription, LocalTime estTime) throws SQLException {
-        try (Connection con = dataSource.getConnection()){
-            String sql = "UPDATE taskcompass.Task SET task_name = ?, description_task = ?, est_time = ?  WHERE task_id = ?";
+
+    public String editTask(int taskId, String taskName, String taskDescription, int estDays, int estHours, int estMinutes) throws SQLException {
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "UPDATE taskcompass.Task SET task_name = ?, description_task = ?, est_days = ?, est_hours = ?, est_minutes = ? WHERE task_id = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
 
             stmt.setString(1, taskName);
             stmt.setString(2, taskDescription);
-            stmt.setTime(3, Time.valueOf(estTime));
-            stmt.setInt(4, taskId);
+            stmt.setInt(3, estDays);
+            stmt.setInt(4, estHours);
+            stmt.setInt(5, estMinutes);
+            stmt.setInt(6, taskId);
+
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
                 return "Changes for task " + taskId + " successfully updated";
@@ -90,6 +96,7 @@ public class TaskRepository {
             throw new RuntimeException(e);
         }
     }
+
 
     //Method for removing a task form a subproject
     public String deleteTaskFromSubproject(int taskId)  {
@@ -110,4 +117,30 @@ public class TaskRepository {
             throw new RuntimeException(e);
         }
     }
+
+    public String getTotalTime(int subprojectId) {
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "SELECT " +
+                    "  CONCAT(" +
+                    "    FLOOR(SUM(est_days)), ' days ', " +
+                    "    FLOOR(SUM(est_hours)), ' hours ', " +
+                    "    FLOOR(SUM(est_minutes)), ' minutes' " +
+                    "  ) AS total_est_time " +
+                    "FROM " +
+                    "  taskcompass.Task " +
+                    "WHERE " +
+                    "  subproject_id = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, subprojectId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            String totalTime = resultSet.getString("total_est_time");
+            return totalTime;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 }

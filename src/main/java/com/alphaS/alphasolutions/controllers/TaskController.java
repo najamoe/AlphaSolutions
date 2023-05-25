@@ -104,7 +104,7 @@ public class TaskController {
     @PostMapping("/edittask")
     public ResponseEntity<String> editTask(@RequestBody TaskModel task) {
         try {
-            String message = taskService.editTask(task.getTaskId(), task.getTaskName(), task.getTaskDescription(), task.getEstTime());
+            String message = taskService.editTask(task.getTaskId(), task.getTaskName(), task.getTaskDescription(), task.getEstDays(), task.getEstHours(), task.getEstHours());
             return ResponseEntity.ok(message);
         } catch (SQLException e) {
             e.printStackTrace();

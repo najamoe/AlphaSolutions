@@ -55,10 +55,15 @@ public class SubprojectController {
         SubprojectModel subproject = subprojectService.readSpecificSubproject(projectId);
         int subprojectId = subprojectService.getSubprojectId(); // Retrieve subprojectId from subproject object
         List<TaskModel> tasks = taskService.readSpecificTask(subprojectId);
+        String taskTime = taskService.getTotalTime(subprojectId); // Get total time as a string
         model.addAttribute("subproject", subproject);
         model.addAttribute("tasks", tasks);
+        model.addAttribute("taskTime", taskTime);
         return "subproject";
     }
+
+
+
 
 
     @PostMapping("/project/{projectId}/subprojects/{subprojectId}/edit")
