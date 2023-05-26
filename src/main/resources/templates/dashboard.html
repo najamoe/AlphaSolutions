@@ -80,6 +80,37 @@
             </div>
         </div>
     </div>
+
+    <div class="container" id="projectcontainer">
+        <div class="projectname">
+            <div class="row">
+                <div class="col-md-12" id="projectname">
+                    <form action="#" th:action="@{/project/details/{projectId}(projectId=${project.projectId})}"
+                          th:object="${project}" method="post">
+
+                        <label for="projectName">Project Name:</label>
+                        <input type="text" id="projectName" name="newProjectName" th:value="${project.projectName}"/>
+
+                        <label for="projectDescription">Project Description:</label>
+                        <input type="text" id="projectDescription" name="newProjectDescription"
+                               th:value="${project.projectDescription}"/>
+
+                        <label for="startDate">Start Date:</label>
+                        <input type="text" id="startDate" name="newStartDate" th:value="${project.startDate}"/>
+
+                        <label for="endDate">End Date:</label>
+                        <input type="text" id="endDate" name="newEndDate" th:value="${project.endDate}"/>
+
+                        <input type="submit" value="Update Project"/>
+
+                        <div th:if="${result}">
+                            <p th:text="${result}" class="result-message"></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container" id="projectwindow">
         <div class="project">
             <div class="row">
