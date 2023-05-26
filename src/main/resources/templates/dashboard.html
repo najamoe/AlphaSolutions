@@ -26,81 +26,18 @@
         }
     </script>
     <style>
-        #welcomecontainer {
-           background-color: white;
-            margin: 50px 40px 20px 50px; /*Top, right, bottom, left*/
-            border-radius: 10px;
-        }
-
-        #howtocaontainer{
+        #welcomecontainer, #howtocontainer, #projectwindow, #projectviewcontainer {
             background-color: white;
-            margin: 50px 40px 20px 50px; /*Top, right, bottom, left*/
+            margin: 50px 40px 20px 50px; /* Top, right, bottom, left */
             border-radius: 10px;
-        }
-
-        #projectwindow{
-            margin: 30px 40px 20px 50px; /*Top, right, bottom, left*/
-            border-radius: 10px;
-            background-color: white;
-            height: auto;
-        }
-
-        #viewprojectswindow{
-            background-color: #f3f6fd;
-            height: 130px;
-            width: 130px;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 40px;
-            margin-left: 60px;
-            margin-bottom: 60px;
-        }
-
-        #newprojectswindow, #createteamwindow{
-            background-color: #f3f6fd;
-            height: 130px;
-            width: 130px;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 40px;
-            margin-left: 60px;
-            margin-bottom: 60px;
-        }
-        #projectviewcontainer {
-            margin: 30px auto; /* Centers the container horizontally */
-            border-radius: 10px;
-            background-color: white;
-            padding: 20px;
-            width: 100%;
-            max-width: 1000px; /* Optional: Sets a maximum width for the container */
-        }
-
-        #optioncontainer {
-            margin: 30px auto; /* Centers the container horizontally */
-            border-radius: 10px;
-            background-color: white;
-            width: 100%;
-            max-width: 1000px; /* Optional: Sets a maximum width for the container */
-            padding: 20px;
+            width: 80%;
         }
 
         #dashboardwindow {
-            background-color: #f3f6fd;
-            height: 30px;
-            width: 130px;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            margin-left: 60px;
-        }
-        #backwindow {
-            background-color: #f3f6fd;
-            height: 30px;
-            width: 130px;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            margin-left: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center the content horizontally */
+            height: 100vh; /* Adjust the height if needed */
         }
 
         .back-link {
@@ -113,10 +50,10 @@
             cursor: pointer;
         }
 
-
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px; /* Add some spacing above the table */
         }
 
         thead th {
@@ -142,19 +79,18 @@
             font-style: italic;
             color: #999;
         }
-
-        </style>
-
     </style>
+
 </head>
 
 
 <body>
 <div layout:fragment="content">
 
+    <div id="dashboardwindow">
     <div class="container" id="welcomecontainer">
         <div class="welcome">
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-md-12" id="welcomemsg">
                     <h1 class="welcome-heading">Welcome to your Dashboard</h1>
                     <p class="welcome-text">Hello, welcome to your dashboard!</p>
@@ -162,9 +98,21 @@
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-md-12" id="projectviewcontainer">
+    <div class="container" id="howtocontainer">
+        <div class="howto">
+            <div class="row justify-content-center">
+                <div class="col-md-12" id="howtomsg">
+                    <h1 class="welcome-heading">How to</h1>
+                    <p class="howto-text">Below is an overview of your existing projects</p>
+                    <p class="howto-text">If you wish to edit or delete a given project, hit the 'i' or trashcan icon at the right of the project</p>
+                    <p class="howto-text">If you wish to add a new project, simplyt hit the "new project" button at the top right corner</p>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="container" id="projectviewcontainer">
+    <div class="row justify-content-center">
+        <div class="col-md-12" id="projectview">
             <div class="container-fluid">
                 <table>
                     <thead>
@@ -209,36 +157,8 @@
             </div>
         </div>
     </div>
-    <div class="container" id="howtocaontainer">
-        <div class="howto">
-            <div class="row">
-                <div class="col-md-12" id="howtomsg">
-                    <h1 class="welcome-heading">How to</h1>
-                    <p class="howto-text">Below you can chose between viewing your existing projects, or creating a new project</p>
-                    <p class="howto-text">If you wish to add a client to an existing project, simply select "view projects", choose the project you wish to add a client to, and click on the "i" button on the right side</p>
-                </div>
-            </div>
-        </div>
     </div>
-    <div class="container" id="projectwindow">
-        <div class="project">
-            <div class="row">
-                <div class="col-md-3" id="newprojectswindow">
-                    <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
-                    <a href="/createproject">Create new project</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container" id="readprojectwindow">
-        <div class="readproject">
-            <div class="row">
 
-
-
-            </div>
-        </div>
-    </div>
 
 
 </div>
