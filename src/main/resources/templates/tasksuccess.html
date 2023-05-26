@@ -97,8 +97,7 @@
       <td th:text="${task.taskId}"></td>
       <td th:text="${task.taskName}"></td>
       <td th:text="${task.taskDescription}"></td>
-      <td th:text="${task.estTime}"></td>
-
+      <td th:text="${task.estDays} + ' days ' + ${task.estHours} + ' hours ' + ${task.estMinutes} + ' minutes'"></td>
       <td>
         <form th:action="@{/tasksuccess/{projectId}(projectId=${projectId})}" method="post" onsubmit="return confirmDelete()">
           <input type="hidden" name="taskId" th:value="${task.taskId}"/>

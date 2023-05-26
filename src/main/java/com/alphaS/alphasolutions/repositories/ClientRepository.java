@@ -16,7 +16,7 @@ public class ClientRepository {
         this.dataSource = dataSource;
     }
 
-    public int createClient(String clientName, int contactPoNo, String contactPerson, int companyPoNo, String address, int zipCode, String country) throws SQLException {
+    public int createClient(String clientName, int contactPoNo, String contactPerson, int companyPoNo, String address, int zipcode, String country) throws SQLException {
         try (Connection con = dataSource.getConnection()) {
             String sql = "INSERT INTO taskcompass.client (client_name, contact_po_no, contact_person, company_po_no, address, zip_code, country) VALUES (?,?,?,?,?,?,?)";
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -26,7 +26,7 @@ public class ClientRepository {
             stmt.setString(3, contactPerson);
             stmt.setInt(4, companyPoNo);
             stmt.setString(5, address);
-            stmt.setInt(6, zipCode);
+            stmt.setInt(6, zipcode);
             stmt.setString(7, country);
 
             // Execute the query and get the number of rows inserted
@@ -100,7 +100,7 @@ public class ClientRepository {
 
 
     public String editClient(String newClientName, int newContactPoNo, String newContactPerson, int newCompanyPoNo,
-                             String newAddress, int newZipCode, String newCountry, int clientId) {
+                             String newAddress, int newZipcode, String newCountry, int clientId) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "UPDATE taskcompass.Client SET client_name=?, contact_po_no=?, contact_person=?, " +
                     "company_po_no=?, address=?, zip_code=?, country=? WHERE client_id=?";
@@ -110,7 +110,7 @@ public class ClientRepository {
             stmt.setString(3, newContactPerson);
             stmt.setInt(4, newCompanyPoNo);
             stmt.setString(5, newAddress);
-            stmt.setInt(6, newZipCode);
+            stmt.setInt(6, newZipcode);
             stmt.setString(7, newCountry);
             stmt.setInt(8, clientId);
 
@@ -123,6 +123,7 @@ public class ClientRepository {
             throw new RuntimeException(e);
         }
     }
+
 
     public String deletedClient(int clientId) {
         try (Connection con = dataSource.getConnection()) {
