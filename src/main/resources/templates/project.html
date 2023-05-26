@@ -10,39 +10,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <style>
-        #projectcontainer {
+        #projectcontainer, #clientcontainer, #subprojectcontainer, #taskcontainer {
             background-color: white;
-            margin: 50px 40px 20px 50px; /*Top, right, bottom, left*/
+            margin: 50px 40px 30px 50px; /*Top, right, bottom, left*/
             border-radius: 10px;
+            height: auto;
         }
 
         #optioncontainer {
-            margin: 30px auto; /* Centers the container horizontally */
-            border-radius: 10px;
             background-color: white;
-            padding: 20px;
-            width: 100%;
-            max-width: 1000px; /* Optional: Sets a maximum width for the container */
+            margin: 50px 40px 30px 50px; /*Top, right, bottom, left*/
+            border-radius: 10px;
+            height: auto;
         }
 
         #viewprojectsswindow {
             background-color: #f3f6fd;
-            height: 130px;
-            width: 130px;
+            height: 100px;
+            width: 100px;
             padding: 20px;
             border-radius: 10px;
-            margin-top: 40px;
-            margin-left: 60px;
+            margin: 20px 20px 20px 40px;
         }
 
         #dashboardwindow {
             background-color: #f3f6fd;
-            height: 130px;
-            width: 130px;
+            height: 100px;
+            width: 100px;
             padding: 20px;
             border-radius: 10px;
-            margin-top: 40px;
-            margin-left: 60px;
+            margin: 20px 20px 20px 20px;
         }
     </style>
 </head>
@@ -50,6 +47,19 @@
 
 <body>
 <div layout:fragment="content">
+
+    <div class="container" id="projectcontainer">
+        <div th:if="${project}">
+            <p>Project ID: <span th:text="${project.projectId}"></span></p>
+            <p>Project Name: <span th:text="${project.projectName}"></span></p>
+            <p>Project Description: <span th:text="${project.projectDescription}"></span></p>
+            <p>Start Date: <span th:text="${project.startDate}"></span></p>
+            <p>End Date: <span th:text="${project.endDate}"></span></p>
+        </div>
+        <div th:unless="${project}">
+            <p>No project found.</p>
+        </div>
+    </div>
 
     <div class="container" id="projectcontainer">
         <div class="projectname">
@@ -84,18 +94,24 @@
 
     <div class="contatiner" id="optioncontainer">
         <div class="row">
-                <div class="col-md-3" id="viewprojectsswindow">
-                    <i class="fa-regular fa-folder" style="font-size: 26px; color: darkgoldenrod"></i>
-                    <a href="/readprojects">View Projects</a>
-                </div>
-                <div class="col-md-3" id="dashboardwindow">
-                    <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
-                    <a href="/dashboard">Go to dashboard</a>
-                </div>
+            <div class="col-md-3" id="clientcontainer">
+                <a th:href="@{'/client/details/' + ${client.clientId}}">Go to Client Info</a>
+            </div>
+            <div class="col-md-3" id="subprojectcontainer">
+                <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
+                <a th:href="@{'/subproject/' + ${project.projectId}}">Go to Subproject</a>
+            </div>
+            <div class="col-md-3" id="taskcontainer">
+                <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
+                <a href="/readtasks">Go to tasks</a>
+            </div>
+            <div class="col-md-3" id="backwindow">
+                <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
+                <a href="javascript:history.go(-1);">Return</a>
             </div>
         </div>
     </div>
-
+</div>
 
 
 

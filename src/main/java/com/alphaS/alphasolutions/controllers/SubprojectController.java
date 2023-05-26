@@ -1,7 +1,9 @@
 package com.alphaS.alphasolutions.controllers;
 
 import com.alphaS.alphasolutions.model.SubprojectModel;
+import com.alphaS.alphasolutions.model.TaskModel;
 import com.alphaS.alphasolutions.service.SubprojectService;
+import com.alphaS.alphasolutions.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.sql.SQLException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +21,11 @@ import java.util.Map;
 public class SubprojectController {
 
     private final SubprojectService subprojectService;
+    private final TaskService taskService;
 
-    public SubprojectController(SubprojectService subprojectService) {
+    public SubprojectController(SubprojectService subprojectService, TaskService taskService) {
         this.subprojectService = subprojectService;
+        this.taskService = taskService;
     }
 
     @GetMapping("/clientsuccess/{projectId}/createsubproject")
@@ -34,72 +39,50 @@ public class SubprojectController {
     public String createSubproject(@PathVariable int projectId, @ModelAttribute SubprojectModel subprojectModel, Model model, RedirectAttributes redirectAttributes) {
         int subprojectId = subprojectService.createSubproject(projectId, subprojectModel);
         redirectAttributes.addAttribute("subprojectId", subprojectId);
-        model.addAttribute("subprojectName", subprojectModel.getSubProjectName());
+        model.addAttribute("subprojectName", subprojectModel.getSubprojectName());
         return "redirect:/subprojectsuccess";
     }
 
     @GetMapping("/subprojectsuccess")
     public String subprojectSuccess(@RequestParam("subprojectId") int subprojectId, Model model) {
-        // Retrieve the subproject details or perform any necessary actions
         model.addAttribute("subprojectId", subprojectId);
         return "subprojectsuccess";
     }
 
 
-    @GetMapping("/project/{projectId}/readsubproject")
-    @ResponseBody
-    public ResponseEntity<List<SubprojectModel>> readSubproject(@PathVariable int projectId) {
-        List<SubprojectModel> subprojects = subprojectService.readSubProject(projectId);
-        return ResponseEntity.ok(subprojects);
-    }
+    @GetMapping("/subproject/{projectId}")
+    public String readSubproject(@PathVariable("projectId") int projectId, Model model) {
+        SubprojectModel subproject = subprojectService.readSpecificSubproject(projectId);
 
-    @PostMapping("/project/{projectId}/subprojects/{subprojectId}/edit")
-    @ResponseBody
-    public ResponseEntity<String> editSubproject(@RequestParam String SubprojectName, @RequestParam String SubprojectDescription) {
-        try {
-            String result = subprojectService.editSubproject(SubprojectName, SubprojectDescription);
-            return ResponseEntity.ok(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to edit subproject");
-        }
-    }
-    @PostMapping("/project/{projectId}/subproject/delete")
-    public String deleteSubproject(@RequestParam int subprojectId) {
-        String message = subprojectService.deleteSubproject(subprojectId);
-        return message;
-    }
-/*
-    @GetMapping("/project/{projectId}/subproject/{subprojectId}/estimatedtime")
-    public String getTotalEstimatedTimeForSubproject(@PathVariable int subprojectId) {
-        try {
-            Duration estimatedTime = Duration.parse(subprojectService.getTotalEstimatedTimeForSubproject(subprojectId));
-            long totalMinutes = estimatedTime.toMinutes();
-            long days = totalMinutes / (24 * 60);
-            long hours = (totalMinutes % (24 * 60)) / 60;
-            long minutes = totalMinutes % 60;
-
-            return String.format("%d days, %d hours, %d minutes", days, hours, minutes);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (subproject == null) {
+            // Handle case where subproject is not found
             return "error";
         }
+
+        model.addAttribute("subproject", subproject);
+
+        return "subproject";
     }
 
-    @GetMapping("/project/{projectId}/combinedtime")
-    @ResponseBody
-    public ResponseEntity<String> getCombinedTimeForProject(@PathVariable int projectId) {
-        try {
-            String combinedTime = subprojectService.getCombinedTimeForProject(projectId);
-            return ResponseEntity.ok(combinedTime);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to calculate combined time for project");
-        }
+    @PostMapping("/subproject/edit/{projectId}")
+    public String editSubproject(@RequestParam("subprojectName") String subprojectName,
+                                 @RequestParam("subprojectDescription") String subprojectDescription,
+                                 @RequestParam("subprojectId") int subprojectId,
+                                 Model model) {
+
+        String result = subprojectService.editSubproject(subprojectName, subprojectDescription, subprojectId);
+        // Update the model with the updated subproject attributes
+        SubprojectModel subproject = subprojectService.readSpecificSubproject(subprojectId);
+
+        model.addAttribute("subproject", subproject);
+        model.addAttribute("result", result);
+        return "subproject";
     }
 
- */
+
+
 }
+
 
 
 

@@ -19,9 +19,8 @@ CREATE TABLE taskcompass.Client (
                                     zip_code INT,
                                     country VARCHAR(255),
                                     client_id INT PRIMARY KEY AUTO_INCREMENT
+
 );
-
-
 
 CREATE TABLE taskcompass.Project (
                                      project_name VARCHAR(255),
@@ -35,6 +34,10 @@ CREATE TABLE taskcompass.Project (
                                      FOREIGN KEY (client_id) REFERENCES taskcompass.Client (client_id) ON DELETE CASCADE
 );
 
+ALTER TABLE taskcompass.Client
+    ADD COLUMN project_id int,
+    ADD FOREIGN KEY (project_id) REFERENCES taskcompass.Project (project_id) ON DELETE CASCADE;
+
 CREATE TABLE taskcompass.Subproject (
                                         sub_project_name VARCHAR(255),
                                         sub_project_description VARCHAR(255),
@@ -46,13 +49,12 @@ CREATE TABLE taskcompass.Subproject (
 CREATE TABLE taskcompass.Task (
                                   task_name VARCHAR(255),
                                   description_task VARCHAR(255),
-                                  est_time TIME,
+                                  est_days INT,
+                                  est_hours INT,
+                                  est_minutes INT,
                                   subproject_id INT,
                                   task_id INT PRIMARY KEY AUTO_INCREMENT,
-                                  FOREIGN KEY (subproject_id) REFERENCES taskcompass.Subproject (subproject_id) ON DELETE CASCADE
+                                  FOREIGN KEY (subproject_id) REFERENCES taskcompass.subproject (subproject_id) ON DELETE CASCADE
 );
 
-ALTER TABLE taskcompass.Client
-    ADD COLUMN project_id INT,
-    ADD FOREIGN KEY (project_id) REFERENCES taskcompass.Project (project_id) ON DELETE CASCADE;
 

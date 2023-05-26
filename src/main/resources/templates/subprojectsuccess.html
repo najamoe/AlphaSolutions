@@ -54,12 +54,8 @@
             <div class="row">
                     <div class="col-md-3" id="addtaskswindow">
                     <i class="fa-solid fa-cubes-stacked" style="font-size: 26px; color: darkgoldenrod"></i>
-                    <a href="/createtask">Add tasks</a>
-                </div>
-                <div class="col-md-3" id="addsubprojectswindow">
-                    <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
-                    <a href="/project/{projectId}/createsubproject">Add more subprojects</a>
-                </div>
+                        <a th:href="@{'/subprojectsuccess/' + ${subprojectId} + '/createtask'}">Create task</a>
+                    </div>
                 <div class="col-md-3" id="dashboardwindow">
                     <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
                     <a href="/dashboard">Return to dashboard</a>

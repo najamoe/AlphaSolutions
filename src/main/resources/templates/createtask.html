@@ -66,9 +66,11 @@
 <div layout:fragment="content">
 
 <div class="container-box">
+  <p class="welcome-text" th:text="${message}"></p>
   <h1 class="welcome-heading">Add task</h1>
   <p class="welcome-text">Follow the steps below to add a task to your subproject</p>
-  <form th:action="@{/createtask/{subprojectId}(subprojectId=${subprojectId})}" th:object="${taskModel}" method="post">
+  <form th:action="@{/subprojectsuccess/{subprojectId}/createtask(subprojectId=${subprojectId})}" th:object="${taskModel}" method="post">
+
     <div class="form-group">
       <label class="form-label" for="taskName">Task Name:</label>
       <input class="form-input" type="text" id="taskName" th:field="*{taskName}" required/>
@@ -78,14 +80,34 @@
       <textarea class="form-textarea" id="taskDescription" th:field="*{taskDescription}" required></textarea>
     </div>
     <div class="form-group">
-      <label class="form-label" for="estTime">Estimated Time:</label>
-      <input class="form-input" type="text" id="estTime" th:field="*{estTime}" th:attr="pattern='\\d{2}:\\d{2}'" required/>
-      <small class="form-text">Format: HH:mm (e.g., 08:30)</small>
+      <label class="form-label" for="estDays">Estimated Days:</label>
+      <input class="form-input" type="number" id="estDays" th:field="*{estDays}" required/>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="estHours">Estimated Hours:</label>
+      <input class="form-input" type="number" id="estHours" th:field="*{estHours}" required/>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="estMinutes">Estimated Minutes:</label>
+      <input class="form-input" type="number" id="estMinutes" th:field="*{estMinutes}" required/>
     </div>
     <div class="form-button-container">
       <button class="form-button" type="submit">Done</button>
     </div>
   </form>
+
+
+  <div class="container" id="finish-container">
+    <div class="project">
+      <div class="row">
+        <div class="col-md-3" id="finishwindow">
+          <i class="fa-solid fa-check" style="font-size: 26px; color: darkgoldenrod"></i>
+          <a th:href="@{/tasksuccess/{subprojectId}(subprojectId=${subprojectId})}">End project-setup</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 </div>
 </div>

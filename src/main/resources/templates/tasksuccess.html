@@ -8,7 +8,21 @@
   <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Tasks</title>
+  <title>Tasks</title>
+
+  <script th:inline="javascript">
+    function confirmDelete() {
+    return confirm("Are you sure you want to delete this task?");
+  }
+    var success = /*[[${param.success}]]*/ false;
+    var error = /*[[${param.error}]]*/ false;
+    if (success) {
+    alert("Task deleted successfully!");
+  } else if (error) {
+    alert("An error occurred - task not deleted");
+  }
+
+</script>
   <style>
     #welcomecontainer {
       background-color: white;
@@ -22,7 +36,7 @@
       border-radius: 10px;
     }
 
-    #addsubprojectswindow, #newprojectswindow, #searchprojecswindow {
+    #addtaskswindow, #newprojectswindow, #searchprojecswindow {
       background-color: #f3f6fd;
       height: 130px;
       width: 130px;
@@ -37,29 +51,79 @@
 
 <body>
 <div layout:fragment="content">
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Message</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="deleteMessage"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <div class="container" id="welcomecontainer">
     <div class="welcome">
       <div class="row">
         <div class="col-md-12" id="welcomemsg">
-          <h1 class="welcome-heading" th:text="${teamName}"></h1>
           <p class="welcome-text">Your new task was successfully added</p>
         </div>
       </div>
     </div>
   </div>
 
+  <table>
+    <thead>
+    <tr>
+      <th>Task ID</th>
+      <th>Task Name</th>
+      <th>Task Description</th>
+      <th>Estimated Time</th>
+      <th></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <!-- Iterate over the tasks and display their properties -->
+    <tr th:each="task : ${tasks}" th:id="'taskRow_' + ${task.taskId}">
+      <td th:text="${task.taskId}"></td>
+      <td th:text="${task.taskName}"></td>
+      <td th:text="${task.taskDescription}"></td>
+      <td th:text="${task.estDays} + ' days ' + ${task.estHours} + ' hours ' + ${task.estMinutes} + ' minutes'"></td>
+      <td>
+        <form th:action="@{/tasksuccess/{projectId}(projectId=${projectId})}" method="post" onsubmit="return confirmDelete()">
+          <input type="hidden" name="taskId" th:value="${task.taskId}"/>
+          <button type="submit" class="fa-solid fa-trash"></button>
+        </form>
+      </td>
+
+    </tr>
+    <tr th:if="${#lists.isEmpty(tasks)}">
+      <td colspan="7">
+        <p>No tasks found.</p>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div th:if="${successMessage}">
+    <p th:text="${successMessage}" class="success-message"></p>
+  </div>
+
+  <div th:if="${errorMessage}">
+    <p th:text="${errorMessage}" class="error-message"></p>
+  </div>
+
   <div class="container" id="projectwindow">
     <div class="project">
       <div class="row">
-        <div class="col-md-3" id="addsubprojectswindow">
-          <i class="fa-solid fa-cubes-stacked" style="font-size: 26px; color: darkgoldenrod"></i>
-          <a href="/createtask/{subprojectId}">Add tasks</a>
-        </div>
-        <div class="col-md-3" id="newprojectswindow">
-          <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
-          <a href="/project/{projectId}/createsubproject">Add more subprojects</a>
-        </div>
         <div class="col-md-3" id="searchprojecswindow">
           <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
           <a href="/dashboard">Return to dashboard</a>
