@@ -7,12 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -31,11 +26,12 @@ class TaskRepositoryTest {
     TaskRepositoryTest(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
+        int taskId = 1;
+        String taskName = "Updated Task";
+        String taskDescription = "Updated Description";
+        LocalTime estTime = LocalTime.of(13, 30);
 
 
-    @Test
-    public void testReadTasks() throws SQLException {
-        // Mock the necessary objects
         Connection connection = mock(Connection.class);
         PreparedStatement statement = mock(PreparedStatement.class);
         ResultSet resultSet = mock(ResultSet.class);
@@ -51,6 +47,7 @@ class TaskRepositoryTest {
         // Configure the mock objects and their behavior
         when(dataSource.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(anyString())).thenReturn(statement);
+
         when(statement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true, false);
         when(resultSet.getInt("task_id")).thenReturn(task1.getTaskId());
@@ -74,3 +71,19 @@ class TaskRepositoryTest {
     }
 
 }
+
+        when(statement.executeUpdate()).thenReturn(1);
+
+        // Call the editTask method
+        String result = taskRepository.editTask(taskId, taskName, taskDescription, estTime);
+
+        // Assert the result
+        assertEquals("Changes for task " + taskId + " successfully updated", result);
+
+        // Verify that the PreparedStatement was called with the correct values
+        verify(statement).setString(1, taskName);
+        verify(statement).setString(2, taskDescription);
+        verify(statement).setTime(3, Time.valueOf(estTime));
+        verify(statement).setInt(4, taskId);
+
+
