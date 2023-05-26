@@ -9,6 +9,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script th:inline="javascript">
+        // AJAX delete request
+        function deleteTask(subprojectId, taskId) {
+            $.ajax({
+                url: '/tasksuccess/' + subprojectId + '/delete?taskId=' + taskId,
+                type: 'POST',
+                success: function (response) {
+                    $('#deleteMessage').text('Deleted task');
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+    </script>
     <style>
         #welcomecontainer {
            background-color: white;
@@ -50,7 +66,84 @@
             margin-left: 60px;
             margin-bottom: 60px;
         }
+        #projectviewcontainer {
+            margin: 30px auto; /* Centers the container horizontally */
+            border-radius: 10px;
+            background-color: white;
+            padding: 20px;
+            width: 100%;
+            max-width: 1000px; /* Optional: Sets a maximum width for the container */
+        }
 
+        #optioncontainer {
+            margin: 30px auto; /* Centers the container horizontally */
+            border-radius: 10px;
+            background-color: white;
+            width: 100%;
+            max-width: 1000px; /* Optional: Sets a maximum width for the container */
+            padding: 20px;
+        }
+
+        #dashboardwindow {
+            background-color: #f3f6fd;
+            height: 30px;
+            width: 130px;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            margin-left: 60px;
+        }
+        #backwindow {
+            background-color: #f3f6fd;
+            height: 30px;
+            width: 130px;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            margin-left: 60px;
+        }
+
+        .back-link {
+            display: inline-block;
+            background: none;
+            border: none;
+            color: darkgoldenrod;
+            font-size: 16px;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            background-color: #f2f2f2;
+            text-align: left;
+            padding: 10px;
+        }
+
+        tbody td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #e6e6e6;
+        }
+
+        p.no-projects {
+            font-style: italic;
+            color: #999;
+        }
+
+        </style>
 
     </style>
 </head>
@@ -69,6 +162,53 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12" id="projectviewcontainer">
+            <div class="container-fluid">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Project ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Start date</th>
+                        <th>End date</th>
+                        <th></th>
+                        <th></th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="project : ${projects}">
+                        <td th:text="${project.projectId}"></td>
+                        <td th:text="${project.projectName}"></td>
+                        <td th:text="${project.projectDescription}"></td>
+                        <td th:text="${project.startDate}"></td>
+                        <td th:text="${project.endDate}"></td>
+                        <td>
+                            <a th:href="@{/project/details/{projectId}(projectId=${project.projectId})}">
+                                <i class="fa-solid fa-circle-info"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <form th:action="@{/project/delete/{projectId}(projectId=${project.projectId})}"
+                                  method="post">
+                                <input type="hidden" name="_method" value="delete"/>
+                                <button type="submit" class="fa-solid fa-trash"></button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(projects)}">
+                        <td colspan="7">
+                            <p>No projects found.</p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <div class="container" id="howtocaontainer">
         <div class="howto">
             <div class="row">
@@ -83,22 +223,22 @@
     <div class="container" id="projectwindow">
         <div class="project">
             <div class="row">
-                <div class="col-md-3" id="viewprojectswindow">
-                    <i class="fa-solid fa-folder" style="font-size: 26px; color: darkgoldenrod"></i>
-                    <a href="/readprojects">View projects</a>
-                </div>
                 <div class="col-md-3" id="newprojectswindow">
                     <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
                     <a href="/createproject">Create new project</a>
                 </div>
-                <div class="col-md-3" id="newprojectswindow">
-                    <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
-                    <a href="/readclients">view clients</a>
-                </div>
             </div>
         </div>
     </div>
+    <div class="container" id="readprojectwindow">
+        <div class="readproject">
+            <div class="row">
 
+
+
+            </div>
+        </div>
+    </div>
 
 
 </div>

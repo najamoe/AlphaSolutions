@@ -59,7 +59,7 @@ public class ProjectController {
             return "error";
         }
     }
-    @GetMapping("/readprojects")
+    @GetMapping("/dashboard")
     public String readCreatedProjects(Model model, HttpSession session) {
         try {
             String username = (String) session.getAttribute("username");
@@ -68,11 +68,11 @@ public class ProjectController {
             List<ProjectModel> projects = projectService.readProjects(username, password);
             model.addAttribute("projects", projects);
 
-            return "readprojects";
+            return "dashboard";
         } catch (SQLException e) {
             String errorMessage = "Failed to retrieve projects from the database. Please try again later.";
             model.addAttribute("error", errorMessage);
-            return "readprojects";
+            return "dashboard";
         }
     }
 
