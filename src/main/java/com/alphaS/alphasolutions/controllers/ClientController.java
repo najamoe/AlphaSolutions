@@ -123,11 +123,11 @@ public class ClientController {
                                      @RequestParam("newContactPerson") String newContactPerson,
                                      @RequestParam("newCompanyPoNo") int newCompanyPoNo,
                                      @RequestParam("newAddress") String newAddress,
-                                     @RequestParam("newZipCode") int newZipCode,
+                                     @RequestParam("newZipcode") int newZipcode,
                                      @RequestParam("newCountry") String newCountry,
                                      Model model) throws SQLException {
         String result = clientService.editClient(newClientName, newContactPoNo, newContactPerson, newCompanyPoNo,
-                newAddress, newZipCode, newCountry, clientId);
+                newAddress, newZipcode, newCountry, clientId);
 
         // Update the model with the updated client attributes
         ClientModel client = (ClientModel) clientService.readSpecificClient(clientId);
@@ -135,9 +135,12 @@ public class ClientController {
 
         // Add the result message to the model for display
         model.addAttribute("result", result);
+        model.addAttribute("showPopup", true); // Add a flag to show the pop-up
 
         return "client";
     }
+
+
 
     /*
     @PostMapping("/clients/delete")

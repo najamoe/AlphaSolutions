@@ -63,14 +63,14 @@ public class SubprojectController {
 
     @PostMapping("/subproject/edit")
     public String editSubproject(@RequestParam("newSubprojectName") String newSubprojectName,
-                                 @RequestParam("newSubprojectDescription") String newSubprojectDescription, int project_id,
+                                 @RequestParam("newSubprojectDescription") String newSubprojectDescription,
+                                 @RequestParam("subprojectId") int subprojectId,
                                  Model model) {
-        String result = subprojectService.editSubproject(newSubprojectName, newSubprojectDescription);
-        SubprojectModel subproject = subprojectService.readSpecificSubproject(project_id);
-        model.addAttribute("subproject", subproject);
+        String result = subprojectService.editSubproject(newSubprojectName, newSubprojectDescription, subprojectId);
         model.addAttribute("result", result);
-        return "subproject";
+        return "redirect:/subproject/details/" + subprojectId;
     }
+
 
 
 

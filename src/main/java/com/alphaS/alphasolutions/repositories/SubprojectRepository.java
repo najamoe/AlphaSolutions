@@ -102,14 +102,13 @@ public class SubprojectRepository {
         return -1; // Return a default value or handle the failure case as per your requirement
     }
 
-
-
-    public String editSubproject(String SubProjectName, String SubProjectDescription) {
+    public String editSubproject(String subProjectName, String subProjectDescription, int subprojectId) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "UPDATE taskcompass.Subproject SET sub_project_name=?, sub_project_description=? WHERE subproject_id=?";
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setString(1, SubProjectName);
-            stmt.setString(2, SubProjectDescription);
+            stmt.setString(1, subProjectName);
+            stmt.setString(2, subProjectDescription);
+            stmt.setInt(3, subprojectId);
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
                 return "Changes for subproject successfully updated";
@@ -119,6 +118,8 @@ public class SubprojectRepository {
             throw new RuntimeException(e);
         }
     }
+
+
 
     //deleteSubproject deletes subproject and associated tasks
     public String deleteSubproject(int subProjectId) {

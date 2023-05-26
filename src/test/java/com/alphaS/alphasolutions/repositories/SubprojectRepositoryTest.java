@@ -26,16 +26,7 @@ class SubprojectRepositoryTest {
         dataSource = mock(DataSource.class);
     }
 
-    @Test
-    void readSpecificSubproject() {
-        SubprojectService subprojectService = new SubprojectService();
-        int subprojectId = 1; // Provide a valid subproject ID
 
-        SubprojectModel subproject = subprojectService.readSpecificSubproject();
-
-        Assertions.assertNotNull(subproject);
-        Assertions.assertEquals(subprojectId, subproject.getSubprojectId());
-    }
 
 
 

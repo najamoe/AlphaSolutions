@@ -25,8 +25,8 @@ public class SubprojectService {
         return subprojectRepository.createSubProject(subprojectModel.getSubProjectName(), subprojectModel.getSubProjectDescription(), projectId);
     }
 
-    public String editSubproject(String newSubProjectName, String newSubProjectDescription) {
-        return subprojectRepository.editSubproject(newSubProjectName, newSubProjectDescription);
+    public String editSubproject(String newSubProjectName, String newSubProjectDescription, int subprojectId) {
+        return subprojectRepository.editSubproject(newSubProjectName, newSubProjectDescription, subprojectId);
     }
 
     public String deleteSubproject(int subProjectId) {

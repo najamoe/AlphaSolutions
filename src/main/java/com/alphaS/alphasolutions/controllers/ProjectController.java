@@ -83,39 +83,65 @@ public class ProjectController {
         String password = (String) session.getAttribute("password");
 
         ProjectModel project = projectService.readSpecificProject(projectId, username, password);
-        ClientModel client = (ClientModel) clientService.readSpecificClient(projectId);
+        ClientModel client = clientService.readSpecificClient(projectId);
+        SubprojectModel subproject = subprojectService.readSpecificSubproject(projectId);
 
         model.addAttribute("project", project);
         model.addAttribute("client", client);
+        model.addAttribute("subproject", subproject);
+        model.addAttribute("clientId", client.getClientId()); // Add the client ID to the model
+
         return "project";
     }
 
 
-
     //For editing projects
+
     @PostMapping("/project/details/{projectId}")
     public String editSpecificProject(@PathVariable("projectId") int projectId,
+                                      @RequestParam("clientId") int clientId,
+                                      @RequestParam("newClientName") String newClientName,
+                                      @RequestParam("newContactPoNo") int newContactPoNo,
+                                      @RequestParam("newContactPerson") String newContactPerson,
+                                      @RequestParam("newCompanyPoNo") int newCompanyPoNo,
+                                      @RequestParam("newAddress") String newAddress,
+                                      @RequestParam("newZipcode") int newZipcode,
+                                      @RequestParam("newCountry") String newCountry,
                                       @RequestParam("newProjectName") String newProjectName,
                                       @RequestParam("newProjectDescription") String newProjectDescription,
                                       @RequestParam("newStartDate") String newStartDate,
                                       @RequestParam("newEndDate") String newEndDate,
-                                      Model model, HttpSession session) {
-        String username = (String) session.getAttribute("username");
-        String password = (String) session.getAttribute("password");
+                                      Model model, HttpSession session) throws SQLException {
+        // Edit client details
+
+        String clientResult = clientService.editClient(newClientName, newContactPoNo, newContactPerson, newCompanyPoNo,
+                newAddress, newZipcode, newCountry, clientId);
+
+        // Edit project details
         LocalDate startDate = LocalDate.parse(newStartDate);
         LocalDate endDate = LocalDate.parse(newEndDate);
+        String projectResult = projectService.editProject(projectId, newProjectName, newProjectDescription, startDate, endDate);
 
-        String result = projectService.editProject(projectId, newProjectName, newProjectDescription, startDate, endDate);
+        // Update the model with the updated client attributes
+        ClientModel client = clientService.readSpecificClient(clientId);
+        model.addAttribute("client", client);
 
         // Update the model with the updated project attributes
+        String username = (String) session.getAttribute("username");
+        String password = (String) session.getAttribute("password");
         ProjectModel project = projectService.readSpecificProject(projectId, username, password);
         model.addAttribute("project", project);
 
-        // Add the result message to the model for display
-        model.addAttribute("result", result);
+        // Add the result messages to the model for display
+        model.addAttribute("clientResult", clientResult);
+        model.addAttribute("projectResult", projectResult);
+        model.addAttribute("showPopup", true); // Add a flag to show the pop-up
 
         return "project";
     }
+
+
+
 
 
     @GetMapping("/project/delete/{projectId}")
