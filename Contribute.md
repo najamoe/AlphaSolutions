@@ -98,6 +98,10 @@ CREATE TABLE taskcompass.Task (
 
 5. Execute the SQL script to create the necessary tables.
 
+## Deployment
+
+Taskcompass is hosted on Render.com. Once you have made your changes and tested them locally, you can submit a pull request. Our team will review the changes and deploy them to the production environment.
+
 ## Guidelines
 
 Please follow these guidelines when contributing to Taskcompass:
