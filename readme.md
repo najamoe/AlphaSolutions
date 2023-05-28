@@ -20,11 +20,11 @@ To use the Alpha Solutions Project Calculation Tool, follow these steps:
 2. **Logging in**
    - To log in, please use the following test client credentials:
 
-      ```
-      Username: johndoe, Password: 1234 
-      Username: janesmith, Password: 1234
-      Username: mikejohnson, Password: password3
-      ```
+     | Username     | Password  |
+     |--------------|-----------|
+     | johndoe      | 1234      |
+     | janesmith    | 1234      |
+     | mikejohnson  | password3 |
 
 ## Creating Clients and Managing Projects
 
