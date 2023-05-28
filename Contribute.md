@@ -1,10 +1,10 @@
-# Contributing to [Project Name]
+# Contributing to Taskcompass
 
-Thank you for your interest in contributing to [Project Name]! We welcome contributions from the community to make this project even better. Please take a moment to review the guidelines below.
+Thank you for your interest in contributing to Taskcompass! We welcome contributions from the community to make this project even better. Please take a moment to review the guidelines below.
 
 ## Getting Started
 
-To contribute to [Project Name], follow these steps:
+To contribute to Taskcompass, follow these steps:
 
 1. Fork the repository.
 2. Clone your forked repository to your local machine.
@@ -100,7 +100,7 @@ CREATE TABLE taskcompass.Task (
 
 ## Guidelines
 
-Please follow these guidelines when contributing to [Project Name]:
+Please follow these guidelines when contributing to Taskcompass:
 
 - Before starting any work, create a new branch from the main branch with a descriptive name.
 - Keep your code clean, well-structured, and follow the existing coding style.
