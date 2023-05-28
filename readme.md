@@ -18,7 +18,7 @@ To use the Alpha Solutions Project Calculation Tool, follow these steps:
    - Visit [Taskcompass project manager](https://task-compass.onrender.com) to access the web app.
 
 2. **Logging in**
-   - To log in, please use the following test client credentials:
+   - To log in, please use either of the following test client credentials:
 
      | Username     | Password  |
      |--------------|-----------|
