@@ -94,6 +94,7 @@ CREATE TABLE taskcompass.Task (
     task_id INT PRIMARY KEY AUTO_INCREMENT,
     FOREIGN KEY (subproject_id) REFERENCES taskcompass.subproject (subproject_id) ON DELETE CASCADE
 );
+```
 
 5. Execute the SQL script to create the necessary tables.
 
