@@ -20,11 +20,10 @@ To use the Alpha Solutions Project Calculation Tool, follow these steps:
 2. **Logging in**
    - To log in, please use the following test client credentials:
 
-      ```sql
-      INSERT INTO taskcompass.Client (client_name, contact_po_no, contact_person, company_po_no, address, zip_code, country) VALUES
-        ('ABC Inc.', 11111111, 'John Smith', 99999999, '123 Main St.', 3400, 'DK'),
-        ('XYZ Ltd.', 22222222, 'Jane Doe', 88888888, '456 Maple Ave.', 2950, 'DK'),
-        ('PQR Co.', 33333333, 'Bob Johnson', 77777777, '789 Oak St.', 3450, 'DK');
+      ```
+      Username: johndoe, Password: 1234 
+      Username: janesmith, Password: 1234
+      Username: mikejohnson, Password: password3
       ```
 
 ## Creating Clients and Managing Projects
