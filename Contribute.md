@@ -108,3 +108,13 @@ Please follow these guidelines when contributing to Taskcompass:
 - If you're adding new features or modifying existing ones, include appropriate tests.
 - Document any new functions, classes, or significant changes in the codebase.
 - Ensure your code passes all existing tests and doesn't introduce any new issues.
+
+## Contact
+If you have any questions or need further assistance, feel free to contact us at:
+
+- <a href="https://github.com/najamoe">Naja Egede Moe </a>
+- <a href="https://github.com/MathildeTrendy">Mathilde Trend</a>
+- <a href="https://github.com/sabr5840">Sabrina Ebbesen</a>
+
+We appreciate your contribution and look forward to your involvement in improving Taskcompass!
+
