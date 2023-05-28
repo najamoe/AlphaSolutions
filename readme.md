@@ -1,6 +1,7 @@
 <p align="center">
-  <img src="TaskCompassLogo.png" alt="Your Picture" width="800" height="500">
+  <img src= src/main/resources/static/img/TaskCompassLogo.png alt="Your Picture" width="800" height="500">
 </p>
+
 
 # Alpha Solutions Project Calculation Tool
 
