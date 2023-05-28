@@ -102,6 +102,10 @@ CREATE TABLE taskcompass.Task (
 
 Taskcompass is hosted on Render.com. Once you have made your changes and tested them locally, you can submit a pull request. Our team will review the changes and deploy them to the production environment.
 
+"[https://github.com/najamoe](https://render.com )">Render </a>
+
+
+
 ## Guidelines
 
 Please follow these guidelines when contributing to Taskcompass:
