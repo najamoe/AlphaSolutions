@@ -69,19 +69,54 @@ public class TaskController {
         return "tasksuccess";
     }
 
-    @GetMapping("/readtasks")
-    public String readTasks(@RequestParam int subprojectId, Model model) throws SQLException {
-        List<TaskModel> tasks = taskService.readTasks(subprojectId);
-        model.addAttribute("tasks", tasks);
-        return "readtasks";
-    }
 
     @GetMapping("/subproject/{subprojectId}/task")
-    public String getSpecificTask(@PathVariable int subprojectId, Model model) throws SQLException {
+    public String getTasks(@PathVariable int subprojectId, Model model) throws SQLException {
         model.addAttribute("subprojectId", subprojectId);
         List<TaskModel> task = taskService.readTasks(subprojectId);
         model.addAttribute("task", task);
         return "task";
+    }
+    @GetMapping("/task/{taskId}/edit")
+    public String getTask(@PathVariable int taskId, Model model) throws SQLException {
+        // Retrieve the task ID from the database using the taskId
+        int retrievedTaskId = taskService.getTaskId(taskId);
+        // Retrieve the subproject name associated with the task
+        String subprojectName = taskService.getSubprojectName(taskId);
+
+        TaskModel task = taskService.getTaskById(taskId);
+        // Add the task ID and subproject name to the model
+        model.addAttribute("taskId", retrievedTaskId);
+        model.addAttribute("subprojectName", subprojectName);
+        model.addAttribute("task", task);
+
+        return "edittask";
+    }
+
+    @PostMapping("/task/{taskId}/edit")
+    public String editTask(
+            @PathVariable("taskId") int taskId,
+            @RequestParam("taskName") String taskName,
+            @RequestParam("taskDescription") String taskDescription,
+            @RequestParam("estDays") int estDays,
+            @RequestParam("estHours") int estHours,
+            @RequestParam("estMinutes") int estMinutes, Model model,
+    RedirectAttributes redirectAttributes) throws SQLException {
+        // Retrieve the task ID from the database using the taskId
+        int retrievedTaskId = taskService.getTaskId(taskId);
+        // Retrieve the subproject name associated with the task
+        String subprojectName = taskService.getSubprojectName(taskId);
+
+        // Perform the task editing logic using the retrievedTaskId
+        String result = taskService.editTask(retrievedTaskId, taskName, taskDescription, estDays, estHours, estMinutes);
+
+        // Add the result message to the model for display
+        model.addAttribute("taskId", retrievedTaskId);
+        model.addAttribute("subprojectName", subprojectName);
+        model.addAttribute("result", result);
+
+        redirectAttributes.addFlashAttribute("result", result);
+        return "redirect:/task/" + taskId + "/edit";
     }
 
 
@@ -99,18 +134,4 @@ public class TaskController {
     }
 
 
-
-
-
-
-    @PostMapping("/edittask")
-    public ResponseEntity<String> editTask(@RequestBody TaskModel task) {
-        try {
-            String message = taskService.editTask(task.getTaskId(), task.getTaskName(), task.getTaskDescription(), task.getEstDays(), task.getEstHours(), task.getEstHours());
-            return ResponseEntity.ok(message);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body("Failed to edit " + task.getTaskName());
-        }
-    }
 }

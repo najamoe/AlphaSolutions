@@ -1,5 +1,6 @@
 package com.alphaS.alphasolutions.repositories;
 import com.alphaS.alphasolutions.model.TaskModel;
+import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -70,9 +71,48 @@ public class TaskRepository {
             return tasks;
         }
     }
+    public int getTaskId(int subprojectId) throws SQLException {
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "SELECT task_id FROM taskcompass.Task WHERE subproject_id = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, subprojectId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("task_id");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return 0; // Return a default value or handle the failure case as per your requirement
+    }
+
+    public String getSubprojectName(int taskId) {
+        try (Connection con = dataSource.getConnection()) {
+            String projectSql = "SELECT sub_project_name FROM taskcompass.subproject s  JOIN taskcompass.Task t ON s.subproject_id = t.task_id WHERE t.task_id =?";
+            PreparedStatement projectStmt = con.prepareStatement(projectSql);
+            projectStmt.setInt(1, taskId);
+            ResultSet projectRs = projectStmt.executeQuery();
+
+            if (projectRs.next()) {
+                return projectRs.getString("sub_project_name");
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
-    public String editTask(int taskId, String taskName, String taskDescription, int estDays, int estHours, int estMinutes) throws SQLException {
+    public String editTask(int subprojectId, String taskName, String taskDescription, int estDays, int estHours, int estMinutes) throws SQLException {
+        // Retrieve the taskId based on the subprojectId
+        int taskId = getTaskId(subprojectId);
+        if (taskId == 0) {
+            return "Task not found"; // Handle the case where the task does not exist
+        }
+
         try (Connection con = dataSource.getConnection()) {
             String sql = "UPDATE taskcompass.Task SET task_name = ?, description_task = ?, est_days = ?, est_hours = ?, est_minutes = ? WHERE task_id = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -93,6 +133,7 @@ public class TaskRepository {
             throw new RuntimeException(e);
         }
     }
+
 
 
     //Method for removing a task form a subproject
@@ -139,5 +180,26 @@ public class TaskRepository {
     }
 
 
+    public TaskModel getTaskById(int taskId) {
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "SELECT * FROM taskcompass.Task WHERE task_id =?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, taskId);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
+            if (resultSet.next()) {
+                TaskModel task = new TaskModel();
+                task.setTaskId(resultSet.getInt("task_id"));
+                task.setTaskName(resultSet.getString("task_name"));
+                task.setTaskDescription(resultSet.getString("description_task"));
+                task.setEstDays(resultSet.getInt("est_days"));
+                task.setEstHours(resultSet.getInt("est_hours"));
+                task.setEstMinutes(resultSet.getInt("est_minutes"));
+                return task;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
 }
