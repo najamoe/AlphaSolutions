@@ -127,12 +127,12 @@
                 <div>
                     <div>
                         <h2>Task Details</h2>
-                        <p>ID: <span th:text="${taskId}"></span></p>
-                        <p>Name: <span th:text="${taskName}"></span></p>
-                        <p>Description: <span th:text="${taskDescription}"></span></p>
-                        <p>Est days: <span th:text="${estDays}"></span></p>
-                        <p>Est hours: <span th:text="${estHours}"></span></p>
-                        <p>Est minutes: <span th:text="${estMinutes}"></span></p>
+                        <p>ID: <span th:text="${task.taskId}"></span></p>
+                        <p>Name: <span th:text="${task.taskName}"></span></p>
+                        <p>Description: <span th:text="${task.taskDescription}"></span></p>
+                        <p>Est days: <span th:text="${task.estDays}"></span></p>
+                        <p>Est hours: <span th:text="${task.estHours}"></span></p>
+                        <p>Est minutes: <span th:text="${task.estMinutes}"></span></p>
                     </div>
                 </div>
             </div>
@@ -159,7 +159,7 @@
                         <p th:text="${result}" class="result-message"></p>
                     </div>
 
-                    <a href="javascript:history.go(-3);">Ok</a>
+                    <a href="javascript:history.go(-2);">Ok</a>
                 </form>
 
             </div>
