@@ -76,6 +76,14 @@ public class TaskController {
         return "readtasks";
     }
 
+    @GetMapping("/subproject/{subprojectId}/task")
+    public String getSpecificTask(@PathVariable int subprojectId, Model model) throws SQLException {
+        model.addAttribute("subprojectId", subprojectId);
+        List<TaskModel> task = taskService.readTasks(subprojectId);
+        model.addAttribute("task", task);
+        return "task";
+    }
+
 
     @PostMapping("/tasksuccess/{subprojectId}")
     public String deleteTaskFromSubproject(@PathVariable int subprojectId, @RequestParam int taskId, RedirectAttributes redirectAttributes) throws SQLException {
@@ -90,13 +98,7 @@ public class TaskController {
         return "redirect:/tasksuccess/" + subprojectId;
     }
 
-    @GetMapping("/subproject/{subprojectId}/task")
-    public String getSpecificTask(@PathVariable int subprojectId, Model model) throws SQLException {
-       model.addAttribute("subprojectId", subprojectId);
-        List<TaskModel> task = taskService.readTasks(subprojectId);
-        model.addAttribute("task", task);
-        return "task";
-    }
+
 
 
 
