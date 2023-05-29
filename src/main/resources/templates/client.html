@@ -10,21 +10,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
   <style>
-    #welcomecontainer, #clientcontainer, #clienteditcontainer {
+    #welcomecontainer {
       background-color: white;
       margin: 50px 40px 20px 50px; /*Top, right, bottom, left*/
       border-radius: 10px;
     }
 
-
-    #optioncontainer {
+    #howtocaontainer{
       background-color: white;
-      margin: 50px 40px 30px 50px; /*Top, right, bottom, left*/
+      margin: 50px 40px 20px 50px; /*Top, right, bottom, left*/
       border-radius: 10px;
+    }
+
+    #projectwindow{
+      margin: 30px 40px 20px 50px; /*Top, right, bottom, left*/
+      border-radius: 10px;
+      background-color: white;
       height: auto;
     }
 
-    #subprojectwindow, #createteamwindow{
+    #viewprojectswindow{
+      background-color: #f3f6fd;
+      height: 130px;
+      width: 130px;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 40px;
+      margin-left: 60px;
+      margin-bottom: 60px;
+    }
+
+    #newprojectswindow, #createteamwindow{
       background-color: #f3f6fd;
       height: 130px;
       width: 130px;
@@ -37,10 +53,6 @@
 
 
   </style>
-
-  <script>
-
-  </script>
 </head>
 
 
@@ -58,22 +70,9 @@
     </div>
   </div>
 
-  <div class="container" id="clientcontainer">
-  <h2>Client Information</h2>
-  <div>
-    <p>Client Name: <span th:text="${client.clientName}"></span></p>
-    <p>Contact PO No: <span th:text="${client.contactPoNo}"></span></p>
-    <p>Contact Person: <span th:text="${client.contactPerson}"></span></p>
-    <p>Company PO No: <span th:text="${client.companyPoNo}"></span></p>
-    <p>Address: <span th:text="${client.address}"></span></p>
-    <p>Zip Code: <span th:text="${client.zipcode}"></span></p>
-    <p>Country: <span th:text="${client.country}"></span></p>
-    <p>Client ID: <span th:text="${client.clientId}"></span></p>
-  </div>
-  </div>
+  <div class="container" id="projectwindow">
 
-
-    <div class="container" id="clienteditcontainer">
+    <div class="container" id="projectcontainer">
       <div class="projectname">
         <div class="row">
           <div class="col-md-12" id="projectname">
@@ -106,8 +105,6 @@
               <div th:if="${result}">
                 <p th:text="${result}" class="result-message"></p>
               </div>
-
-              <a href="javascript:history.go(-2);">Ok</a>
             </form>
           </div>
         </div>
@@ -115,18 +112,29 @@
     </div>
 
 
-        <div class="container" id="optioncontainer">
-            <div class="row">
-              <div class="col-md-3" id="backwindow">
-                <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
-                <a href="javascript:history.go(-1);">Return</a>
-              </div>
-              <div class="col-md-3" id="dashboardwindow">
-                <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
-                <a href="/dashboard">Return to dashboard</a>
-              </div>
-          </div>
+            <div class="project">
+      <div class="row">
+        <div class="col-md-3" id="newswindow">
+        <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
+        <a href="/createproject">Create new project</a>
         </div>
+        <div class="col-md-3" id="viewprojectswindow">
+          <i class="fa-solid fa-folder" style="font-size: 26px; color: darkgoldenrod"></i>
+          <a href="/readprojects">View Projects</a>
+        </div>
+        <div class="col-md-3" id="newprojectswindow">
+          <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
+          <a href="/editclient">Create new project</a>
+        </div>
+        <div class="col-md-3" id="createteamwindow">
+          <i class="fa-solid fa-users" style="font-size: 26px; color: darkgoldenrod"></i>
+          <a href="/createteam">Create team</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
 
 </div>

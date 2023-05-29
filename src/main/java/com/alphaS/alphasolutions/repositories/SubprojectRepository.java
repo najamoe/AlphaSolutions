@@ -18,19 +18,19 @@ public class SubprojectRepository {
     public SubprojectRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-    public int createSubProject(String subprojectName, String subprojectDescription, int projectId) {
+    public int createSubProject(String subProjectName, String subProjectDescription, int projectId) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "INSERT INTO taskcompass.Subproject (sub_project_name, sub_project_description, project_id) VALUES (?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, subprojectName);
-            stmt.setString(2, subprojectDescription);
+            stmt.setString(1, subProjectName);
+            stmt.setString(2, subProjectDescription);
             stmt.setInt(3, projectId);
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
                 ResultSet rs = stmt.getGeneratedKeys();
                 if (rs.next()) {
-                    int subprojectId = rs.getInt(1);
-                    return subprojectId;
+                    int subProjectId = rs.getInt(1);
+                    return subProjectId;
                 }
             }
         } catch (SQLException e) {
@@ -39,38 +39,43 @@ public class SubprojectRepository {
         return -1; // Return a default value or handle the failure case as per your requirement
     }
 
-    public List<SubprojectModel> readSubProjects() throws SQLException {
+
+
+
+
+    public List<SubprojectModel> readSubProjects(int projectId) throws SQLException {
         try (Connection con = dataSource.getConnection()){
-            String sql = "SELECT * FROM taskcompass.Subproject";
+            String sql = "SELECT * FROM taskcompass.Subproject WHERE project_id =?";
             PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, projectId);
             ResultSet rs = stmt.executeQuery();
-            List<SubprojectModel> subprojects = new ArrayList<>();
+            List<SubprojectModel> subProjects = new ArrayList<>();
             while (rs.next()) {
-                SubprojectModel subproject = new SubprojectModel();
-                subproject.setSubprojectId(rs.getInt("subproject_id"));
-                subproject.setSubprojectName(rs.getString("sub_project_name"));
-                subproject.setSubprojectDescription(rs.getString("sub_project_description"));
-                subprojects.add(subproject);
+                SubprojectModel subProject = new SubprojectModel();
+                subProject.setSubProjectId(rs.getInt("subproject_id"));
+                subProject.setSubProjectName(rs.getString("sub_project_name"));
+                subProject.setSubProjectDescription(rs.getString("sub_project_description"));
+                subProjects.add(subProject);
             }
-            return subprojects;
+            return subProjects;
         }
 
     }
 
 
-    public SubprojectModel readSpecificSubproject(int project_id) {
+    public SubprojectModel readSpecificSubproject(int projectId) {
         try (Connection con = dataSource.getConnection()) {
             // Retrieve subproject details by projectId
             String subprojectSql = "SELECT * FROM taskcompass.Subproject WHERE project_id = ?";
             PreparedStatement subprojectStmt = con.prepareStatement(subprojectSql);
-            subprojectStmt.setInt(1, project_id);
+            subprojectStmt.setInt(1, projectId);
             ResultSet subprojectRs = subprojectStmt.executeQuery();
 
             if (subprojectRs.next()) {
                 SubprojectModel subproject = new SubprojectModel();
-                subproject.setSubprojectId(subprojectRs.getInt("subproject_id"));
-                subproject.setSubprojectName(subprojectRs.getString("sub_project_name"));
-                subproject.setSubprojectDescription(subprojectRs.getString("sub_project_description"));
+                subproject.setSubProjectId(subprojectRs.getInt("subproject_id"));
+                subproject.setSubProjectName(subprojectRs.getString("sub_project_name"));
+                subproject.setSubProjectDescription(subprojectRs.getString("sub_project_description"));
 
                 return subproject;
             }
@@ -81,16 +86,15 @@ public class SubprojectRepository {
         return null; // Return null if the subproject is not found for the given projectId
     }
 
-    public int getSubprojectId(int projectId) {
+    public int getSubprojectId(){
         try (Connection con = dataSource.getConnection()) {
-            String subprojectSql = "SELECT subproject_id FROM taskcompass.Subproject WHERE project_id = ?";
+            String subprojectSql = "SELECT subproject_id FROM taskcompass.Subproject";
             PreparedStatement subprojectStmt = con.prepareStatement(subprojectSql);
-            subprojectStmt.setInt(1, projectId);
             ResultSet subprojectRs = subprojectStmt.executeQuery();
 
             if (subprojectRs.next()) {
-                int subprojectId = subprojectRs.getInt("subproject_id");
-                return subprojectId;
+                int subProjectId = subprojectRs.getInt("subproject_id");
+                return subProjectId;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -100,14 +104,13 @@ public class SubprojectRepository {
     }
 
 
-    public String editSubproject(String subprojectName, String subprojectDescription, int subprojectId) {
+
+    public String editSubproject(String SubProjectName, String SubProjectDescription) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "UPDATE taskcompass.Subproject SET sub_project_name=?, sub_project_description=? WHERE subproject_id=?";
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setString(1, subprojectName);
-            stmt.setString(2, subprojectDescription);
-            stmt.setInt(3, subprojectId);
-
+            stmt.setString(1, SubProjectName);
+            stmt.setString(2, SubProjectDescription);
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
                 return "Changes for subproject successfully updated";
@@ -119,21 +122,21 @@ public class SubprojectRepository {
     }
 
     //deleteSubproject deletes subproject and associated tasks
-    public String deleteSubproject(int subprojectId) {
+    public String deleteSubproject(int subProjectId) {
         try (Connection con = dataSource.getConnection()) {
             String tasksSql = "DELETE FROM taskcompass.Task WHERE subproject_id=?";
             PreparedStatement tasksStmt = con.prepareStatement(tasksSql);
-            tasksStmt.setInt(1, subprojectId);
+            tasksStmt.setInt(1, subProjectId);
             tasksStmt.executeUpdate();
             String subprojectSql = "DELETE FROM taskcompass.Subproject WHERE subproject_id=?";
             PreparedStatement subprojectStmt = con.prepareStatement(subprojectSql);
-            subprojectStmt.setInt(1, subprojectId);
+            subprojectStmt.setInt(1, subProjectId);
             int subprojectDeleted = subprojectStmt.executeUpdate();
 
             if (subprojectDeleted > 0) {
                 return "Subproject successfully deleted";
             }
-            return "Subproject with ID " + subprojectId + " does not exist";
+            return "Subproject with ID " + subProjectId + " does not exist";
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
