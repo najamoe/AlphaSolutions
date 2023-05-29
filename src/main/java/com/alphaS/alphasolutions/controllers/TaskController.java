@@ -124,18 +124,23 @@ public class TaskController {
     }
 
 
-    @PostMapping("/tasksuccess/{subprojectId}")
-    public String deleteTaskFromSubproject(@PathVariable int subprojectId, @RequestParam int taskId, RedirectAttributes redirectAttributes) throws SQLException {
-        String message = taskService.deleteTaskFromSubproject(taskId);
+    @PostMapping("/task/{taskId}/delete")
+    public String deleteTask(@PathVariable("taskId") int taskId, @RequestParam("subprojectId") Integer subprojectId, Model model, RedirectAttributes redirectAttributes) throws SQLException {
+        // Call the deleteTaskFromSubproject method from your repository
+        String result = taskService.deleteTaskFromSubproject(taskId);
 
-        if (message.equals(taskId + " has been deleted")) {
-            redirectAttributes.addFlashAttribute("successMessage", "Task deleted successfully!");
-        } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "An error occurred - task not deleted");
-        }
+        // Add the subprojectId to the redirect attributes
+        redirectAttributes.addAttribute("subprojectId", subprojectId);
+        // Add the result message to the redirect attributes
+        redirectAttributes.addAttribute("result", result);
 
-        return "redirect:/tasksuccess/" + subprojectId;
+        return "redirect:/subproject/{subprojectId}/task";
     }
+
+
+
+
+
 
 
 }

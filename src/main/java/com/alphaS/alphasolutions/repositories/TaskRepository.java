@@ -107,13 +107,11 @@ public class TaskRepository {
 
 
     public String editTask(int subprojectId, String taskName, String taskDescription, int estDays, int estHours, int estMinutes) throws SQLException {
-        // Retrieve the taskId based on the subprojectId
+
         int taskId = getTaskId(subprojectId);
         if (taskId == 0) {
-            return "Task not found"; // Handle the case where the task does not exist
-        }
-
-        try (Connection con = dataSource.getConnection()) {
+            return "Task not found";
+        }   try (Connection con = dataSource.getConnection()) {
             String sql = "UPDATE taskcompass.Task SET task_name = ?, description_task = ?, est_days = ?, est_hours = ?, est_minutes = ? WHERE task_id = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
 
@@ -129,28 +127,6 @@ public class TaskRepository {
                 return "Changes for task " + taskId + " successfully updated";
             }
             return "Failed to edit task";
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-
-    //Method for removing a task form a subproject
-    public String deleteTaskFromSubproject(int taskId)  {
-        String message;
-
-        try (Connection con = dataSource.getConnection()) {
-            String sql = "DELETE FROM taskcompass.Task WHERE task_id = ?";
-            PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setInt(1, taskId);
-            int rowsDeleted = preparedStatement.executeUpdate();
-
-            if (rowsDeleted > 0) {
-                return taskId + " has been deleted";
-            } else {
-                return taskId + " was not deleted";
-            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -203,5 +179,25 @@ public class TaskRepository {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    //Method for removing a task form a subproject
+    public String deleteTaskFromSubproject(int taskId)  {
+        String message;
+
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "DELETE FROM taskcompass.Task WHERE task_id = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, taskId);
+            int rowsDeleted = preparedStatement.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                return taskId + " has been deleted";
+            } else {
+                return taskId + " was not deleted";
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

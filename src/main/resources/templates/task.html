@@ -137,7 +137,8 @@
             <div class="row">
                 <div class="col-md-12" id="welcomemsg">
                     <h1 class="welcome-heading">Your tasks</h1>
-                    <p class="welcome-text">A list of the tasks associated with subproject <span th:text="${subprojectName}"></span></p>
+                    <p class="welcome-text">A list of the tasks associated with subproject <span
+                            th:text="${subprojectName}"></span></p>
                 </div>
             </div>
         </div>
@@ -170,14 +171,13 @@
                                 <a th:href="@{/task/{taskId}/edit(taskId=${task.taskId})}">
                                     <i class="fa fa-pencil"></i> Edit</a>
                             </td>
-
-             <!--               <td>
-                                <form th:action="@{/project/delete/{projectId}(projectId=${project.projectId})}"
-                                      method="post">
-                                    <input type="hidden" name="_method" value="delete"/>
+                            <td>
+                                <form th:action="@{/task/{taskId}/delete(taskId=${task.taskId})}" method="post">
+                                    <input type="hidden" name="subprojectId" th:value="${subprojectId}" />
+                                    <input type="hidden" name="_method" value="delete" />
                                     <button type="submit" class="fa-solid fa-trash"></button>
                                 </form>
-             -->               </td>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="6"></td>
@@ -191,8 +191,6 @@
             </div>
         </div>
     </div>
-
-
 
 
     <div class="container" id="optioncontainer">
