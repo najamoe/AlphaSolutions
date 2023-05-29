@@ -4,7 +4,6 @@ import com.alphaS.alphasolutions.model.SubprojectModel;
 import com.alphaS.alphasolutions.model.TaskModel;
 import com.alphaS.alphasolutions.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -35,14 +34,11 @@ public class TaskService {
         return taskRepository.readTasks(subprojectId);
     }
 
-    public int getTaskId(int taskId) throws SQLException {
-        return taskRepository.getTaskId(taskId);
+    public List<TaskModel> readSpecificTask(int subprojectId) throws SQLException {
+        return taskRepository.readTasks(subprojectId);
     }
-    public TaskModel getTaskById(int taskId) {
-        return taskRepository.getTaskById(taskId);
-    }
-    public String getSubprojectName(int taskId) {
-        return taskRepository.getSubprojectName(taskId);
+    public String deleteTaskFromSubproject(int taskId) throws SQLException {
+        return taskRepository.deleteTaskFromSubproject(taskId);
     }
 
     public String editTask(int taskId, String taskName, String taskDescription, int estDays, int estHours, int estMinutes) throws SQLException {
@@ -52,10 +48,6 @@ public class TaskService {
     public String getTotalTime(int subprojectId){
         return taskRepository.getTotalTime(subprojectId);
     }
-    public String deleteTaskFromSubproject(int taskId) throws SQLException {
-        return taskRepository.deleteTaskFromSubproject(taskId);
-    }
-
 
 
 }
