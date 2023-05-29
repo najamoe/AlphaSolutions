@@ -50,4 +50,15 @@ public class TaskService {
     }
 
 
+    public String getSubprojectName(int taskId) {
+        return taskRepository.getSubprojectName(taskId);
+    }
+
+    public int getTaskId(int taskId) throws SQLException {
+        return taskRepository.getTaskId(taskId);
+    }
+
+    public TaskModel getTaskById(int taskId) {
+        return taskRepository.getTaskById(taskId);
+    }
 }

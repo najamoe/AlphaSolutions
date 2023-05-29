@@ -159,7 +159,14 @@
             </div>
         </div>
     </div>
-
+    <div class="container" id="optioncontainer">
+        <div class="row">
+            <div class="col-md-3" id="dashboardwindow">
+                <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
+                <a th:href="@{/subproject/{subprojectId}/task(subprojectId=${subproject.subprojectId})}">Tasks</a>
+            </div>
+        </div>
+    </div>
 
     <div class="container" id="optioncontainer">
         <div class="row">
