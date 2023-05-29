@@ -111,6 +111,13 @@ public class ProjectController {
         return "project";
     }
 
+
+    @GetMapping("/project/delete/{projectId}")
+    public String showDeleteProjectPage(@PathVariable("projectId") int projectId, Model model) {
+        model.addAttribute("projectId", projectId);
+        return "deletedproject";
+    }
+
     @PostMapping("/project/delete/{projectId}")
     public String deleteProject(@PathVariable("projectId") int projectId) {
         String deletionMessage = projectService.deleteProject(projectId);
@@ -123,6 +130,10 @@ public class ProjectController {
         }
     }
 
+    @GetMapping("/deletedproject")
+    public String showDeletedProjectPage(Model model) {
+        return "deletedproject";
+    }
 
 
 
