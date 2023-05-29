@@ -2,48 +2,49 @@ package com.alphaS.alphasolutions.model;
 
 public class SubprojectModel {
     private int subprojectId;
-    private String subprojectName;
-    private String subprojectDescription;
+    private String subProjectName;
+    private String subProjectDescription;
 
     public SubprojectModel(int subprojectId, String subProjectName, String subProjectDescription) {
         this.subprojectId = subprojectId;
-        this.subprojectName = subProjectName;
-        this.subprojectDescription = subProjectDescription;
+        this.subProjectName = subProjectName;
+        this.subProjectDescription = subProjectDescription;
     }
 
     public SubprojectModel() {
     }
 
+
     public int getSubprojectId() {
         return subprojectId;
     }
 
-    public void setSubprojectId(int subprojectId) {
+    public void setSubProjectId(int subprojectId) {
         this.subprojectId = subprojectId;
     }
 
-    public String getSubprojectName() {
-        return subprojectName;
+    public String getSubProjectName() {
+        return subProjectName;
     }
 
-    public void setSubprojectName(String subprojectName) {
-        this.subprojectName = subprojectName;
+    public void setSubProjectName(String subProjectName) {
+        this.subProjectName = subProjectName;
     }
 
-    public String getSubprojectDescription() {
-        return subprojectDescription;
+    public String getSubProjectDescription() {
+        return subProjectDescription;
     }
 
-    public void setSubprojectDescription(String subprojectDescription) {
-        this.subprojectDescription = subprojectDescription;
+    public void setSubProjectDescription(String subProjectDescription) {
+        this.subProjectDescription = subProjectDescription;
     }
 
     @Override
     public String toString() {
-        return "SubprojectModel{" +
-                "subprojectId=" + subprojectId +
-                ", subProjectName='" + subprojectName + '\'' +
-                ", subProjectDescription='" + subprojectDescription + '\'' +
+        return "SubProjectModel{" +
+                "subProjectId='" + subprojectId + '\'' +
+                "subProjectName='" + subProjectName + '\'' +
+                ", subProjectDescription='" + subProjectDescription + '\'' +
                 '}';
     }
 }

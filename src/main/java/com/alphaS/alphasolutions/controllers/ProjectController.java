@@ -1,12 +1,9 @@
 package com.alphaS.alphasolutions.controllers;
 
-import com.alphaS.alphasolutions.model.ClientModel;
 import com.alphaS.alphasolutions.model.ProjectModel;
-import com.alphaS.alphasolutions.model.SubprojectModel;
 import com.alphaS.alphasolutions.service.ClientService;
 import com.alphaS.alphasolutions.service.ProjectService;
 import com.alphaS.alphasolutions.service.EmployeeService;
-import com.alphaS.alphasolutions.service.SubprojectService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,13 +20,11 @@ public class ProjectController {
     private final ProjectService projectService;
     private final EmployeeService employeeService;
     private final ClientService clientService;
-    private final SubprojectService subprojectService;
 
-    public ProjectController(ProjectService projectService, EmployeeService employeeService, ClientService clientService, SubprojectService subprojectService) {
+    public ProjectController(ProjectService projectService, EmployeeService employeeService, ClientService clientService) {
         this.projectService = projectService;
         this.employeeService = employeeService;
         this.clientService = clientService;
-        this.subprojectService= subprojectService;
     }
 
     @GetMapping("/createproject")
@@ -59,7 +54,7 @@ public class ProjectController {
             return "error";
         }
     }
-    @GetMapping("/dashboard")
+    @GetMapping("/readprojects")
     public String readCreatedProjects(Model model, HttpSession session) {
         try {
             String username = (String) session.getAttribute("username");
@@ -87,14 +82,7 @@ public class ProjectController {
             return "projectNotFound";
         }
 
-        // Retrieve client details for the project
-        ClientModel client = clientService.readSpecificClient(project.getClientId());
-        SubprojectModel subproject = subprojectService.readSpecificSubproject(projectId);
-
         model.addAttribute("project", project);
-        model.addAttribute("client", client);
-        model.addAttribute("subproject", subproject);
-
         return "project";
     }
 

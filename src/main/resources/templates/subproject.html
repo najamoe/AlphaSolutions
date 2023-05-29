@@ -108,15 +108,15 @@
 <body>
 <div layout:fragment="content">
 
-    <div class="container" id="welcomecontainer">
-        <div class="welcome">
-            <div class="row">
-                <div class="col-md-12" id="welcomemsg">
-                    <h1 class="welcome-heading">Your subprojects</h1>
-                </div>
-            </div>
+  <div class="container" id="welcomecontainer">
+    <div class="welcome">
+      <div class="row">
+        <div class="col-md-12" id="welcomemsg">
+          <h1 class="welcome-heading">Your subprojects</h1>
         </div>
+      </div>
     </div>
+  </div>
 
     <div class="row">
         <div class="col-md-12" id="projectviewcontainer">
@@ -161,15 +161,21 @@
     </div>
 
 
-    <div class="container" id="optioncontainer">
-        <div class="row">
-            <div class="col-md-3" id="dashboardwindow">
-                <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
-                <a href="/dashboard">Return to dashboard</a>
-            </div>
-        </div>
+  <div class="container" id="optioncontainer">
+    <div class="row">
+      <div class="col-md-3" id="backwindow">
+        <form>
+          <button type="button" class="back-link" onclick="history.back()">
+            <i class="fa-solid fa-arrow-left" style="font-size: 26px; color: darkgoldenrod"></i>
+          </button>
+        </form>
+      </div>
+      <div class="col-md-3" id="dashboardwindow">
+        <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
+        <a href="/dashboard"></a>
+      </div>
     </div>
-
+  </div>
 </div>
 
 

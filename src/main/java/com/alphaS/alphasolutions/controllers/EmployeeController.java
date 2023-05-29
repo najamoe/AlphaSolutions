@@ -44,6 +44,10 @@ public class EmployeeController {
         }
     }
 
+    @GetMapping("/dashboard")
+    public String showDashboard(Model model) {
+        return "dashboard";
+    }
 
     @GetMapping("/logout")
     public String logOut(HttpSession session) {
