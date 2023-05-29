@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
@@ -8,31 +9,7 @@
     <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <script>
-        // Function to open the modal
-        function openModal(modalId) {
-            var modal = document.getElementById(modalId);
-            modal.style.display = "block";
-        }
-
-        // Function to close the modal
-        function closeModal(modalId) {
-            var modal = document.getElementById(modalId);
-            modal.style.display = "none";
-        }
-
-        // Add event listener to open the modal when the edit button is clicked
-        document.addEventListener("DOMContentLoaded", function () {
-            var editButtons = document.getElementsByClassName("edit-button");
-
-            for (var i = 0; i < editButtons.length; i++) {
-                editButtons[i].addEventListener("click", function () {
-                    openModal("editTaskModal");
-                });
-            }
-        });
-    </script>
+    <title>Task</title>
 
 
     <style>
@@ -132,6 +109,7 @@
 <body>
 <div layout:fragment="content">
 
+
     <div class="container" id="welcomecontainer">
         <div class="welcome">
             <div class="row">
@@ -143,49 +121,64 @@
         </div>
     </div>
 
-
     <div class="row">
         <div class="col-md-12" id="projectviewcontainer">
             <div class="container-fluid">
                 <div>
-                    <table>
-                        <tr>
-                            <th>Task ID</th>
-                            <th>Task Name</th>
-                            <th>Task Description</th>
-                            <th>Est. days</th>
-                            <th>Est. hours</th>
-                            <th>Est. minutes</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                        <tr th:each="task : ${tasks}">
-                            <td th:text="${task.taskId}"></td>
-                            <td th:text="${task.taskName}"></td>
-                            <td th:text="${task.taskDescription}"></td>
-                            <td th:text="${task.estDays}"></td>
-                            <td th:text="${task.estHours}"></td>
-                            <td th:text="${task.estMinutes}"></td>
-                            <td>
-                                <a th:href="@{/task/{taskId}/edit(taskId=${task.taskId})}">
-                                    <i class="fa fa-pencil"></i> Edit</a>
-                            </td>
-
-             <!--               <td>
-                                <form th:action="@{/project/delete/{projectId}(projectId=${project.projectId})}"
-                                      method="post">
-                                    <input type="hidden" name="_method" value="delete"/>
-                                    <button type="submit" class="fa-solid fa-trash"></button>
-                                </form>
-             -->               </td>
-
-                        </tr>
-                    </table>
+                    <div>
+                        <h2>Task Details</h2>
+                        <p>ID: <span th:text="${taskId}"></span></p>
+                        <p>Name: <span th:text="${taskName}"></span></p>
+                        <p>Description: <span th:text="${taskDescription}"></span></p>
+                        <p>Est days: <span th:text="${estDays}"></span></p>
+                        <p>Est hours: <span th:text="${estHours}"></span></p>
+                        <p>Est minutes: <span th:text="${estMinutes}"></span></p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12" id="projectviewcontainer">
+            <div class="container-fluid">
+                <form th:action="@{/task/{taskId}/edit(taskId=${taskId})}" method="post">
+                <label for="taskName">Task Name:</label>
+                    <input type="text" id="taskName" name="taskName" th:value="${task.taskName}" required/><br/>
+                    <label for="taskDescription">Task Description:</label>
+                    <textarea id="taskDescription" name="taskDescription" required th:text="${task.taskDescription}"></textarea><br/>
+                    <label for="estDays">Est. Days:</label>
+                    <input type="number" id="estDays" name="estDays" th:value="${task.estDays}" required/><br/>
+                    <label for="estHours">Est. Hours:</label>
+                    <input type="number" id="estHours" name="estHours" th:value="${task.estHours}" required/><br/>
+                    <label for="estMinutes">Est. Minutes:</label>
+                    <input type="number" id="estMinutes" name="estMinutes" th:value="${task.estMinutes}" required/><br/>
+                    <div>
+                        <input type="submit" value="Save Changes" />
+                    </div>
+                    <div th:if="${result}">
+                        <p th:text="${result}" class="result-message"></p>
+                    </div>
 
+                    <a href="javascript:history.go(-3);">Ok</a>
+                </form>
+
+            </div>
+            <div class="total-time" style="position: fixed; bottom: 10px; right: 10px;">
+                Total Time: <span th:text="${totalTime}"></span>
+            </div>
+        </div>
+    </div>
+
+
+                <div class="row">
+        <div class="col-md-12" id="editsubprojectwcontainer">
+            <div class="container-fluid">
+
+
+
+            </div>
+        </div>
+    </div>
 
 
 
