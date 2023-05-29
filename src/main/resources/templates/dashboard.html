@@ -26,8 +26,8 @@
         }
     </script>
     <style>
-        #welcomecontainer, #howtocontainer, #projectwindow, #projectviewcontainer{
-           background-color: white;
+        #welcomecontainer, #howtocontainer, #projectwindow, #projectviewcontainer {
+            background-color: white;
             margin: 50px 40px 20px 50px; /*Top, right, bottom, left*/
             border-radius: 10px;
             width: 80%;
@@ -78,7 +78,7 @@
             color: #999;
         }
 
-        </style>
+    </style>
 </head>
 
 
@@ -86,76 +86,77 @@
 <div layout:fragment="content">
 
     <div id="dashboardwindow">
-    <div class="container" id="welcomecontainer">
-        <div class="welcome">
-            <div class="row justify-content-center">
-                <div class="col-md-12" id="welcomemsg">
-                    <h1 class="welcome-heading">Welcome to your Dashboard</h1>
-                    <p class="welcome-text">Hello, welcome to your dashboard!</p>
+        <div class="container" id="welcomecontainer">
+            <div class="welcome">
+                <div class="row justify-content-center">
+                    <div class="col-md-12" id="welcomemsg">
+                        <h1 class="welcome-heading">Welcome to your Dashboard</h1>
+                        <p class="welcome-text">Hello, welcome to your dashboard!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container" id="howtocontainer">
+            <div class="howto">
+                <div class="row justify-content-center">
+                    <div class="col-md-12" id="howtomsg">
+                        <h1 class="welcome-heading">How to</h1>
+                        <p class="howto-text">Below is an overview of your existing projects</p>
+                        <p class="howto-text">If you wish to edit or delete a given project, hit the 'i' or trashcan
+                            icon at the right of the project</p>
+                        <p class="howto-text">If you wish to add a new project, simplyt hit the "new project" button at
+                            the top right corner</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-12" id="projectviewcontainer">
+                <div class="container-fluid">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Project ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Start date</th>
+                            <th>End date</th>
+                            <th></th>
+                            <th></th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="project : ${projects}">
+                            <td th:text="${project.projectId}"></td>
+                            <td th:text="${project.projectName}"></td>
+                            <td th:text="${project.projectDescription}"></td>
+                            <td th:text="${project.startDate}"></td>
+                            <td th:text="${project.endDate}"></td>
+                            <td>
+                                <a th:href="@{/project/details/{projectId}(projectId=${project.projectId})}">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <form th:action="@{/project/delete/{projectId}(projectId=${project.projectId})}"
+                                      method="post">
+                                    <input type="hidden" name="_method" value="delete"/>
+                                    <button type="submit" class="fa-solid fa-trash"></button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(projects)}">
+                            <td colspan="7">
+                                <p>No projects found.</p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container" id="howtocontainer">
-        <div class="howto">
-            <div class="row justify-content-center">
-                <div class="col-md-12" id="howtomsg">
-                    <h1 class="welcome-heading">How to</h1>
-                    <p class="howto-text">Below is an overview of your existing projects</p>
-                    <p class="howto-text">If you wish to edit or delete a given project, hit the 'i' or trashcan icon at the right of the project</p>
-                    <p class="howto-text">If you wish to add a new project, simplyt hit the "new project" button at the top right corner</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-md-12" id="projectviewcontainer">
-            <div class="container-fluid">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Project ID</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Start date</th>
-                        <th>End date</th>
-                        <th></th>
-                        <th></th>
-
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="project : ${projects}">
-                        <td th:text="${project.projectId}"></td>
-                        <td th:text="${project.projectName}"></td>
-                        <td th:text="${project.projectDescription}"></td>
-                        <td th:text="${project.startDate}"></td>
-                        <td th:text="${project.endDate}"></td>
-                        <td>
-                            <a th:href="@{/project/details/{projectId}(projectId=${project.projectId})}">
-                                <i class="fa-solid fa-circle-info"></i>
-                            </a>
-                        </td>
-                        <td>
-                            <form th:action="@{/project/delete/{projectId}(projectId=${project.projectId})}"
-                                  method="post">
-                                <input type="hidden" name="_method" value="delete"/>
-                                <button type="submit" class="fa-solid fa-trash"></button>
-                            </form>
-                        </td>
-                    </tr>
-                    <tr th:if="${#lists.isEmpty(projects)}">
-                        <td colspan="7">
-                            <p>No projects found.</p>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    </div>
-
 
 
 </div>
