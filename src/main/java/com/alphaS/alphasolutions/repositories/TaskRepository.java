@@ -159,15 +159,17 @@ public class TaskRepository {
     public String getTotalTime(int subprojectId) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "SELECT " +
-                    "  CONCAT(" +
-                    "    FLOOR(SUM(est_days)), ' days ', " +
-                    "    FLOOR(SUM(est_hours)), ' hours ', " +
-                    "    FLOOR(SUM(est_minutes)), ' minutes' " +
-                    "  ) AS total_est_time " +
+                    "CONCAT(" +
+                    "  FLOOR((SUM(est_days) + SUM(est_hours) / 24 + SUM(est_minutes) / 1440)), ' days ', " +
+                    "  FLOOR((SUM(est_hours) % 24 + (SUM(est_minutes) / 60)) % 24), ' hours ', " +
+                    "  FLOOR(SUM(est_minutes) % 60), ' minutes' " +
+                    ") AS total_est_time " +
                     "FROM " +
-                    "  taskcompass.Task " +
+                    "taskcompass.Task " +
                     "WHERE " +
-                    "  subproject_id = ?";
+                    "subproject_id = ?";
+
+
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setInt(1, subprojectId);
             ResultSet resultSet = preparedStatement.executeQuery();

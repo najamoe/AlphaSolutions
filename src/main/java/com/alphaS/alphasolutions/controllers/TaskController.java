@@ -76,7 +76,8 @@ public class TaskController {
 
         List<TaskModel> tasks = taskService.readTasks(subprojectId);
         model.addAttribute("tasks", tasks);
-
+        String totalTime = taskService.getTotalTime(subprojectId);
+        model.addAttribute("totalTime", totalTime);
         return "task";
     }
 
