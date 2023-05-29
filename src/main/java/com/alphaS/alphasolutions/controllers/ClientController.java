@@ -46,11 +46,7 @@ public class ClientController {
 
     @PostMapping("/createclient/{projectId}")
     public String addClientToProject(
-            @PathVariable("projectId") int projectId,
-            @ModelAttribute("client") ClientModel client,
-            Model model,
-            HttpSession session,
-            RedirectAttributes redirectAttributes
+            @PathVariable("projectId") int projectId, @ModelAttribute("client") ClientModel client, Model model, HttpSession session, RedirectAttributes redirectAttributes
     ) throws SQLException {
         // Retrieve the username and password from the session
         String username = (String) session.getAttribute("username");

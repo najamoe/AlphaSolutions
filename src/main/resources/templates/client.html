@@ -72,15 +72,13 @@
   </div>
 
 
-
-
     <div class="container" id="clienteditcontainer">
       <div class="projectname">
         <div class="row">
           <div class="col-md-12" id="projectname">
-            <form action="/client/details/{clientId}" method="post">
-              <input type="hidden" name="clientId" th:value="${client.clientId}" />
-              <label for="newClientName">Client Name:</label>
+            <form action="/client/details/{clientId}" method="post" th:action="@{'/client/details/' + ${client.clientId}}">
+
+            <label for="newClientName">Client Name:</label>
               <input type="text" id="newClientName" name="newClientName" th:value="${client.clientName}" required/><br/>
 
               <label for="newContactPoNo">Contact Phone Number:</label>
