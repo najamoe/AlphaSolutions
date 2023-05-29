@@ -126,17 +126,12 @@
             <tr>
               <th>Task Name</th>
               <th>Task Description</th>
-              <th>Estimated days</th>
-              <th>Estimated hours</th>
-              <th>Estimated minutes</th>
+              <th>Estimated Time</th>
             </tr>
             <tr th:each="task : ${task}">
               <td th:text="${task.taskName}"></td>
               <td th:text="${task.taskDescription}"></td>
-              <td th:text="${task.estDays}"></td>
-              <td th:text="${task.estHours}"></td>
-              <td th:text="${task.estMinutes}"></td>
-
+              <td th:text="${task.estTime}"></td>
             </tr>
           </table>
         </div>
