@@ -73,11 +73,12 @@ public class ClientRepository {
         return clients;
     }
 
-    public ClientModel readSpecificClient(int projectId) {
+
+    public ClientModel readSpecificClient(int clientId) {
         try (Connection con = dataSource.getConnection()) {
-            String sql = "SELECT * FROM taskcompass.Client WHERE project_id = ?";
+            String sql = "SELECT * FROM taskcompass.Client WHERE client_id = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, projectId);
+            stmt.setInt(1, clientId);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -97,6 +98,7 @@ public class ClientRepository {
         }
         return null; // Return null if the client is not found
     }
+
 
     public String editClient(String newClientName, int newContactPoNo, String newContactPerson, int newCompanyPoNo,
                              String newAddress, int newZipcode, String newCountry, int clientId) {
@@ -122,7 +124,6 @@ public class ClientRepository {
             throw new RuntimeException(e);
         }
     }
-
 
     public String deletedClient(int clientId) {
         try (Connection con = dataSource.getConnection()) {

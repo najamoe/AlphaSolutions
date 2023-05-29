@@ -5,7 +5,6 @@ import com.alphaS.alphasolutions.repositories.SubprojectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -25,19 +24,19 @@ public class SubprojectService {
     }
 
     public int createSubproject(int projectId, SubprojectModel subprojectModel) {
-        return subprojectRepository.createSubProject(subprojectModel.getSubProjectName(), subprojectModel.getSubProjectDescription(), projectId);
+        return subprojectRepository.createSubproject(subprojectModel.getSubprojectName(), subprojectModel.getSubprojectDescription(), projectId);
     }
 
-    public List<SubprojectModel> readSubProject(int projectId) throws SQLException {
-        return subprojectRepository.readSubProjects(projectId);
+    public List<SubprojectModel> readSubproject( ) throws SQLException {
+        return subprojectRepository.readSubprojects();
     }
 
-    public String editSubproject(String SubProjectName, String SubProjectDescription) {
-        return subprojectRepository.editSubproject(SubProjectName, SubProjectDescription);
+    public String editSubproject(String SubprojectName, String SubprojectDescription, int subprojectId) {
+        return subprojectRepository.editSubproject(SubprojectName, SubprojectDescription, subprojectId);
     }
 
-    public String deleteSubproject(int subProjectId) {
-     return  subprojectRepository.deleteSubproject(subProjectId);
+    public String deleteSubproject(int subprojectId) {
+     return  subprojectRepository.deleteSubproject(subprojectId);
     }
 
     public SubprojectModel readSpecificSubproject(int projectId) {
@@ -45,7 +44,7 @@ public class SubprojectService {
     }
 
 
-    public int getSubprojectId() {
-        return subprojectRepository.getSubprojectId();
+    public int getSubprojectId(int projectId) {
+        return subprojectRepository.getSubprojectId(projectId);
     }
 }

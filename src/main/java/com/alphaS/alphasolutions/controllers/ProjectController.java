@@ -1,9 +1,12 @@
 package com.alphaS.alphasolutions.controllers;
 
+import com.alphaS.alphasolutions.model.ClientModel;
 import com.alphaS.alphasolutions.model.ProjectModel;
+import com.alphaS.alphasolutions.model.SubprojectModel;
 import com.alphaS.alphasolutions.service.ClientService;
 import com.alphaS.alphasolutions.service.ProjectService;
 import com.alphaS.alphasolutions.service.EmployeeService;
+import com.alphaS.alphasolutions.service.SubprojectService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,11 +23,13 @@ public class ProjectController {
     private final ProjectService projectService;
     private final EmployeeService employeeService;
     private final ClientService clientService;
+    private final SubprojectService subprojectService;
 
-    public ProjectController(ProjectService projectService, EmployeeService employeeService, ClientService clientService) {
+    public ProjectController(ProjectService projectService, EmployeeService employeeService, ClientService clientService, SubprojectService subprojectService) {
         this.projectService = projectService;
         this.employeeService = employeeService;
         this.clientService = clientService;
+        this.subprojectService= subprojectService;
     }
 
     @GetMapping("/createproject")
@@ -54,7 +59,7 @@ public class ProjectController {
             return "error";
         }
     }
-    @GetMapping("/readprojects")
+    @GetMapping("/dashboard")
     public String readCreatedProjects(Model model, HttpSession session) {
         try {
             String username = (String) session.getAttribute("username");
@@ -63,11 +68,11 @@ public class ProjectController {
             List<ProjectModel> projects = projectService.readProjects(username, password);
             model.addAttribute("projects", projects);
 
-            return "readprojects";
+            return "dashboard";
         } catch (SQLException e) {
             String errorMessage = "Failed to retrieve projects from the database. Please try again later.";
             model.addAttribute("error", errorMessage);
-            return "readprojects";
+            return "dashboard";
         }
     }
 
@@ -77,16 +82,15 @@ public class ProjectController {
         String password = (String) session.getAttribute("password");
 
         ProjectModel project = projectService.readSpecificProject(projectId, username, password);
-        if (project == null) {
-            // Handle case where project is not found
-            return "projectNotFound";
-        }
+        ClientModel client = clientService.readSpecificClient(project.getClientId());
+        SubprojectModel subproject = subprojectService.readSpecificSubproject(projectId);
 
         model.addAttribute("project", project);
+        model.addAttribute("client", client);
+        model.addAttribute("subproject", subproject);
+
         return "project";
     }
-
-
     @PostMapping("/project/details/{projectId}")
     public String editSpecificProject(@PathVariable("projectId") int projectId,
                                       @RequestParam("newProjectName") String newProjectName,
@@ -105,17 +109,12 @@ public class ProjectController {
         ProjectModel project = projectService.readSpecificProject(projectId, username, password);
         model.addAttribute("project", project);
 
+        ClientModel client = clientService.readSpecificClient(project.getClientId());
+        model.addAttribute("client", client);
         // Add the result message to the model for display
         model.addAttribute("result", result);
 
         return "project";
-    }
-
-
-    @GetMapping("/project/delete/{projectId}")
-    public String showDeleteProjectPage(@PathVariable("projectId") int projectId, Model model) {
-        model.addAttribute("projectId", projectId);
-        return "deletedproject";
     }
 
     @PostMapping("/project/delete/{projectId}")
@@ -130,10 +129,6 @@ public class ProjectController {
         }
     }
 
-    @GetMapping("/deletedproject")
-    public String showDeletedProjectPage(Model model) {
-        return "deletedproject";
-    }
 
 
 

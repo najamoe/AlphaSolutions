@@ -34,10 +34,6 @@ CREATE TABLE taskcompass.Project (
                                      FOREIGN KEY (client_id) REFERENCES taskcompass.Client (client_id) ON DELETE CASCADE
 );
 
-ALTER TABLE taskcompass.Client
-    ADD COLUMN project_id int,
-    ADD FOREIGN KEY (project_id) REFERENCES taskcompass.Project (project_id) ON DELETE CASCADE;
-
 CREATE TABLE taskcompass.Subproject (
                                         sub_project_name VARCHAR(255),
                                         sub_project_description VARCHAR(255),

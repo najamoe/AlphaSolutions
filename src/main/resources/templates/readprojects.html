@@ -26,17 +26,52 @@
         }
     </script>
     <style>
-        #welcomecontainer, #howtocontainer, #projectwindow, #projectviewcontainer{
-           background-color: white;
-            margin: 50px 40px 20px 50px; /*Top, right, bottom, left*/
+
+        #welcomecontainer {
+            margin: 30px auto; /* Centers the container horizontally */
+            margin-bottom: 20px;
             border-radius: 10px;
-            width: 80%;
+            background-color: white;
+            padding: 20px;
+            width: 100%;
+            max-width: 1000px; /* Optional: Sets a maximum width for the container */
+        }
+
+        #projectviewcontainer {
+            margin: 30px auto; /* Centers the container horizontally */
+            border-radius: 10px;
+            background-color: white;
+            padding: 20px;
+            width: 100%;
+            max-width: 1000px; /* Optional: Sets a maximum width for the container */
+        }
+
+        #optioncontainer {
+            margin: 30px auto; /* Centers the container horizontally */
+            border-radius: 10px;
+            background-color: white;
+            width: 100%;
+            max-width: 1000px; /* Optional: Sets a maximum width for the container */
+            padding: 20px;
         }
 
         #dashboardwindow {
-            display: flex;
-            flex-direction: column;
-            height: 100vh; /* Adjust the height if needed */
+            background-color: #f3f6fd;
+            height: 30px;
+            width: 130px;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            margin-left: 60px;
+        }
+        #backwindow {
+            background-color: #f3f6fd;
+            height: 30px;
+            width: 130px;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            margin-left: 60px;
         }
 
         .back-link {
@@ -48,6 +83,7 @@
             text-decoration: underline;
             cursor: pointer;
         }
+
 
         table {
             width: 100%;
@@ -78,37 +114,25 @@
             color: #999;
         }
 
-        </style>
+    </style>
 </head>
 
 
 <body>
 <div layout:fragment="content">
 
-    <div id="dashboardwindow">
     <div class="container" id="welcomecontainer">
         <div class="welcome">
-            <div class="row justify-content-center">
+            <div class="row">
                 <div class="col-md-12" id="welcomemsg">
-                    <h1 class="welcome-heading">Welcome to your Dashboard</h1>
-                    <p class="welcome-text">Hello, welcome to your dashboard!</p>
+                    <h1 class="welcome-heading">Your projects</h1>
+                    <p class="welcome-text">A detailed list of your projects</p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container" id="howtocontainer">
-        <div class="howto">
-            <div class="row justify-content-center">
-                <div class="col-md-12" id="howtomsg">
-                    <h1 class="welcome-heading">How to</h1>
-                    <p class="howto-text">Below is an overview of your existing projects</p>
-                    <p class="howto-text">If you wish to edit or delete a given project, hit the 'i' or trashcan icon at the right of the project</p>
-                    <p class="howto-text">If you wish to add a new project, simplyt hit the "new project" button at the top right corner</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-center">
+
+    <div class="row">
         <div class="col-md-12" id="projectviewcontainer">
             <div class="container-fluid">
                 <table>
@@ -154,11 +178,27 @@
             </div>
         </div>
     </div>
+
+
+
+    <div class="container" id="optioncontainer">
+        <div class="row">
+            <div class="col-md-3" id="backwindow">
+                <form>
+                    <button type="button" class="back-link" onclick="history.back()">
+                        <i class="fa-solid fa-arrow-left" style="font-size: 26px; color: darkgoldenrod"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-3" id="dashboardwindow">
+                <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
+                <a href="/dashboard"></a>
+            </div>
+        </div>
     </div>
-
-
-
 </div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>

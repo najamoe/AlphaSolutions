@@ -151,9 +151,7 @@ public class ProjectRepository {
 
             if (rowsUpdated > 0) {
                 // Retrieve the updated project
-                ProjectModel updatedProject = readSpecificProject(projectId, username, password);
-                updatedProject.setClientId(clientId); // Set the client ID in the updated project
-                return updatedProject;
+                return readSpecificProject(projectId, username, password);
             } else {
                 throw new SQLException("Failed to add client to project");
             }
@@ -161,7 +159,6 @@ public class ProjectRepository {
             throw new RuntimeException(e);
         }
     }
-
 
     public String deleteProject(int projectId) {
         try (Connection con = dataSource.getConnection()) {

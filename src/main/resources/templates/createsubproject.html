@@ -69,7 +69,7 @@
     <form th:action="@{'/clientsuccess/' + ${projectId} + '/createsubproject'}" th:object="${subproject}" method="post">
       <div class="form-group">
         <label class="form-label" for="subprojectName">Subproject Name:</label>
-        <input class="form-input" type="text" id="subprojectName" th:field="*{subProjectName}" required/>
+        <input class="form-input" type="text" id="subprojectName" th:field="*{subprojectName}" required/>
       </div>
       <div class="form-group">
         <label class="form-label" for="subprojectDescription">Subproject Description:</label>

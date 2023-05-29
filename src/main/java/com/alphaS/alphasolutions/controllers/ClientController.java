@@ -36,14 +36,12 @@ public class ClientController {
     @GetMapping("/createclient")
     public String clients(Model model, HttpSession session, @ModelAttribute("projectId") Integer projectId) {
         if (projectId == null) {
-            // Handle the case when projectId is null
-            // For example, you can return an error page or redirect to a different URL
-            return "redirect:/projecterror";
+            return "redirect:/error";
         }
 
         model.addAttribute("client", new ClientModel());
         model.addAttribute("projectId", projectId);
-        return "createClient";
+        return "createclient";
     }
 
     @PostMapping("/createclient/{projectId}")
@@ -63,7 +61,7 @@ public class ClientController {
                 client.getClientName(), client.getContactPoNo(), client.getContactPerson(),
                 client.getCompanyPoNo(), client.getAddress(), client.getZipcode(), client.getCountry()
         );
-
+        
         String message = null;
         // Add the client to the project using the repository
         if (clientId > 0) {
@@ -84,7 +82,6 @@ public class ClientController {
 
     @GetMapping("/clientsuccess/{projectId}")
     public String clientSuccess(@PathVariable("projectId") int projectId, Model model, HttpSession session) {
-        // Add projectId to the model if needed
         model.addAttribute("projectId", projectId);
         return "clientSuccess";
     }
@@ -135,23 +132,31 @@ public class ClientController {
 
         // Add the result message to the model for display
         model.addAttribute("result", result);
-        model.addAttribute("showPopup", true); // Add a flag to show the pop-up
 
         return "client";
     }
 
-
-
-    /*
-    @PostMapping("/clients/delete")
-    public ResponseEntity<String> deleteClient(@RequestParam int clientID){
-        boolean deletionStatus = clientService.deleteClient(clientID);
-        if (deletionStatus) {
-            return new ResponseEntity<>("Client with ID " + clientID + " was deleted", HttpStatus.OK);
+/*
+    @PostMapping("/client/delete/{clientId}")
+    public String deleteClient(@PathVariable("clientId") int clientId) {
+        String deletionMessage = clientService.deleteClient(clientId);
+        String errorOnDelete ="An error occured, client not deleted";
+        if (deletionMessage.equals("Client deleted successfully")) {
+            return "redirect:/deletedclient";
         } else {
-            return new ResponseEntity<>("Failed to delete client with ID " + clientID, HttpStatus.INTERNAL_SERVER_ERROR);
+            return "redirect:/readclients.html?error=" + errorOnDelete;
         }
     }
 
-     */
+    @GetMapping("/client/delete/{clientId}")
+    public String showDeleteClientPage(@PathVariable("clientId") int clientId, Model model) {
+        model.addAttribute("clientId", clientId);
+        return "deletedclient";
+    }
+
+    @GetMapping("/deletedclient")
+    public String showDeletedClientPage(Model model) {
+        return "deletedclient";
+    }
+*/
 }

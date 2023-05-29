@@ -10,37 +10,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
   <style>
-    #welcomecontainer {
+    #welcomecontainer, #clientcontainer, #clienteditcontainer {
       background-color: white;
       margin: 50px 40px 20px 50px; /*Top, right, bottom, left*/
       border-radius: 10px;
     }
 
-    #howtocaontainer{
-      background-color: white;
-      margin: 50px 40px 20px 50px; /*Top, right, bottom, left*/
-      border-radius: 10px;
-    }
 
-    #projectwindow{
-      margin: 30px 40px 20px 50px; /*Top, right, bottom, left*/
-      border-radius: 10px;
+    #optioncontainer {
       background-color: white;
+      margin: 50px 40px 30px 50px; /*Top, right, bottom, left*/
+      border-radius: 10px;
       height: auto;
     }
 
-    #viewprojectswindow{
-      background-color: #f3f6fd;
-      height: 130px;
-      width: 130px;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 40px;
-      margin-left: 60px;
-      margin-bottom: 60px;
-    }
-
-    #newprojectswindow, #createteamwindow{
+    #subprojectwindow, #createteamwindow{
       background-color: #f3f6fd;
       height: 130px;
       width: 130px;
@@ -53,6 +37,8 @@
 
 
   </style>
+
+
 </head>
 
 
@@ -70,41 +56,54 @@
     </div>
   </div>
 
-  <div class="container" id="projectwindow">
+  <div class="container" id="clientcontainer">
+  <h2>Client Information</h2>
+  <div>
+    <p>Client ID: <span th:text="${client.clientId}"></span></p>
+    <p>Client Name: <span th:text="${client.clientName}"></span></p>
+    <p>Contact PO No: <span th:text="${client.contactPoNo}"></span></p>
+    <p>Contact Person: <span th:text="${client.contactPerson}"></span></p>
+    <p>Company PO No: <span th:text="${client.companyPoNo}"></span></p>
+    <p>Address: <span th:text="${client.address}"></span></p>
+    <p>Zip Code: <span th:text="${client.zipcode}"></span></p>
+    <p>Country: <span th:text="${client.country}"></span></p>
 
-    <div class="container" id="projectcontainer">
+  </div>
+  </div>
+
+
+
+
+    <div class="container" id="clienteditcontainer">
       <div class="projectname">
         <div class="row">
           <div class="col-md-12" id="projectname">
-            <form action="#" th:action="@{/client/details/{clientId}(clientId=${client.clientId})}"
-                  th:object="${client}" method="post">
+            <form action="/client/details/{clientId}" method="post">
+              <input type="hidden" name="clientId" th:value="${client.clientId}" />
+              <label for="newClientName">Client Name:</label>
+              <input type="text" id="newClientName" name="newClientName" th:value="${client.clientName}" required/><br/>
 
-              <label for="clientName">Client Name:</label>
-              <input type="text" id="clientName" name="newClientName" th:value="${client.clientName}"/>
+              <label for="newContactPoNo">Contact Phone Number:</label>
+              <input type="text" id="newContactPoNo" name="newContactPoNo" th:value="${client.contactPoNo}" required/><br/>
 
-              <label for="contactPoNo">Contact Phone No.:</label>
-              <input type="text" id="contactPoNo" name="newContactPoNo" th:value="${client.contactPoNo}"/>
+              <label for="newContactPerson">Contact Person:</label>
+              <input type="text" id="newContactPerson" name="newContactPerson" th:value="${client.contactPerson}" required/><br/>
 
-              <label for="contactPerson">Contact Person:</label>
-              <input type="text" id="contactPerson" name="newContactPerson" th:value="${client.contactPerson}"/>
+              <label for="newCompanyPoNo">Company Phone Number:</label>
+              <input type="text" id="newCompanyPoNo" name="newCompanyPoNo" th:value="${client.companyPoNo}" required/><br/>
 
-              <label for="companyPoNo">Company Phone No.:</label>
-              <input type="text" id="companyPoNo" name="newCompanyPoNo" th:value="${client.companyPoNo}"/>
+              <label for="newAddress">Address:</label>
+              <input type="text" id="newAddress" name="newAddress" th:value="${client.address}" required/><br/>
 
-              <label for="address">Address:</label>
-              <input type="text" id="address" name="newAddress" th:value="${client.address}"/>
+              <label for="newZipcode">Zip Code:</label>
+              <input type="text" id="newZipcode" name="newZipcode" th:value="${client.zipcode}" required/><br/>
 
-              <label for="zipCode">Zip code:</label>
-              <input type="text" id="zipCode" name="newZipCode" th:value="${client.zipcode}"/>
+              <label for="newCountry">Country:</label>
+              <input type="text" id="newCountry" name="newCountry" th:value="${client.country}" required/><br/>
 
-              <label for="country">Country:</label>
-              <input type="text" id="country" name="newCountry" th:value="${client.country}"/>
+              <input type="submit" value="Save Changes"/>
 
-              <input type="submit" value="Update Client"/>
-
-              <div th:if="${result}">
-                <p th:text="${result}" class="result-message"></p>
-              </div>
+            <a href="javascript:history.go(-2);">Ok</a>
             </form>
           </div>
         </div>
@@ -112,29 +111,19 @@
     </div>
 
 
-            <div class="project">
-      <div class="row">
-        <div class="col-md-3" id="newswindow">
-        <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
-        <a href="/createproject">Create new project</a>
-        </div>
-        <div class="col-md-3" id="viewprojectswindow">
-          <i class="fa-solid fa-folder" style="font-size: 26px; color: darkgoldenrod"></i>
-          <a href="/readprojects">View Projects</a>
-        </div>
-        <div class="col-md-3" id="newprojectswindow">
-          <i class="fa-solid fa-folder-plus" style="font-size: 26px; color: darkgoldenrod"></i>
-          <a href="/editclient">Create new project</a>
-        </div>
-        <div class="col-md-3" id="createteamwindow">
-          <i class="fa-solid fa-users" style="font-size: 26px; color: darkgoldenrod"></i>
-          <a href="/createteam">Create team</a>
-        </div>
-      </div>
-    </div>
-  </div>
 
-
+        <div class="container" id="optioncontainer">
+            <div class="row">
+              <div class="col-md-3" id="backwindow">
+                <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
+                <a href="javascript:history.go(-1);">Return</a>
+              </div>
+              <div class="col-md-3" id="dashboardwindow">
+                <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
+                <a href="/dashboard">Return to dashboard</a>
+              </div>
+          </div>
+        </div>
 
 
 </div>
