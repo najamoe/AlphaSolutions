@@ -167,9 +167,11 @@ public class ProjectRepository {
             int projectDeleted = projectStmt.executeUpdate();
 
             if (projectDeleted > 0) {
-                return "Project with ID " + projectId + "and associated records deleted successfully";
+                String successMessage = "Project with ID " + projectId + " and associated records deleted successfully";
+                return "displayMessage('" + successMessage + "');";
             } else {
-                return "Project with ID " + projectId + " does not exist";
+                String errorMessage = "Project with ID " + projectId + " does not exist";
+                return "displayMessage('" + errorMessage + "');";
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

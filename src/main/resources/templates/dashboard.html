@@ -9,21 +9,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script th:inline="javascript">
-        // AJAX delete request
-        function deleteTask(subprojectId, taskId) {
-            $.ajax({
-                url: '/tasksuccess/' + subprojectId + '/delete?taskId=' + taskId,
-                type: 'POST',
-                success: function (response) {
-                    $('#deleteMessage').text('Deleted task');
-                },
-                error: function (error) {
-                    console.error(error);
-                }
-            });
+        <script>
+            function confirmDelete() {
+            var confirmation = confirm('Are you sure you want to delete this project?');
+            if (confirmation) {
+            // Form submission proceeds
+            return true;
+        } else {
+            // Form submission canceled
+            return false;
         }
+        }
+
     </script>
     <style>
         #welcomecontainer, #howtocontainer, #projectwindow, #projectviewcontainer {
@@ -139,11 +136,11 @@
                                 </a>
                             </td>
                             <td>
-                                <form th:action="@{/project/delete/{projectId}(projectId=${project.projectId})}"
-                                      method="post">
+                                <form th:action="@{/project/delete/{projectId}(projectId=${project.projectId})}" method="post" onsubmit="return confirm('Are you sure you want to delete this project?');">
                                     <input type="hidden" name="_method" value="delete"/>
                                     <button type="submit" class="fa-solid fa-trash"></button>
                                 </form>
+
                             </td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(projects)}">
