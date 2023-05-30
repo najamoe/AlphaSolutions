@@ -68,8 +68,7 @@ public class TaskController {
     public String taskSuccess(@PathVariable int subprojectId, Model model) throws SQLException {
         List<TaskModel> tasks = taskService.readTasks(subprojectId);
         model.addAttribute("tasks", tasks);
-        String totalTime = taskService.getTotalTime(subprojectId);
-        model.addAttribute("totalTime", totalTime);
+
         return "tasksuccess";
     }
 
@@ -140,11 +139,5 @@ public class TaskController {
 
         return "redirect:/subproject/{subprojectId}/task";
     }
-
-
-
-
-
-
 
 }
