@@ -5,11 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.ui.Model;
-
-import java.sql.Connection;
-import java.sql.SQLException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -22,6 +18,8 @@ class ProjectControllerTest {
 
     @Mock
     private ProjectService projectService;
+    @Mock
+    private RedirectAttributes redirectAttributes;
 
     @BeforeEach
     void setUp() {
@@ -38,10 +36,10 @@ class ProjectControllerTest {
         when(projectService.deleteProject(projectId)).thenReturn(deletionMessage);
 
         // Act
-        String result = projectController.deleteProject(projectId);
+        String result = projectController.deleteProject(projectId, redirectAttributes);
 
         // Assert
-        assertEquals("redirect:/deletedproject", result);
+        assertEquals("redirect:/dashboard", result);
 
         // Verify that the projectService.deleteProject method was called with the correct projectId
         verify(projectService).deleteProject(projectId);
@@ -57,24 +55,12 @@ class ProjectControllerTest {
         when(projectService.deleteProject(projectId)).thenReturn(deletionMessage);
 
         // Act
-        String result = projectController.deleteProject(projectId);
+        String result = projectController.deleteProject(projectId, redirectAttributes);
 
         // Assert
-        assertEquals("redirect:/readproject.html?error=An error occured, project not deleted", result);
+        assertEquals("redirect:/dashboard", result);
 
         // Verify that the projectService.deleteProject method was called with the correct projectId
         verify(projectService).deleteProject(projectId);
-    }
-
-    @Test
-    void showDeletedProjectPage() {
-        // Arrange
-        Model model = mock(Model.class);
-
-        // Act
-        String result = projectController.showDeletedProjectPage(model);
-
-        // Assert
-        assertEquals("deletedproject", result);
     }
 }
