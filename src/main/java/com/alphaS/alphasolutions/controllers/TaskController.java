@@ -41,6 +41,8 @@ public class TaskController {
         TaskModel taskModel = new TaskModel();
         model.addAttribute("taskModel", new TaskModel());
         model.addAttribute("subprojectId", subprojectId);
+        String totalTime = taskService.getTotalTime(subprojectId);
+        model.addAttribute("totalTime", totalTime);
         return "createtask";
     }
 
@@ -66,6 +68,8 @@ public class TaskController {
     public String taskSuccess(@PathVariable int subprojectId, Model model) throws SQLException {
         List<TaskModel> tasks = taskService.readTasks(subprojectId);
         model.addAttribute("tasks", tasks);
+        String totalTime = taskService.getTotalTime(subprojectId);
+        model.addAttribute("totalTime", totalTime);
         return "tasksuccess";
     }
 
