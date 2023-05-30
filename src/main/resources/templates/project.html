@@ -10,37 +10,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <style>
-        #projectcontainer, #clientcontainer, #subprojectcontainer, #taskcontainer {
+
+        #projectfullcontainer{
+            height: 100vh;
+            align-content: center;
+        }
+        #projectcontainer, #projecteditcontainer{
             background-color: white;
-            margin: 50px 40px 30px 50px; /*Top, right, bottom, left*/
+            margin: 50px 50px 30px 50px; /*Top, right, bottom, left*/
             border-radius: 10px;
             height: auto;
+            width: 80%;
         }
-
         #optioncontainer {
             background-color: white;
-            margin: 50px 40px 30px 50px; /*Top, right, bottom, left*/
+            padding: 10px;
+            margin: 50px 50px 30px 50px; /*Top, right, bottom, left*/
             border-radius: 10px;
             height: auto;
+            width: 80%;
         }
 
-        #viewprojectsswindow {
-            background-color: #f3f6fd;
-            height: 100px;
-            width: 100px;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 20px 20px 40px;
+        #optioncontainer .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        #dashboardwindow {
-            background-color: #f3f6fd;
-            height: 100px;
-            width: 100px;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 20px 20px 20px;
+        #optioncontainer .col-md-3 {
+            flex-basis: 33.33%;
+            text-align: center;
         }
+
+        #optioncontainer a {
+            display: block;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        #optioncontainer i {
+            font-size: 20px;
+            color: darkgoldenrod;
+            margin-bottom: 10px;
+        }
+
+
+        p {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        #projecteditcontainer .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        #projecteditcontainer .col-md-12 {
+            flex-basis: 100%;
+            margin-bottom: 10px;
+        }
+
+        #projecteditcontainer label {
+            display: block;
+            font-weight: bold;
+        }
+
+        #projecteditcontainer input[type="text"] {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+        }
+
+        #projecteditcontainer input[type="submit"] {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        #projecteditcontainer .result-message {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        #projecteditcontainer a {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #ccc;
+            color: black;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 
@@ -48,6 +119,7 @@
 <body>
 <div layout:fragment="content">
 
+    <div class="container" id="projectfullcontainer">
     <div class="container" id="projectcontainer">
         <div th:if="${project}">
             <p>Project ID: <span th:text="${project.projectId}"></span></p>
@@ -61,7 +133,7 @@
         </div>
     </div>
 
-    <div class="container" id="projectcontainer">
+    <div class="container" id="projecteditcontainer">
         <div class="projectname">
             <div class="row">
                 <div class="col-md-12" id="projectname">
@@ -76,10 +148,10 @@
                                th:value="${project.projectDescription}"/>
 
                         <label for="startDate">Start Date:</label>
-                        <input type="text" id="startDate" name="newStartDate" th:value="${project.startDate}"/>
+                        <input type="date" id="startDate" name="newStartDate" th:value="${project.startDate}"/>
 
                         <label for="endDate">End Date:</label>
-                        <input type="text" id="endDate" name="newEndDate" th:value="${project.endDate}"/>
+                        <input type="date" id="endDate" name="newEndDate" th:value="${project.endDate}"/>
 
                         <input type="submit" value="Update Project"/>
 
@@ -98,21 +170,23 @@
     <div class="contatiner" id="optioncontainer">
         <div class="row">
             <div class="col-md-3" id="clientcontainer">
+                <i class="fa-solid fa-person-circle-check" style="font-size: 26px; color: darkgoldenrod"></i>
                  <a th:href="@{'/client/details/' + ${client.clientId}}">Go to Client Info</a>
             </div>
 
             <div class="col-md-3" id="subprojectcontainer">
-                <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
+                <i class="fa-solid fa-diagram-project"  style="font-size: 26px; color: darkgoldenrod"></i>
                 <a th:href="@{'/subproject/' + ${project.projectId}}">Go to Subproject</a>
             </div>
 
             <div class="col-md-3" id="backwindow">
-                <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
-                <a href="javascript:history.go(-1);">Return</a>
+                <i class="fa-solid fa-house" style="font-size: 26px; color: darkgoldenrod"></i>
+                <a href="javascript:history.go(-1);">Return to dashboard</a>
             </div>
         </div>
     </div>
 
+</div>
 </div>
 
 
