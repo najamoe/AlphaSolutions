@@ -25,7 +25,6 @@ public class ProjectRepository {
     }
 
 
-
     public String createProject(ProjectModel project, String username, String password) throws SQLException {
         Connection con = dataSource.getConnection();
         String sql = "INSERT INTO taskcompass.Project (project_name, project_description, start_date, end_date, employee_id) " +
@@ -168,7 +167,7 @@ public class ProjectRepository {
             int projectDeleted = projectStmt.executeUpdate();
 
             if (projectDeleted > 0) {
-                return "Project and associated records deleted successfully";
+                return "Project with ID " + projectId + "and associated records deleted successfully";
             } else {
                 return "Project with ID " + projectId + " does not exist";
             }

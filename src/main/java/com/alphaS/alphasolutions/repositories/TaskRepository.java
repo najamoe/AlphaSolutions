@@ -183,9 +183,7 @@ public class TaskRepository {
 
     //Method for removing a task form a subproject
     public String deleteTaskFromSubproject(int taskId)  {
-        String message;
-
-        try (Connection con = dataSource.getConnection()) {
+            try (Connection con = dataSource.getConnection()) {
             String sql = "DELETE FROM taskcompass.Task WHERE task_id = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setInt(1, taskId);
