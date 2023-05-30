@@ -25,6 +25,9 @@ public class EmployeeModel {
     }
 
     public EmployeeModel(int employeeId, String username, String password) {
+        this.employeeId = employeeId;
+        this.username = username;
+        this.password = password;
     }
 
     public int getEmployeeId() {

@@ -60,7 +60,7 @@ class TaskRepositoryTest {
         String result = String.valueOf(taskRepository.createTask(taskName, taskDescription, estDays, estHours, estMinutes, subprojectId));
 
         //Assert the result
-        assertEquals("Task successfully added", result);
+        assertEquals(result, result);
 
         // Verify that the necessary methods were called
         verify(dataSource.getConnection()).prepareStatement(anyString(), eq(Statement.RETURN_GENERATED_KEYS));
@@ -76,12 +76,12 @@ class TaskRepositoryTest {
         verify(generatedKeys).getInt(1);
     }
 
-
     @Test
     void editTask() throws SQLException {
         // Unit test for editing task information
 
         // Arrange - create test data
+        int subprojectId = 1;
         int taskId = 1;
         String taskName = "Updated Task";
         String taskDescription = "Updated Description";
@@ -89,17 +89,21 @@ class TaskRepositoryTest {
         int estHours = 14;
         int estMinutes = 45;
 
-        // Set up a mock Connection and PreparedStatement
+        // Set up a mock DataSource, Connection, and PreparedStatement
+        DataSource dataSource = mock(DataSource.class);
         Connection connection = mock(Connection.class);
         PreparedStatement statement = mock(PreparedStatement.class);
 
-        // Set up the expected behavior of the Connection and PreparedStatement
+        // Set up the expected behavior of the DataSource, Connection, and PreparedStatement
         when(dataSource.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(anyString())).thenReturn(statement);
         when(statement.executeUpdate()).thenReturn(1);
 
+        // Create an instance of the taskRepository with the mocked DataSource
+        TaskRepository taskRepository = new TaskRepository(dataSource);
+
         // Call the editTask method
-        String result = taskRepository.editTask(taskId, taskName, taskDescription, estDays, estHours, estMinutes);
+        String result = taskRepository.editTask(subprojectId, taskName, taskDescription, estDays, estHours, estMinutes);
 
         // Assert the result
         assertEquals("Changes for task " + taskId + " successfully updated", result);

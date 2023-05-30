@@ -107,7 +107,6 @@ public class TaskRepository {
 
 
     public String editTask(int subprojectId, String taskName, String taskDescription, int estDays, int estHours, int estMinutes) throws SQLException {
-
         int taskId = getTaskId(subprojectId);
         if (taskId == 0) {
             return "Task not found";
