@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
@@ -13,65 +12,40 @@
 
 
     <style>
+        h2 {
+            font-size: 18px;
+            font-weight: bold;
+        }
 
-        #welcomecontainer {
-            margin: 30px auto; /* Centers the container horizontally */
-            margin-bottom: 20px;
-            border-radius: 10px;
-            background-color: white;
-            padding: 20px;
-            width: 100%;
-            max-width: 1000px; /* Optional: Sets a maximum width for the container */
+        p,
+        #projectviewcontainer label,
+        #projectviewcontainer input[type="text"],
+        #projectviewcontainer textarea,
+        #projectviewcontainer input[type="number"],
+        #projectviewcontainer input[type="submit"],
+        #projectviewcontainer a {
+            font-size: 12px;
         }
 
         #projectviewcontainer {
-            margin: 30px auto; /* Centers the container horizontally */
+            margin-bottom: 10px;
+            margin: 30px auto;
             border-radius: 10px;
             background-color: white;
             padding: 20px;
             width: 100%;
-            max-width: 1000px; /* Optional: Sets a maximum width for the container */
+            max-width: 1000px;
         }
 
         #optioncontainer {
-            margin: 30px auto; /* Centers the container horizontally */
+            margin-top: 5px;
+            margin: 30px auto;
             border-radius: 10px;
             background-color: white;
             width: 100%;
-            max-width: 1000px; /* Optional: Sets a maximum width for the container */
+            max-width: 1000px;
             padding: 20px;
         }
-
-        #dashboardwindow {
-            background-color: #f3f6fd;
-            height: 30px;
-            width: 130px;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            margin-left: 60px;
-        }
-
-        #backwindow {
-            background-color: #f3f6fd;
-            height: 30px;
-            width: 130px;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            margin-left: 60px;
-        }
-
-        .back-link {
-            display: inline-block;
-            background: none;
-            border: none;
-            color: darkgoldenrod;
-            font-size: 16px;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
 
         table {
             width: 100%;
@@ -102,24 +76,55 @@
             color: #999;
         }
 
+        #projectviewcontainer form {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        #projectviewcontainer label {
+            flex-basis: 30%;
+            margin-right: 10px;
+            text-align: right;
+        }
+
+        #projectviewcontainer input[type="text"],
+        #projectviewcontainer textarea,
+        #projectviewcontainer input[type="number"] {
+            flex-basis: 60%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        #projectviewcontainer div {
+            flex-basis: 100%;
+        }
+
+        #projectviewcontainer .button-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        #projectviewcontainer input[type="submit"],
+        #projectviewcontainer a {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: #ccc;
+            color: black;
+            text-align: center;
+            text-decoration: none;
+            font-size: 12px;
+            margin-top: 10px;
+            cursor: pointer;
+            border: none;
+        }
     </style>
+
 </head>
 
 
 <body>
 <div layout:fragment="content">
 
-
-    <div class="container" id="welcomecontainer">
-        <div class="welcome">
-            <div class="row">
-                <div class="col-md-12" id="welcomemsg">
-                    <h1 class="welcome-heading">Your tasks</h1>
-                    <p class="welcome-text">A list of the tasks associated with subproject <span th:text="${subprojectName}"></span></p>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="row">
         <div class="col-md-12" id="projectviewcontainer">
@@ -138,14 +143,16 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-md-12" id="projectviewcontainer">
             <div class="container-fluid">
                 <form th:action="@{/task/{taskId}/edit(taskId=${taskId})}" method="post">
-                <label for="taskName">Task Name:</label>
+                    <label for="taskName">Task Name:</label>
                     <input type="text" id="taskName" name="taskName" th:value="${task.taskName}" required/><br/>
                     <label for="taskDescription">Task Description:</label>
-                    <textarea id="taskDescription" name="taskDescription" required th:text="${task.taskDescription}"></textarea><br/>
+                    <textarea id="taskDescription" name="taskDescription" required
+                              th:text="${task.taskDescription}"></textarea><br/>
                     <label for="estDays">Est. Days:</label>
                     <input type="number" id="estDays" name="estDays" th:value="${task.estDays}" required/><br/>
                     <label for="estHours">Est. Hours:</label>
@@ -153,7 +160,7 @@
                     <label for="estMinutes">Est. Minutes:</label>
                     <input type="number" id="estMinutes" name="estMinutes" th:value="${task.estMinutes}" required/><br/>
                     <div>
-                        <input type="submit" value="Save Changes" />
+                        <input type="submit" value="Save Changes"/>
                     </div>
                     <div th:if="${result}">
                         <p th:text="${result}" class="result-message"></p>
@@ -161,39 +168,20 @@
 
                     <a href="javascript:history.go(-2);">Ok</a>
                 </form>
-
-            </div>
-            <div class="total-time" style="position: fixed; bottom: 10px; right: 10px;">
-                Total Time: <span th:text="${totalTime}"></span>
             </div>
         </div>
     </div>
-
-
-                <div class="row">
-        <div class="col-md-12" id="editsubprojectwcontainer">
-            <div class="container-fluid">
-
-
-
-            </div>
-        </div>
-    </div>
-
 
 
     <div class="container" id="optioncontainer">
         <div class="row">
             <div class="col-md-3" id="backwindow">
-                <form>
-                    <button type="button" class="back-link" onclick="history.back()">
-                        <i class="fa-solid fa-arrow-left" style="font-size: 26px; color: darkgoldenrod"></i>
-                    </button>
-                </form>
+                <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
+                <a href="javascript:history.go(-1);">Return</a>
             </div>
             <div class="col-md-3" id="dashboardwindow">
                 <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
-                <a href="/dashboard"></a>
+                <a href="/dashboard">Return to dashboard</a>
             </div>
         </div>
     </div>
