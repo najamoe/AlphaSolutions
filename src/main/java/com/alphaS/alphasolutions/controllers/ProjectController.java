@@ -91,6 +91,8 @@ public class ProjectController {
 
         return "project";
     }
+
+    
     @PostMapping("/project/details/{projectId}")
     public String editSpecificProject(@PathVariable("projectId") int projectId,
                                       @RequestParam("newProjectName") String newProjectName,

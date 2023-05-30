@@ -44,7 +44,6 @@ public class EmployeeController {
         }
     }
 
-
     @GetMapping("/logout")
     public String logOut(HttpSession session) {
         session.invalidate();

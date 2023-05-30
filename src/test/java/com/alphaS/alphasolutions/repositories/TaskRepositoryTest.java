@@ -23,6 +23,15 @@ class TaskRepositoryTest {
     @Mock //Allows us to control the behavior of the dependencies and simulate the database interactions
     private DataSource dataSource;
 
+    @Mock
+    private Connection connection;
+
+    @Mock
+    private PreparedStatement statement;
+
+    @Mock
+    private ResultSet resultSet;
+
     @BeforeEach
     public void setup() throws SQLException {
         MockitoAnnotations.openMocks(this);
@@ -77,46 +86,33 @@ class TaskRepositoryTest {
     }
 
     @Test
-    void editTask() throws SQLException {
-        // Unit test for editing task information
-
-        // Arrange - create test data
+    void getTotalTime() throws SQLException {
+        // Arrange
         int subprojectId = 1;
-        int taskId = 1;
-        String taskName = "Updated Task";
-        String taskDescription = "Updated Description";
-        int estDays = 12;
-        int estHours = 14;
-        int estMinutes = 45;
+        String expectedTotalTime = "10 days 2 hours 30 minutes";
 
-        // Set up a mock DataSource, Connection, and PreparedStatement
-        DataSource dataSource = mock(DataSource.class);
-        Connection connection = mock(Connection.class);
-        PreparedStatement statement = mock(PreparedStatement.class);
-
-        // Set up the expected behavior of the DataSource, Connection, and PreparedStatement
+        // Mock the necessary objects and their behaviors
         when(dataSource.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(anyString())).thenReturn(statement);
-        when(statement.executeUpdate()).thenReturn(1);
+        when(statement.executeQuery()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true);
+        when(resultSet.getString("total_est_time")).thenReturn(expectedTotalTime);
 
-        // Create an instance of the taskRepository with the mocked DataSource
-        TaskRepository taskRepository = new TaskRepository(dataSource);
+        // Act
+        String totalTime = taskRepository.getTotalTime(subprojectId);
 
-        // Call the editTask method
-        String result = taskRepository.editTask(subprojectId, taskName, taskDescription, estDays, estHours, estMinutes);
+        // Assert
+        assertEquals(expectedTotalTime, totalTime);
 
-        // Assert the result
-        assertEquals("Changes for task " + taskId + " successfully updated", result);
+        // Verify that the necessary methods were called with the correct parameters
+        verify(dataSource).getConnection();
+        verify(connection).prepareStatement(anyString());
+        verify(statement).setInt(1, subprojectId);
+        verify(statement).executeQuery();
+        verify(resultSet).next();
+        verify(resultSet).getString("total_est_time");
 
-        // Verify that the PreparedStatement was called with the correct values
-        verify(statement).setString(1, taskName);
-        verify(statement).setString(2, taskDescription);
-        verify(statement).setInt(3, estDays);
-        verify(statement).setInt(4, estHours);
-        verify(statement).setInt(5, estMinutes);
-        verify(statement).setInt(6, taskId);
-
-        // Verify that the executeUpdate method was called
-        verify(statement).executeUpdate();
     }
+
+
 }
