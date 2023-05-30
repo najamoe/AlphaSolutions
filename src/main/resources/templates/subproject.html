@@ -10,117 +10,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subproject</title>
 
-
     <style>
-
-        #welcomecontainer {
-            margin: 30px auto; /* Centers the container horizontally */
-            margin-bottom: 20px;
-            border-radius: 10px;
-            background-color: white;
-            padding: 20px;
-            width: 100%;
-            max-width: 1000px; /* Optional: Sets a maximum width for the container */
+        #subprojectfullcontainer {
+            height: 100vh;
+            align-content: center;
+            width: 100vw;
         }
 
-        #projectviewcontainer {
-            margin: 30px auto; /* Centers the container horizontally */
-            border-radius: 10px;
+        #subprojectviewcontainer, #editsubprojectcontainer {
             background-color: white;
-            padding: 20px;
-            width: 100%;
-            max-width: 1000px; /* Optional: Sets a maximum width for the container */
+            margin: 50px 40px 20px 50px; /*Top, right, bottom, left*/
+            border-radius: 10px;
+            width: 80%;
         }
 
         #optioncontainer {
-            margin: 30px auto; /* Centers the container horizontally */
-            border-radius: 10px;
             background-color: white;
-            width: 100%;
-            max-width: 1000px; /* Optional: Sets a maximum width for the container */
-            padding: 20px;
-        }
-
-        #dashboardwindow {
-            background-color: #f3f6fd;
-            height: 30px;
-            width: 130px;
-            padding: 20px;
+            padding: 10px;
+            margin: 30px 50px 40px 50px; /*Top, right, bottom, left*/
             border-radius: 10px;
-            margin-top: 20px;
-            margin-left: 60px;
+            height: auto;
+            width: 80%;
         }
 
-        #backwindow {
-            background-color: #f3f6fd;
-            height: 30px;
-            width: 130px;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            margin-left: 60px;
+        #optioncontainer .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .back-link {
-            display: inline-block;
-            background: none;
-            border: none;
+        #optioncontainer .col-md-3 {
+            flex-basis: 33.33%;
+            text-align: center;
+        }
+
+        #optioncontainer a {
+            display: block;
+            font-weight: bold;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        #optioncontainer i {
+            font-size: 28px;
             color: darkgoldenrod;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        #editsubprojectcontainer .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        #editsubprojectcontainer .col-md-12 {
+            flex-basis: 100%;
+            margin-bottom: 10px;
+        }
+
+        #editsubprojectcontainer label {
+            display: block;
+            font-weight: bold;
+        }
+
+        #editsubprojectcontainer input[type="text"] {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+        }
+
+        #editsubprojectcontainer input[type="submit"] {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            text-align: center;
+            text-decoration: none;
             font-size: 16px;
-            text-decoration: underline;
+            margin-top: 10px;
             cursor: pointer;
         }
 
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        #editsubprojectcontainer .result-message {
+            margin-top: 10px;
+            font-weight: bold;
         }
 
-        thead th {
-            background-color: #f2f2f2;
-            text-align: left;
-            padding: 10px;
+        #editsubprojectcontainer a {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #ccc;
+            color: black;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
         }
-
-        tbody td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        tbody tr:hover {
-            background-color: #e6e6e6;
-        }
-
-        p.no-projects {
-            font-style: italic;
-            color: #999;
-        }
-
     </style>
+
 </head>
 
 
 <body>
 <div layout:fragment="content">
 
-    <div class="container" id="welcomecontainer">
-        <div class="welcome">
-            <div class="row">
-                <div class="col-md-12" id="welcomemsg">
-                    <h1 class="welcome-heading">Your subprojects</h1>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="container" id="subprojectfullcontainer">
 
-    <div class="row">
-        <div class="col-md-12" id="projectviewcontainer">
-            <div class="container-fluid">
+
+     <div class="container" id="subprojectviewcontainer">
+        <div class="col-md-12">
+            <div class="row">
                 <div>
                     <h2>Subproject Details</h2>
                     <p>ID: <span th:text="${subproject.subprojectId}"></span></p>
@@ -131,9 +137,10 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12" id="editsubprojectwcontainer">
-            <div class="container-fluid">
+
+    <div class="container" id="editsubprojectcontainer">
+        <div class="col-md-12">
+            <div class="row">
                 <form action="/subproject/edit/{projectId}" method="post">
                     <input type="hidden" name="subprojectId" th:value="${subproject.subprojectId}" />
 
@@ -154,17 +161,14 @@
 
                     <a href="javascript:history.go(-2);">Ok</a>
                 </form>
-
-
             </div>
         </div>
     </div>
 
-
     <div class="container" id="optioncontainer">
         <div class="row">
             <div class="col-md-3" id="taskcontainer">
-                <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
+                <i class="fa-solid fa-list-check" style="font-size: 26px; color: darkgoldenrod"></i>
                 <a th:href="@{'/subproject/' +${subproject.subprojectId} + '/task' }">Go to Task</a>
             </div>
             <div class="col-md-3" id="dashboardwindow">
@@ -173,7 +177,7 @@
             </div>
         </div>
     </div>
-
+    </div>
 </div>
 
 
