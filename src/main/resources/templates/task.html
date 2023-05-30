@@ -46,42 +46,37 @@
         }
 
         #optioncontainer {
-            margin: 30px auto; /* Centers the container horizontally */
-            border-radius: 10px;
             background-color: white;
-            width: 100%;
-            max-width: 1000px; /* Optional: Sets a maximum width for the container */
-            padding: 20px;
-        }
-
-        #dashboardwindow {
-            background-color: #f3f6fd;
-            height: 30px;
-            width: 130px;
-            padding: 20px;
+            padding: 10px;
+            margin: 50px 50px 30px 50px; /*Top, right, bottom, left*/
             border-radius: 10px;
-            margin-top: 20px;
-            margin-left: 60px;
+            height: auto;
+            width: 80%;
         }
 
-        #backwindow {
-            background-color: #f3f6fd;
-            height: 30px;
-            width: 130px;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            margin-left: 60px;
+
+        #optioncontainer .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .back-link {
-            display: inline-block;
-            background: none;
-            border: none;
+        #optioncontainer .col-md-3 {
+            flex-basis: 33.33%;
+            text-align: center;
+        }
+
+        #optioncontainer a {
+            display: block;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        #optioncontainer i {
+            font-size: 20px;
             color: darkgoldenrod;
-            font-size: 16px;
-            text-decoration: underline;
-            cursor: pointer;
+            margin-bottom: 10px;
         }
 
 
@@ -113,7 +108,15 @@
             font-style: italic;
             color: #999;
         }
-
+        #backwindow, #dashboardwindow{
+            height: 100px;
+            width: 100px;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            margin-left: 60px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 
@@ -181,22 +184,19 @@
         </div>
     </div>
 
-
     <div class="container" id="optioncontainer">
         <div class="row">
             <div class="col-md-3" id="backwindow">
-                <form>
-                    <button type="button" class="back-link" onclick="history.back()">
-                        <i class="fa-solid fa-arrow-left" style="font-size: 26px; color: darkgoldenrod"></i>
-                    </button>
-                </form>
+                <i class="fa-solid fa-arrow-left"  style="font-size: 26px; color: darkgoldenrod"></i>
+                <a href="javascript:history.go(-1);">Return</a>
             </div>
             <div class="col-md-3" id="dashboardwindow">
                 <i class="fa-solid fa-house-user" style="font-size: 26px; color: darkgoldenrod"></i>
-                <a href="/dashboard"></a>
+                <a href="/dashboard">Return to dashboard</a>
             </div>
         </div>
     </div>
+
 </div>
 
 
