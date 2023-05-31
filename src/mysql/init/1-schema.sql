@@ -50,7 +50,7 @@ CREATE TABLE taskcompass.Task (
                                   est_minutes INT,
                                   subproject_id INT,
                                   task_id INT PRIMARY KEY AUTO_INCREMENT,
-                                  FOREIGN KEY (subproject_id) REFERENCES taskcompass.subproject (subproject_id) ON DELETE CASCADE
+                                  FOREIGN KEY (subproject_id) REFERENCES taskcompass.Subproject (subproject_id) ON DELETE CASCADE
 );
 
 
